@@ -1015,6 +1015,14 @@ if (heroCameraTrigger) {
 }
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
+    // Instantly reveal elements above or near the fold
+    reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 1.15) {
+            el.classList.add('active');
+        }
+    });
+
     if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1022,11 +1030,16 @@ function initScrollReveal() {
                     entry.target.classList.add('active');
                 }
             });
-        }, { threshold: 0.12 });
+        }, { threshold: 0.02, rootMargin: '40px' });
         reveals.forEach(el => observer.observe(el));
     } else {
         reveals.forEach(el => el.classList.add('active'));
     }
+
+    // Safety fallback: ensure nothing stays invisible after 500ms
+    setTimeout(() => {
+        reveals.forEach(el => el.classList.add('active'));
+    }, 500);
 }
 let isEndPageWarpActive = false;
 function initEndPageScrollWarp() {
@@ -1147,7 +1160,7 @@ window.addEventListener('pointerdown', (e) => {
     if (e.target.closest('button, a, input, select, .theme-btn')) return;
     spawnClickBurst(e.clientX, e.clientY);
 });
-window.addEventListener('DOMContentLoaded', () => {
+function startNexApp() {
     window.scrollTo(0, 0);
     initParticleEngine();
     resizeTrackingCanvas();
@@ -1155,4 +1168,10 @@ window.addEventListener('DOMContentLoaded', () => {
     initEndPageScrollWarp();
     initBlocksOverscroll();
     animate();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startNexApp);
+} else {
+    startNexApp();
+}
