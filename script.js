@@ -718,7 +718,7 @@ let hands;
 let missedHandFrames = 0;
 function initMediaPipe() {
     hands = new Hands({
-        locateFile: (file) => `https:
+        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
     });
     hands.setOptions({
         maxNumHands: 2,
