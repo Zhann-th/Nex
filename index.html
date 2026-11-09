@@ -3,155 +3,2855 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AI 2.0 - Real-Time 3D Hand Gesture & Spatial Control Platform">
-    <title>Nex</title>
+    <title>NEX — Active Loss Prevention & Vision AI for Smart Vending</title>
+    <meta name="description" content="Nex eliminates micromarket shrinkage. Plug-and-play 120 FPS stereoscopic computer vision for smart fridges and micromarkets, preventing multi-item theft in real-time.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Paper Tiger Authentic Typography System -->
+    <style>
+        @font-face {
+            font-family: 'Rightgrotesk';
+            src: url('./fonts/RightGrotesk-TightBlack.woff2') format('woff2'),
+                 url('https://cdn.prod.website-files.com/68c9282d38c8df82b6d5f656/68c9287c371683e9fc0a4d1f_RightGrotesk-TightBlack.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Onsitestandard';
+            src: url('./fonts/OnsiteStandard-Regular.woff2') format('woff2'),
+                 url('https://cdn.prod.website-files.com/68c9282d38c8df82b6d5f656/68c9288948500a1e33599b14_OnsiteStandard-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Suisseworks';
+            src: url('./fonts/SuisseWorks-MediumItalic.woff2') format('woff2'),
+                 url('https://cdn.prod.website-files.com/68c9282d38c8df82b6d5f656/68c9289f55f62655acf4e121_SuisseWorks-MediumItalic.woff2') format('woff2');
+            font-weight: 500;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Dmmono';
+            src: url('./fonts/dmmono-regular.woff2') format('woff2'),
+                 url('https://cdn.prod.website-files.com/68c9282d38c8df82b6d5f656/68d141fe82258a98c3757a19_dmmono-regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Dmmono';
+            src: url('./fonts/dmmono-medium.woff2') format('woff2'),
+                 url('https://cdn.prod.website-files.com/68c9282d38c8df82b6d5f656/68d14204a06121dcdb6b7f3e_dmmono-medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <!-- Three.js for 3D Vending Machine & Camera Scrollytelling -->
+    <script src="./three.min.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           PAPER TIGER BRUTALIST DESIGN SYSTEM FOR NEX
+           Sleek Hero Canvas -> Deep Dive -> Pitch Black Brutalism (#000000)
+           1.5px/2px Solid Borders, Flat Stark Offset Shadows, Zero Muddy Glass.
+           ═══════════════════════════════════════════════════════════════ */
+        :root {
+            --bg-page: #FFFFFF;
+            --bg-canvas: #000000;
+            --bg-tint: #F3F3F5;
+            --bg-dark-card: #121214;
+            --bg-dark-subtle: #18181B;
+            --bg-dark-input: #09090B;
+            
+            --ink-black: #000000;
+            --ink-charcoal: #18181B;
+            --ink-muted: #A1A1AA;
+            --ink-faint: #71717A;
+            
+            --border-heavy: 1.5px solid #000000;
+            --border-thick: 2px solid #000000;
+            --border-white: 1.5px solid #FFFFFF;
+            --border-white-thick: 2px solid #FFFFFF;
+            --border-dark-subtle: 1.5px solid #27272A;
+            
+            --accent-tart: #fa435b;
+            --accent-coral: #fa435b;
+            --accent-lavender: #9589d3;
+            --accent-lagoon: #6dc9bc;
+            --accent-lemon: #fdf9c9;
+            --accent-pink: #ffdce0;
+            --accent-emerald: #10B981;
+            
+            --font-headline: 'Rightgrotesk', 'Anton', -apple-system, sans-serif;
+            --font-subhead: 'Rightgrotesk', 'Syne', -apple-system, sans-serif;
+            --font-body: 'Onsitestandard', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Dmmono', 'Space Grotesk', monospace;
+            --font-serif: 'Suisseworks', Georgia, serif;
+            
+            --shadow-brutal: 4px 4px 0px #000000;
+            --shadow-brutal-sm: 2px 2px 0px #000000;
+            --shadow-brutal-lg: 6px 6px 0px #000000;
+            --shadow-brutal-coral: 4px 4px 0px #fa435b;
+            --shadow-brutal-white: 4px 4px 0px #FFFFFF;
+            --shadow-brutal-dark: 4px 4px 0px rgba(255, 255, 255, 0.15);
+            --shadow-brutal-dark-lg: 6px 6px 0px rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: var(--font-body);
+            line-height: 1.5;
+            overflow-x: clip;
+            width: 100%;
+        }
+
+        /* ════════════ TOP HEADER BAR (SMOOTH TRANSITION TO DARK MODE) ════════════ */
+        .site-header {
+            background: #FFFFFF;
+            border-bottom: var(--border-heavy);
+            height: 60px;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box;
+            white-space: nowrap;
+            transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+        }
+
+        .site-header.is-dark {
+            background: #000000;
+            border-bottom: var(--border-dark-subtle);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .brand-wordmark {
+            font-family: var(--font-headline);
+            font-size: 32px;
+            color: #000000;
+            text-decoration: none;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            transition: color 0.25s ease;
+        }
+
+        .site-header.is-dark .brand-wordmark {
+            color: #FFFFFF;
+        }
+
+        .brand-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border: var(--border-heavy);
+            background: var(--bg-tint);
+            color: #000000;
+            letter-spacing: 0.05em;
+            transition: all 0.25s ease;
+        }
+
+        .site-header.is-dark .brand-badge {
+            background: #18181B;
+            border: 1px solid #27272A;
+            color: #FFFFFF;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-link {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            color: #52525B;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #000000;
+        }
+
+        .site-header.is-dark .nav-link {
+            color: #A1A1AA;
+        }
+
+        .site-header.is-dark .nav-link:hover {
+            color: #FFFFFF;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        /* Paper Tiger Brutalist Buttons */
+        .btn {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 8px 18px;
+            border: var(--border-heavy);
+            background: #FFFFFF;
+            color: #000000;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 0px;
+            box-shadow: var(--shadow-brutal-sm);
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+            transform: translate(-1px, -1px);
+            box-shadow: var(--shadow-brutal);
+        }
+
+        .btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: none;
+        }
+
+        .btn-black {
+            background: #000000;
+            color: #FFFFFF;
+            border-color: #000000;
+        }
+
+        .btn-black:hover {
+            background: var(--accent-coral);
+            border-color: #000000;
+            color: #FFFFFF;
+        }
+
+        .site-header.is-dark .btn-black {
+            background: #FFFFFF;
+            color: #000000;
+            border-color: #FFFFFF;
+            box-shadow: 2px 2px 0px rgba(255, 255, 255, 0.25);
+        }
+
+        .site-header.is-dark .btn-black:hover {
+            background: var(--accent-coral);
+            border-color: var(--accent-coral);
+            color: #FFFFFF;
+        }
+
+        .btn-coral {
+            background: var(--accent-coral);
+            color: #FFFFFF;
+            border-color: var(--accent-coral);
+            box-shadow: var(--shadow-brutal-sm);
+        }
+
+        .btn-coral:hover {
+            background: #ff5a70;
+            border-color: #ff5a70;
+            color: #FFFFFF;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SCROLL-DRIVEN 3D CHOREOGRAPHY (400VH HERO SCROLLYTELLING)
+           ═══════════════════════════════════════════════════════════════ */
+        .scrolly-section {
+            position: relative;
+            width: 100%;
+            height: 400vh;
+            background: #FFFFFF;
+        }
+
+        .sticky-viewport {
+            position: sticky;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fullscreen WebGL Canvas */
+        #webgl-canvas-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* Optical Iris / Black Void Plunge Overlay */
+        .lens-plunge-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 25;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.06s linear;
+        }
+
+        /* ── HUD STEP PILL & SCROLL PROMPT ── */
+        .hud-top-bar {
+            position: absolute;
+            top: 74px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .hud-step-pill {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            padding: 5px 12px;
+            box-shadow: var(--shadow-brutal-sm);
+            color: #000000;
+            pointer-events: auto;
+        }
+
+        .scroll-prompt-pill {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            padding: 5px 12px;
+            box-shadow: var(--shadow-brutal-sm);
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: auto;
+            animation: bouncePrompt 2s infinite ease-in-out;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes bouncePrompt {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(4px); }
+        }
+
+        /* ── PAPER TIGER SIGNATURE HERO BACKING CARDS ── */
+        .hero-backing-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(280px, 26vw, 390px);
+            height: clamp(400px, 50vh, 550px);
+            pointer-events: none;
+            z-index: 2; /* Sits strictly behind WebGL canvas (z-index: 5) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .c-hero-backing {
+            position: absolute;
+            inset: 0;
+            border: 2px solid #000000;
+            box-shadow: var(--shadow-brutal);
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .c-hero-backing.is-lavender {
+            background-color: var(--accent-lavender);
+            transform: rotate(-4.5deg) translate(-14px, -10px);
+            z-index: 1;
+        }
+
+        .c-hero-backing.is-coral {
+            background-color: var(--accent-tart);
+            transform: rotate(3.2deg) translate(16px, 12px);
+            z-index: 2;
+        }
+
+        .c-card-noise {
+            position: absolute;
+            inset: 0;
+            opacity: 0.35;
+            filter: url(#noiseFilter);
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+
+        .hero-headline-top {
+            position: absolute;
+            top: 104px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: var(--font-headline);
+            font-size: clamp(62px, 8.8vw, 128px);
+            line-height: 0.82;
+            letter-spacing: -0.015em;
+            text-transform: uppercase;
+            color: #000000;
+            z-index: 3;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .hero-headline-bottom {
+            position: absolute;
+            bottom: 104px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: var(--font-headline);
+            font-size: clamp(62px, 8.8vw, 128px);
+            line-height: 0.82;
+            letter-spacing: -0.015em;
+            text-transform: uppercase;
+            color: #000000;
+            z-index: 3;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        /* ── HERO BOTTOM FLANKING ELEMENTS (STAGE 0) ── */
+        .hero-bottom-dock {
+            position: absolute;
+            bottom: 22px;
+            left: 40px;
+            right: 40px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            z-index: 10;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .hero-micro-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #000000;
+            pointer-events: auto;
+        }
+
+        .hero-micro-stats .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-micro-stats .stat-val {
+            font-family: var(--font-headline);
+            font-size: 17px;
+            line-height: 1;
+            min-width: 46px;
+            color: #000000;
+        }
+
+        .hero-manifesto-box {
+            max-width: 380px;
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--ink-charcoal);
+            text-align: right;
+            pointer-events: auto;
+        }
+
+        .hero-manifesto-box em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 500;
+            font-size: 14.5px;
+            color: #000000;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* ── PAPER TIGER STAGE NARRATIVE CARDS (STAGES 2 & 3) ── */
+        .stage-card {
+            position: absolute;
+            max-width: 390px;
+            background: #FFFFFF;
+            border: var(--border-thick);
+            padding: 24px;
+            box-shadow: var(--shadow-brutal-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 20;
+            pointer-events: auto;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stage-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stage-card-right {
+            top: 50%;
+            right: 48px;
+            transform: translateY(calc(-50% + 24px));
+        }
+
+        .stage-card-right.is-visible {
+            transform: translateY(-50%);
+        }
+
+        .stage-card-left {
+            top: 50%;
+            left: 48px;
+            transform: translateY(calc(-50% + 24px));
+        }
+
+        .stage-card-left.is-visible {
+            transform: translateY(-50%);
+        }
+
+        .card-kicker {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent-coral);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-title {
+            font-family: var(--font-subhead);
+            font-size: 21px;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            color: #000000;
+        }
+
+        .card-body {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--ink-charcoal);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .pt-pill {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            border: 1px solid #000000;
+            background: var(--bg-tint);
+            color: #000000;
+        }
+
+        .pill-danger {
+            background: #FEE2E2;
+            color: #B91C1C;
+            border-color: #B91C1C;
+        }
+
+        .pill-success {
+            background: #E6FBF2;
+            color: #047857;
+            border-color: #047857;
+        }
+
+        /* ── RUNNING MARQUEE STRIP (PITCH BLACK THEME) ── */
+        .pt-marquee-strip {
+            background: #000000;
+            color: #FFFFFF;
+            border-top: var(--border-dark-subtle);
+            border-bottom: var(--border-dark-subtle);
+            padding: 15px 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 30;
+            white-space: nowrap;
+        }
+
+        .pt-marquee-track {
+            display: inline-flex;
+            align-items: center;
+            gap: 32px;
+            animation: ptMarqueeAnim 26s linear infinite;
+        }
+
+        @keyframes ptMarqueeAnim {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+            font-family: var(--font-headline);
+            font-size: 19px;
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+        }
+
+        .marquee-item .badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 800;
+            background: var(--accent-tart);
+            color: #FFFFFF;
+            padding: 2px 7px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .marquee-star {
+            color: var(--accent-lavender);
+            font-size: 15px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+   SIGNATURE STACKING PANELS (c-panel-scroll)
+   High-tech editorial brutalist architecture:
+   Full-page sticky stacking panels with technical metadata headers,
+   index badges, specification matrix chips, corner reticles,
+   monumental titles, and custom high-resolution editorial posters.
+   ═══════════════════════════════════════════════════════════════ */
+        .c-panel-scroll {
+            width: 100%;
+            position: relative;
+            background: #000000;
+        }
+
+        .c-panel {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            min-height: 720px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            padding: 2.2rem 6vw 3.2rem;
+            overflow: hidden;
+            will-change: transform;
+            /* Elevation shadow separating stacking panels */
+            box-shadow: 0 -24px 60px rgba(0, 0, 0, 0.55);
+        }
+
+        .c-panel.is-1 {
+            background-color: #07080a;
+            color: #FFFFFF;
+            z-index: 10;
+        }
+
+        .c-panel.is-2 {
+            background-color: #9589d3;
+            color: #09090b;
+            z-index: 20;
+        }
+
+        .c-panel.is-3 {
+            background-color: #fa435b;
+            color: #000000;
+            z-index: 30;
+        }
+
+        .c-panel.is-4 {
+            background-color: #07090e;
+            color: #FFFFFF;
+            z-index: 40;
+        }
+
+        /* Top Technical Metadata Rail on Each Panel */
+        .c-panel-top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.1rem;
+            margin-bottom: 1.4rem;
+            border-bottom: 1px solid currentColor;
+            opacity: 0.82;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .c-panel-top-meta .meta-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .c-panel-top-meta .meta-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+            display: inline-block;
+        }
+
+        .c-panel-top-meta .meta-badge {
+            padding: 4px 10px;
+            border: 1px solid currentColor;
+            border-radius: 3px;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            font-weight: 800;
+        }
+
+        .c-panel-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            align-items: stretch;
+            flex: 1;
+            min-height: 0;
+            gap: 2rem;
+        }
+
+        .c-panel-main {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-width: 620px;
+            z-index: 2;
+            padding-right: 1.5rem;
+        }
+
+        .c-panel-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .c-panel-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.2rem;
+        }
+
+        .c-panel-num {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .c-panel-kicker {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            opacity: 0.75;
+        }
+
+        .c-panel-desc {
+            max-width: 48ch;
+            margin-bottom: 1.3rem;
+        }
+
+        .c-panel-desc p {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.55;
+            letter-spacing: -0.01em;
+            margin: 0;
+            opacity: 0.92;
+        }
+
+        .c-panel-desc strong {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        /* Technical Specification Matrix Chips */
+        .c-panel-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1.3rem;
+        }
+
+        .c-spec-chip {
+            padding: 7px 12px;
+            border: 1px solid currentColor;
+            opacity: 0.9;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-family: var(--font-mono);
+        }
+
+        .c-spec-chip .spec-label {
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        .c-spec-chip .spec-val {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .c-panel.is-1 .c-spec-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .c-panel.is-1 .c-spec-chip.is-alert .spec-val {
+            color: #fa435b;
+        }
+
+        .c-panel.is-2 .c-spec-chip {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .c-panel.is-3 .c-spec-chip {
+            background: rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .c-panel.is-4 .c-spec-chip {
+            background: rgba(56, 189, 248, 0.06);
+            border-color: rgba(56, 189, 248, 0.25);
+        }
+        .c-panel.is-4 .c-spec-chip.is-accent .spec-val {
+            color: #38bdf8;
+        }
+
+        .c-panel_bt {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .panel-title {
+            font-family: 'Rightgrotesk', var(--font-headline), sans-serif;
+            font-size: clamp(72px, 11vw, 175px);
+            line-height: 0.78;
+            letter-spacing: -0.025em;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin: 0 0 1.2rem 0;
+            color: inherit;
+            word-break: break-word;
+        }
+
+        .c-panel-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding-top: 1.1rem;
+            border-top: 1px solid currentColor;
+            text-decoration: none;
+            color: inherit;
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            opacity: 0.85;
+            transition: opacity 0.2s ease;
+        }
+
+        .c-panel-link:hover {
+            opacity: 1;
+        }
+
+        .c-panel-link .arrow {
+            font-size: 19px;
+            margin-left: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .c-panel-link:hover .arrow {
+            transform: translate(3px, -3px);
+        }
+
+        .c-panel-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-poster-frame {
+            position: relative;
+            max-width: 450px;
+            width: 88%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Technical Corner Reticles */
+        .poster-reticle {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: currentColor;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 4;
+        }
+        .poster-reticle.top-left {
+            top: -8px;
+            left: -8px;
+            border-top: 2px solid currentColor;
+            border-left: 2px solid currentColor;
+        }
+        .poster-reticle.top-right {
+            top: -8px;
+            right: -8px;
+            border-top: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+        }
+        .poster-reticle.bottom-left {
+            bottom: -8px;
+            left: -8px;
+            border-bottom: 2px solid currentColor;
+            border-left: 2px solid currentColor;
+        }
+        .poster-reticle.bottom-right {
+            bottom: -8px;
+            right: -8px;
+            border-bottom: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+        }
+
+        .panel-poster-img {
+            width: 100%;
+            height: auto;
+            max-height: 72vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 12px 20px 50px rgba(0, 0, 0, 0.55);
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .panel-poster-frame:hover .panel-poster-img {
+            transform: perspective(1200px) rotate(0deg) scale(1.02) translateY(-4px);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+        }
+
+        .c-panel.is-1 .panel-poster-img {
+            transform: perspective(1200px) rotate(-1.5deg);
+        }
+
+        .c-panel.is-2 .panel-poster-img {
+            transform: perspective(1200px) rotate(1.8deg);
+            box-shadow: 12px 20px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .c-panel.is-3 .panel-poster-img {
+            transform: perspective(1200px) rotate(-1.6deg);
+            box-shadow: 12px 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .c-panel.is-4 .panel-poster-img {
+            transform: perspective(1200px) rotate(1.5deg);
+        }
+
+        @media (max-width: 960px) {
+            .c-panel {
+                height: auto;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                padding: 3rem 24px;
+                position: relative;
+                top: 0 !important;
+            }
+            .c-panel-main {
+                max-width: 100%;
+                padding-right: 0;
+                margin-bottom: 2.5rem;
+            }
+            .panel-title {
+                font-size: clamp(52px, 15vw, 110px);
+                margin-top: 2rem;
+            }
+            .c-panel-visual {
+                width: 100%;
+            }
+            .panel-poster-img {
+                max-height: 55vh;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SECTION: FINAL ACTION BANNER & FOOTER (PITCH BLACK THEME)
+           ═══════════════════════════════════════════════════════════════ */
+        .section-cta {
+            background: #000000;
+            color: #FFFFFF;
+            padding: 120px 48px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            position: relative;
+            z-index: 30;
+            border-top: var(--border-dark-subtle);
+        }
+
+        .cta-massive-title {
+            font-family: var(--font-headline);
+            font-size: clamp(48px, 8.5vw, 110px);
+            text-transform: uppercase;
+            line-height: 0.92;
+            letter-spacing: -0.02em;
+            color: #FFFFFF;
+        }
+
+        .cta-sub {
+            max-width: 600px;
+            font-size: 16px;
+            color: #A1A1AA;
+            line-height: 1.6;
+        }
+
+        .cta-btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .site-footer {
+            background: #000000;
+            border-top: var(--border-dark-subtle);
+            padding: 32px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: #71717A;
+            position: relative;
+            z-index: 30;
+        }
+
+        .site-footer strong {
+            color: #FFFFFF;
+        }
+
+        .footer-nav-row {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-nav-row a {
+            color: #D4D4D8;
+            text-decoration: none;
+            font-weight: 800;
+            transition: color 0.15s ease;
+        }
+
+        .footer-nav-row a:hover {
+            color: var(--accent-coral);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .site-header {
+                padding: 0 20px;
+            }
+            .header-nav {
+                display: none;
+            }
+            .hero-bottom-dock {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                bottom: 14px;
+                left: 20px;
+                right: 20px;
+            }
+            .hero-manifesto-box {
+                text-align: left;
+                max-width: none;
+            }
+            .comparison-grid, .sim-console, .retrofit-grid {
+                grid-template-columns: 1fr;
+            }
+            .sim-left {
+                border-right: none;
+                border-bottom: 2px solid #27272A;
+            }
+            .stage-card {
+                left: 20px !important;
+                right: 20px !important;
+                max-width: none;
+            }
+        }
+
+
+    </style>
 </head>
-<body id="top">
-    <header class="app-header glass-panel">
-        <nav class="nav-links">
-            <a href="#hero" class="nav-item active">Overview</a>
-            <a href="#workspace-pin" class="nav-item">Studio</a>
+<body>
+
+    <!-- SVG Noise Filter for Paper Tiger Noise Texture -->
+    <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+        <filter id="noiseFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" result="noise" />
+            <feColorMatrix type="saturate" values="0" />
+        </filter>
+    </svg>
+
+    <!-- ════════════ TOP HEADER BAR (FIXED) ════════════ -->
+    <header class="site-header">
+        <div class="header-brand">
+            <a href="/" class="brand-wordmark">NEX</a>
+        </div>
+
+        <nav class="header-nav">
+            <a href="#scrolly-root" class="nav-link">Architecture</a>
+            <a href="#panel-1" class="nav-link">Blindspot</a>
+            <a href="#panel-2" class="nav-link">Theft Vault</a>
+            <a href="#panel-3" class="nav-link">Lockout</a>
+            <a href="#panel-4" class="nav-link">Retrofit</a>
         </nav>
-        <div class="header-actions"></div>
+
+        <div class="header-actions">
+            <a href="/dashboard" class="btn btn-black" title="Open Computer Vision Control Workspace">
+                Control Workspace →
+            </a>
+        </div>
     </header>
-    <div class="page-wrapper">
-        <section id="hero" class="hero-section">
-            <div class="hero-content glass-panel reveal">
-                <h1 class="hero-title reveal reveal-delay-1">
-                    Control Cosmos Particles With <span class="gradient-text">Your Hands</span>
-                </h1>
-                <p class="hero-subtitle reveal reveal-delay-2">
-                    Real-time AI webcam hand tracking powering 2,500 glowing plasma particles with dynamic Black Hole singularity physics, custom HSL color palettes, and hyper-velocity fist scatter.
-                </p>
-                <div class="hero-stats-grid reveal reveal-delay-4">
-                    <div class="stat-card">
-                        <span class="stat-val">2,500</span>
-                        <span class="stat-lbl">Glowing Particles</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-val">60 FPS</span>
-                        <span class="stat-lbl">Smooth Physics</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-val">Dual Hand</span>
-                        <span class="stat-lbl">MediaPipe AI</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-val">Singularity</span>
-                        <span class="stat-lbl">Black Hole Mode</span>
-                    </div>
-                </div>
-                <div class="info-cards-row reveal reveal-delay-4">
-                    <div class="info-chip">
-                        <i class="fa-solid fa-bolt"></i>
-                        <div class="info-chip-text">
-                            <strong>Sub-10ms Latency</strong>
-                            <span>Real-time MediaPipe AI pipeline</span>
-                        </div>
-                    </div>
-                    <div class="info-chip">
-                        <i class="fa-solid fa-atom"></i>
-                        <div class="info-chip-text">
-                            <strong>Singularity Vortex</strong>
-                            <span>Dynamic orbital physics simulation</span>
-                        </div>
-                    </div>
-                    <div class="info-chip">
-                        <i class="fa-solid fa-hand"></i>
-                        <div class="info-chip-text">
-                            <strong>21 Joint Tracking</strong>
-                            <span>Dual hand spatial 3D coordinates</span>
-                        </div>
-                    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCROLL-DRIVEN 3D CHOREOGRAPHY (400VH HERO SCROLLYTELLING)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="scrolly-section" id="scrolly-root">
+        <div class="sticky-viewport">
+            
+            <!-- Three.js Canvas Container -->
+            <div id="webgl-canvas-container"></div>
+
+            <!-- Optical Iris / Black Void Plunge Overlay -->
+            <div class="lens-plunge-overlay" id="lensPlungeOverlay"></div>
+
+            <!-- Row 1: Top HUD Bar (Step Pill & Scroll Prompt) -->
+            <div class="hud-top-bar" id="hudTopBar">
+                <span class="hud-step-pill" id="hudStepIndicator">STANDBY STATE</span>
+                <div class="scroll-prompt-pill" id="scrollPrompt">
+                    <span>Scroll To Inspect 3D Vending</span>
+                    <i class="fa-solid fa-arrow-down"></i>
                 </div>
             </div>
-            <div class="scroll-down-hint">
-                <span>Scroll to Interactive Studio</span>
-                <i class="fa-solid fa-chevron-down bounce"></i>
+
+            <!-- Signature Paper Tiger Hero Backing Cards -->
+            <div class="hero-backing-frame" id="heroBackingFrame">
+                <div class="c-hero-backing is-lavender">
+                    <div class="c-card-noise"></div>
+                </div>
+                <div class="c-hero-backing is-coral">
+                    <div class="c-card-noise"></div>
+                </div>
+            </div>
+
+            <!-- Row 2: Top Headline ZERO THEFT. (Framing above 3D machine) -->
+            <h1 class="hero-headline-top" id="heroHeadlineTop">ZERO THEFT.</h1>
+
+            <!-- Row 4: Bottom Headline TOTAL CONTROL. (Framing below 3D machine) -->
+            <div class="hero-headline-bottom" id="heroHeadlineBottom">TOTAL CONTROL.</div>
+
+            <!-- Row 5: Bottom Flanking Elements (Stage 0): Micro-Stats Left, Manifesto Right -->
+            <div class="hero-bottom-dock" id="heroBottomDock">
+                <!-- Left: 4 clean lines of micro-stats -->
+                <div class="hero-micro-stats">
+                    <div class="stat-item">
+                        <span class="stat-val">0.0%</span>
+                        <span>Shrinkage</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">&lt;15ms</span>
+                        <span>Grab Detection</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">100%</span>
+                        <span>Universal Retrofit</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">0</span>
+                        <span>Barcode Scanners</span>
+                    </div>
+                </div>
+
+                <!-- Right: Editorial Manifesto with italic emphasis -->
+                <div class="hero-manifesto-box">
+                    Nex transforms vulnerable smart fridges into <em>unpickable autonomous micro-markets</em> using active optical neural vision.
+                </div>
+            </div>
+
+            <!-- Stage 2 Narrative Card (45% - 72% Scroll): Pops on RIGHT -->
+            <div class="stage-card stage-card-right" id="stageCardExploit">
+                <div class="card-kicker">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>STAGE 02 • DOOR UNLOCK VULNERABILITY</span>
+                </div>
+                <h3 class="card-title">Pay for 1 Snickers.<br>Sneak 2 Red Bulls.</h3>
+                <p class="card-body">
+                    Dumb smart fridges disengage the solenoid and assume honesty. Customers reach deep, slide premium energy drinks and sandwiches into winter coats, and only scan a 450 ₸ candy bar.
+                </p>
+                <div class="card-tags">
+                    <span class="pt-pill pill-danger">18% – 28% SHRINKAGE</span>
+                    <span class="pt-pill">ZERO TRACKING</span>
+                </div>
+            </div>
+
+            <!-- Stage 3 Narrative Card (72% - 100% Scroll): Pops on LEFT -->
+            <div class="stage-card stage-card-left" id="stageCardVision">
+                <div class="card-kicker" style="color: var(--accent-emerald);">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>STAGE 03 • ACTIVE NEURAL VISION</span>
+                </div>
+                <h3 class="card-title">120 FPS Stereoscopic<br>Multi-Grab Detection.</h3>
+                <p class="card-body">
+                    Overhead high-speed optical sensors track hand spatial trajectories across every shelf plane. Sub-15ms edge inference maps SKU subtractions and automatically updates the Kaspi/Stripe cart before the door latches.
+                </p>
+                <div class="card-tags">
+                    <span class="pt-pill pill-success">0% UNRECORDED LOSS</span>
+                    <span class="pt-pill">SUB-15MS EDGE AI</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PAPER TIGER RUNNING MARQUEE STRIP
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="pt-marquee-strip">
+        <div class="pt-marquee-track">
+            <span class="marquee-item"><span class="badge">120 FPS</span> STEREOSCOPIC VISION</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">0.0%</span> SHRINKAGE TOLERANCE</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">&lt;15MS</span> ON-DEVICE INFERENCE</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">100%</span> UNIVERSAL RETROFIT</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">NO SCALES</span> OPTICAL BOUNDING BOXES</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">KASPI &amp; STRIPE</span> REAL-TIME TELEMETRY</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">120 FPS</span> STEREOSCOPIC VISION</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">0.0%</span> SHRINKAGE TOLERANCE</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">&lt;15MS</span> ON-DEVICE INFERENCE</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">100%</span> UNIVERSAL RETROFIT</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">NO SCALES</span> OPTICAL BOUNDING BOXES</span>
+            <span class="marquee-star">✦</span>
+            <span class="marquee-item"><span class="badge">KASPI &amp; STRIPE</span> REAL-TIME TELEMETRY</span>
+            <span class="marquee-star">✦</span>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         PAPER TIGER SIGNATURE STACKING PANELS (c-panel-scroll)
+         Pure editorial brutalism matching Paper Tiger:
+         100vh full-page sticky stacking panels with circular number badges,
+         clean editorial copy, monumental titles, and physical tactile posters.
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="c-panel-scroll" id="panels">
+        
+        <!-- ════ PANEL 1: PITCH BLACK / BLINDSPOT ════ -->
+        <section class="c-panel is-1" id="panel-1">
+            <div class="c-panel-top-meta">
+                <div class="meta-tag"><span class="meta-dot"></span> THREAT VECTOR 01 // SURVEILLANCE PARADOX</div>
+                <div class="meta-badge">UNRESOLVED LOSS: 18% – 28%</div>
+            </div>
+
+            <div class="c-panel-grid">
+                <div class="c-panel-main">
+                    <div class="c-panel-top">
+                        <div class="c-panel-badge-row">
+                            <span class="c-panel-num">01</span>
+                            <span class="c-panel-kicker">PASSIVE CCTV COLLAPSE</span>
+                        </div>
+                        <div class="c-panel-desc">
+                            <p>
+                                <strong>Обычные камеры создают фальшивое чувство безопасности.</strong> Пассивная камера — это просто слепая видеозапись без синхронизации с корзиной. Она не способна понять в моменте, кто оплатил товар, а кто украл. При инциденте оператору приходится вручную отсматривать 70+ часов архива, пока нарушитель безнаказанно обчищает следующую точку.
+                            </p>
+                        </div>
+
+                        <!-- Technical Specification Matrix Chips -->
+                        <div class="c-panel-specs">
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Задержка аудита</span>
+                                <span class="spec-val">72+ часа (вручную)</span>
+                            </div>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Точность фиксации</span>
+                                <span class="spec-val">0.0% на точке</span>
+                            </div>
+                            <div class="c-spec-chip is-alert">
+                                <span class="spec-label">Списания сети</span>
+                                <span class="spec-val">18% – 28% выручки</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c-panel_bt">
+                        <h2 class="panel-title">BLINDSPOT</h2>
+                        <a href="#panel-2" class="c-panel-link">
+                            <span>Архитектура защиты от скрытых краж</span>
+                            <span class="arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="c-panel-visual">
+                    <div class="panel-poster-frame">
+                        <div class="poster-reticle top-left"></div>
+                        <div class="poster-reticle top-right"></div>
+                        <div class="poster-reticle bottom-left"></div>
+                        <div class="poster-reticle bottom-right"></div>
+                        <img class="panel-poster-img" src="./posters/poster_1_blindspot.webp" alt="NEX Blindspot Technical Architecture Poster" />
+                    </div>
+                </div>
             </div>
         </section>
-        <div id="workspace-pin" class="workspace-wrapper">
-            <section id="workspace" class="workspace-section">
-                <div class="workspace-container glass-panel reveal">
-                    <div id="canvas-container" class="workspace-canvas"></div>
-                    <div class="compact-camera-box glass-panel">
-                        <div class="camera-header">
-                            <span><i class="fa-solid fa-eye"></i> Vision Feed</span>
-                            <span class="fps-counter" id="fps-display">FPS: --</span>
+
+        <!-- ════ PANEL 2: LAVENDER / THEFT VAULT ════ -->
+        <section class="c-panel is-2" id="panel-2">
+            <div class="c-panel-top-meta">
+                <div class="meta-tag"><span class="meta-dot"></span> NEURAL MODULE 02 // REAL-TIME IDENTITY COMMIT</div>
+                <div class="meta-badge">EDGE INFERENCE: 11 MS</div>
+            </div>
+
+            <div class="c-panel-grid">
+                <div class="c-panel-main">
+                    <div class="c-panel-top">
+                        <div class="c-panel-badge-row">
+                            <span class="c-panel-num">02</span>
+                            <span class="c-panel-kicker">BIOMETRIC BLACKLISTING</span>
                         </div>
-                        <div class="video-container">
-                            <video id="webcam-video" playsinline style="display:none;"></video>
-                            <canvas id="tracking-canvas"></canvas>
+                        <div class="c-panel-desc">
+                            <p>
+                                <strong>Фиксация нарушителя ровно в момент кражи, а не недели спустя.</strong> Потолочные стереокамеры Nex непрерывно отслеживают 3D-траекторию рук по всем полкам. Как только товар покидает полку без последующей оплаты в корзине, 512-мерный биометрический вектор лица нарушителя мгновенно коммитится в распределенную базу Theft Vault.
+                            </p>
                         </div>
-                    </div>
-                    <aside class="floating-controls-panel">
-                        <div class="telemetry-card controls-card glass-panel compact-card">
-                            <button id="camera-toggle-btn" class="btn btn-primary btn-camera-panel">
-                                <i class="fa-solid fa-video"></i> Start Camera
-                            </button>
-                            <div class="control-group">
-                                <div class="color-picker-wrapper">
-                                    <input type="color" id="custom-color-picker" value="#94a3b8">
-                                    <span id="color-hex-val">#94A3B8</span>
-                                </div>
+
+                        <!-- Technical Specification Matrix Chips -->
+                        <div class="c-panel-specs">
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Скорость коммита</span>
+                                <span class="spec-val">&lt; 15 миллисекунд</span>
                             </div>
-                            <div class="control-group">
-                                <div class="theme-buttons">
-                                    <button class="theme-btn active" data-theme="silver"><span class="color-dot silver"></span> Silver</button>
-                                    <button class="theme-btn" data-theme="nebula"><span class="color-dot purple"></span> Nebula</button>
-                                    <button class="theme-btn" data-theme="plasma"><span class="color-dot blue"></span> Plasma</button>
-                                </div>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Точность распознавания</span>
+                                <span class="spec-val">99.8% (FP16 NPU)</span>
                             </div>
-                            <div class="coords-strip">
-                                <span class="coord-badge"><span class="axis axis-x">X</span> <span id="coord-x">0.50</span></span>
-                                <span class="coord-badge"><span class="axis axis-y">Y</span> <span id="coord-y">0.50</span></span>
-                                <span class="coord-badge"><span class="axis axis-z">Z</span> <span id="coord-z">-0.05</span></span>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Приватность</span>
+                                <span class="spec-val">Без сырых фото</span>
                             </div>
                         </div>
-                    </aside>
-                </div>
-            </section>
-        </div>
-        <footer class="app-footer glass-panel">
-            <div class="footer-container">
-                <div class="footer-brand-col">
-                    <div class="footer-status-pill">
-                        <span class="status-dot-active"></span> Engine Online
                     </div>
-                    <p class="footer-desc">Real-time 2D particle physics powered by MediaPipe AI & WebGL.</p>
-                </div>
-                <div class="footer-meta-col">
-                    <div class="meta-tags">
-                        <span><i class="fa-solid fa-microchip"></i> MediaPipe 2.0</span>
-                        <span><i class="fa-solid fa-cubes"></i> Three.js / Canvas2D</span>
-                        <span><i class="fa-solid fa-gauge-high"></i> 60 FPS Engine</span>
+
+                    <div class="c-panel_bt">
+                        <h2 class="panel-title">THEFT VAULT</h2>
+                        <a href="#panel-3" class="c-panel-link">
+                            <span>Как работает биометрический протокол</span>
+                            <span class="arrow">↗</span>
+                        </a>
                     </div>
                 </div>
-                <div class="footer-contacts-col">
-                    <span class="footer-col-title">Get In Touch</span>
-                    <div class="contact-links">
-                        <a href="mailto:thzhanasyl@gmail.com" class="contact-item"><i class="fa-solid fa-envelope"></i> thzhanasyl@gmail.com</a>
-                        <div class="footer-social-icons">
-                            <a href="https://github.com/Zhann-th" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>
-                            <a href="https://www.linkedin.com/in/zhanassyl-syrlibayev-833250435/" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                            <a href="https://x.com/zhann_sy" target="_blank" title="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                        </div>
+
+                <div class="c-panel-visual">
+                    <div class="panel-poster-frame">
+                        <div class="poster-reticle top-left"></div>
+                        <div class="poster-reticle top-right"></div>
+                        <div class="poster-reticle bottom-left"></div>
+                        <div class="poster-reticle bottom-right"></div>
+                        <img class="panel-poster-img" src="./posters/poster_2_vault.webp" alt="NEX Biometric Theft Vault Technical Poster" />
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom-bar">
-                <p>&copy; 2026 NeuroVision. All rights reserved.</p>
+        </section>
+
+        <!-- ════ PANEL 3: TART CORAL / LOCKOUT ════ -->
+        <section class="c-panel is-3" id="panel-3">
+            <div class="c-panel-top-meta">
+                <div class="meta-tag"><span class="meta-dot"></span> HARDWARE ENFORCEMENT 03 // DISTRIBUTED IMMUNITY</div>
+                <div class="meta-badge">LOCK FORCE: 300 KG</div>
             </div>
-        </footer>
+
+            <div class="c-panel-grid">
+                <div class="c-panel-main">
+                    <div class="c-panel-top">
+                        <div class="c-panel-badge-row">
+                            <span class="c-panel-num">03</span>
+                            <span class="c-panel-kicker">PHYSICAL ACCESS DENIAL</span>
+                        </div>
+                        <div class="c-panel-desc">
+                            <p>
+                                <strong>Один инцидент защищает сразу всю сеть микромаркетов.</strong> Лицо нарушителя синхронизируется по всем аппаратам оператора. Когда вор подходит к любому другому холодильнику сети и сканирует Kaspi QR — контроллер наотрез отказывается разблокировать электромагнитный замок с усилием удержания 300 кг.
+                            </p>
+                        </div>
+
+                        <!-- Technical Specification Matrix Chips -->
+                        <div class="c-panel-specs">
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Усилие замка</span>
+                                <span class="spec-val">300 кг (2940 Н)</span>
+                            </div>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Синхронизация</span>
+                                <span class="spec-val">&lt; 120ms по всей сети</span>
+                            </div>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Kaspi / QR отказ</span>
+                                <span class="spec-val">Мгновенный блок</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c-panel_bt">
+                        <h2 class="panel-title">LOCKOUT</h2>
+                        <a href="#panel-4" class="c-panel-link">
+                            <span>Спецификация сетевой блокировки</span>
+                            <span class="arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="c-panel-visual">
+                    <div class="panel-poster-frame">
+                        <div class="poster-reticle top-left"></div>
+                        <div class="poster-reticle top-right"></div>
+                        <div class="poster-reticle bottom-left"></div>
+                        <div class="poster-reticle bottom-right"></div>
+                        <img class="panel-poster-img" src="./posters/poster_3_lockout.webp" alt="NEX Autonomous Lockout Technical Poster" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════ PANEL 4: PITCH BLACK / RETROFIT ════ -->
+        <section class="c-panel is-4" id="panel-4">
+            <div class="c-panel-top-meta">
+                <div class="meta-tag"><span class="meta-dot"></span> INTEGRATION SPEC 04 // UNIVERSAL PLUG-AND-PLAY</div>
+                <div class="meta-badge">INSTALL: 30 MIN</div>
+            </div>
+
+            <div class="c-panel-grid">
+                <div class="c-panel-main">
+                    <div class="c-panel-top">
+                        <div class="c-panel-badge-row">
+                            <span class="c-panel-num">04</span>
+                            <span class="c-panel-kicker">RAPID FLEET INTEGRATION</span>
+                        </div>
+                        <div class="c-panel-desc">
+                            <p>
+                                <strong>Вам не нужно менять холодильники и списывать существующий парк.</strong> Модуль Nex монтируется в любые микромаркеты (совместимо с VBox, Unicum и кастомными шкафами с замками 12V/24V) прямо на торговой точке за 30 минут: стереопод крепится на потолок, шлейф подключается к контроллеру замка. Экономика автомата выходит в плюс с первого месяца.
+                            </p>
+                        </div>
+
+                        <!-- Technical Specification Matrix Chips -->
+                        <div class="c-panel-specs">
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Время монтажа</span>
+                                <span class="spec-val">30 минут на точке</span>
+                            </div>
+                            <div class="c-spec-chip">
+                                <span class="spec-label">Совместимость</span>
+                                <span class="spec-val">VBox, Unicum, 12V/24V</span>
+                            </div>
+                            <div class="c-spec-chip is-accent">
+                                <span class="spec-label">Окупаемость</span>
+                                <span class="spec-val">1-й месяц работы</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="c-panel_bt">
+                        <h2 class="panel-title">RETROFIT</h2>
+                        <a href="#cta" class="c-panel-link">
+                            <span>Запросить пилот на 3 аппарата</span>
+                            <span class="arrow">↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="c-panel-visual">
+                    <div class="panel-poster-frame">
+                        <div class="poster-reticle top-left"></div>
+                        <div class="poster-reticle top-right"></div>
+                        <div class="poster-reticle bottom-left"></div>
+                        <div class="poster-reticle bottom-right"></div>
+                        <img class="panel-poster-img" src="./posters/poster_4_retrofit.webp" alt="NEX Universal Retrofit Technical Poster" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </div>
-    <script src="script.js"></script>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         FINAL CALL TO ACTION (PITCH BLACK THEME)
+         ═══════════════════════════════════════════════════════════════ -->
+    <section class="section-cta" id="cta">
+        <h2 class="cta-massive-title">STOP LOSING MONEY.<br>RETROFIT YOUR FLEET.</h2>
+        <p class="cta-sub">
+            Turn vulnerable vending kiosks into unbreachable autonomous micro-markets. Access the technical management dashboard or schedule a hardware trial.
+        </p>
+
+        <div class="cta-btn-group">
+            <a href="/dashboard" class="btn btn-coral" style="font-size:13px; padding:15px 36px;">
+                Open Control Workspace →
+            </a>
+            <a href="mailto:thzhanasyl@gmail.com" class="btn" style="font-size:13px; padding:15px 36px; background:#FFFFFF; color:#000000; border-color:#FFFFFF;">
+                Inquire For Pilot Fleet
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer (PITCH BLACK THEME) -->
+    <footer class="site-footer">
+        <div>
+            <strong>NEX ACTIVE CV</strong> — Autonomous Vision &amp; Loss Prevention OS
+        </div>
+        <div class="footer-nav-row">
+            <a href="/dashboard">Dashboard Workspace</a>
+            <a href="#panel-1">Blindspot</a>
+            <a href="#panel-2">Theft Vault</a>
+            <a href="#panel-3">Lockout</a>
+            <a href="#panel-4">Retrofit</a>
+            <a href="https://github.com/Zhann-th" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         THREE.JS 3D VENDING MACHINE & SCROLL-DRIVEN CAMERA CHOREOGRAPHY
+         ═══════════════════════════════════════════════════════════════ -->
+    <script>
+        const container = document.getElementById('webgl-canvas-container');
+        const scrollyRoot = document.getElementById('scrolly-root');
+
+        // Elements to choreograph
+        const heroTop = document.getElementById('heroHeadlineTop');
+        const heroBottom = document.getElementById('heroHeadlineBottom');
+        const heroDock = document.getElementById('heroBottomDock');
+        const hudTopBar = document.getElementById('hudTopBar');
+        const hudStep = document.getElementById('hudStepIndicator');
+        const scrollPrompt = document.getElementById('scrollPrompt');
+        const stageCardExploit = document.getElementById('stageCardExploit');
+        const stageCardVision = document.getElementById('stageCardVision');
+        const heroBackingFrame = document.getElementById('heroBackingFrame');
+        const lensPlungeOverlay = document.getElementById('lensPlungeOverlay');
+        const siteHeader = document.querySelector('.site-header');
+
+        // 1. Scene, Camera, Renderer Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(36, window.innerWidth / window.innerHeight, 0.1, 100);
+        
+        // Initial Stage 0 distance: 13.5 (Bigger & bolder machine framing)
+        camera.position.set(0, 0, 13.5);
+
+        let renderer = null;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.18;
+            container.appendChild(renderer.domElement);
+        } catch (e) {
+            console.warn("WebGL not available or failed to initialize:", e);
+        }
+
+        // 2. High-End Studio Lighting Setup
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.45);
+        scene.add(ambientLight);
+
+        // Key light (soft warm-white studio fill)
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.95);
+        keyLight.position.set(6, 9, 8);
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
+        scene.add(keyLight);
+
+        // Fill light from left (crisp cool-white)
+        const fillLight = new THREE.DirectionalLight(0xf0f4ff, 1.25);
+        fillLight.position.set(-6, 4, 6);
+        scene.add(fillLight);
+
+        // Rim/Back light to highlight architectural chassis edges
+        const rimLight = new THREE.DirectionalLight(0xffeedd, 1.45);
+        rimLight.position.set(0, 8, -6);
+        scene.add(rimLight);
+
+        // 3. Interior Cool-White LED Illumination
+        const interiorCeilingLight = new THREE.PointLight(0xffffff, 3.4, 8.0, 1.0);
+        interiorCeilingLight.position.set(0, 2.4, 0.6);
+        scene.add(interiorCeilingLight);
+
+        const interiorShelfLight = new THREE.PointLight(0xf4f4f5, 2.2, 5.0, 1.0);
+        interiorShelfLight.position.set(0, 0.1, 0.8);
+        scene.add(interiorShelfLight);
+
+        // Left & Right Interior Vertical Diffuser Point Lights
+        const interiorLeftLight = new THREE.PointLight(0xf0f4ff, 1.8, 4.0, 1.0);
+        interiorLeftLight.position.set(-1.4, 0.2, 0.9);
+        scene.add(interiorLeftLight);
+
+        const interiorRightLight = new THREE.PointLight(0xf0f4ff, 1.8, 4.0, 1.0);
+        interiorRightLight.position.set(1.4, 0.2, 0.9);
+        scene.add(interiorRightLight);
+
+        // ════════════ PROCEDURAL TEXTURES GENERATORS ════════════
+        // High-Resolution Top Marquee Canvas ("NEX • NEURAL VISION")
+        function createMarqueeTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#060609';
+            ctx.fillRect(0, 0, 1024, 256);
+            
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(12, 12, 1000, 232);
+            
+            // Vibrant Coral & Lavender Tech Corners
+            ctx.fillStyle = '#fa435b';
+            ctx.fillRect(12, 12, 32, 8);
+            ctx.fillRect(12, 12, 8, 32);
+            ctx.fillRect(980, 12, 32, 8);
+            ctx.fillRect(1004, 12, 8, 32);
+            ctx.fillRect(12, 236, 32, 8);
+            ctx.fillRect(12, 212, 8, 32);
+            ctx.fillRect(980, 236, 32, 8);
+            ctx.fillRect(1004, 212, 8, 32);
+            
+            // Tech Sub-Headings
+            ctx.font = '700 24px "Dmmono", monospace';
+            ctx.fillStyle = '#fa435b';
+            ctx.textAlign = 'left';
+            ctx.fillText('[ 120 FPS STEREO CV ]', 46, 62);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#9589d3';
+            ctx.fillText('[ SUB-15MS EDGE AI ]', 978, 62);
+            
+            // Bold Marquee Wordmark
+            ctx.font = '900 86px "Rightgrotesk", "Anton", sans-serif';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('NEX • NEURAL VISION', 512, 142);
+            
+            // Micro Status Strip
+            ctx.font = '700 20px "Dmmono", monospace';
+            ctx.fillStyle = '#A1A1AA';
+            ctx.fillText('AUTONOMOUS LOSS PREVENTION OS • ACTIVE', 512, 210);
+            
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+
+        // On-Door Digital Touch Terminal Screen (Kaspi QR & "SCAN TO UNLOCK")
+        function createTouchTerminalTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 512;
+            const ctx = canvas.getContext('2d');
+            
+            // Deep Black Glass Background
+            ctx.fillStyle = '#08080B';
+            ctx.fillRect(0, 0, 256, 512);
+            
+            // Top Kaspi Red Header
+            ctx.fillStyle = '#F14635';
+            ctx.fillRect(0, 0, 256, 68);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 22px "Rightgrotesk", sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('KASPI QR • SCAN TO UNLOCK', 128, 42);
+            
+            // Subtitle
+            ctx.font = '700 13px "Dmmono", monospace';
+            ctx.fillStyle = '#E4E4E7';
+            ctx.fillText('POINT CAMERA TO OPEN', 128, 96);
+            
+            // Procedural QR Code Graphic
+            const qrX = 48, qrY = 118, qrSize = 160;
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(qrX, qrY, qrSize, qrSize);
+            
+            // Finder Patterns
+            function drawFinder(fx, fy) {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(fx, fy, 42, 42);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(fx + 6, fy + 6, 30, 30);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(fx + 12, fy + 12, 18, 18);
+            }
+            drawFinder(qrX + 6, qrY + 6);
+            drawFinder(qrX + qrSize - 48, qrY + 6);
+            drawFinder(qrX + 6, qrY + qrSize - 48);
+            
+            // Data Grid Modules
+            ctx.fillStyle = '#000000';
+            const seed = [
+                1,0,1,1,0,1,0,0,1,1,
+                0,1,0,0,1,0,1,1,0,1,
+                1,1,0,1,1,0,0,1,0,0,
+                0,0,1,0,1,1,0,1,1,0,
+                1,0,1,0,0,1,1,0,0,1,
+                0,1,1,1,0,0,1,0,1,0,
+                1,0,0,1,1,1,0,1,0,1,
+                0,1,0,0,1,0,1,1,0,0,
+                1,1,1,0,0,1,0,0,1,1,
+                0,0,1,1,1,0,1,1,0,1
+            ];
+            const gridSize = 10;
+            const cellSize = 10;
+            const startX = qrX + 30;
+            const startY = qrY + 30;
+            for (let r = 0; r < gridSize; r++) {
+                for (let c = 0; c < gridSize; c++) {
+                    if (seed[(r * gridSize + c) % seed.length]) {
+                        ctx.fillRect(startX + c * cellSize, startY + r * cellSize, 8, 8);
+                    }
+                }
+            }
+            
+            // Big Bold Prompt: "SCAN TO UNLOCK"
+            ctx.font = '900 24px "Rightgrotesk", sans-serif';
+            ctx.fillStyle = '#F6C700'; // Kaspi Gold Accent
+            ctx.fillText('SCAN TO UNLOCK', 128, 320);
+            
+            // Machine Status Badge
+            ctx.fillStyle = '#18181B';
+            ctx.strokeStyle = '#27272A';
+            ctx.lineWidth = 2;
+            ctx.fillRect(20, 350, 216, 75);
+            ctx.strokeRect(20, 350, 216, 75);
+            
+            ctx.font = '700 13px "Dmmono", monospace';
+            ctx.fillStyle = '#10B981'; // Green Active Dot
+            ctx.fillText('● SOLENOID ARMED', 128, 380);
+            ctx.fillStyle = '#A1A1AA';
+            ctx.font = '700 11px "Dmmono", monospace';
+            ctx.fillText('NEX ACTIVE CV 120 FPS', 128, 405);
+            
+            // Bottom Safe Latch Info
+            ctx.fillStyle = '#71717A';
+            ctx.font = '700 11px "Dmmono", monospace';
+            ctx.fillText('DOOR LOCKS IN 15S', 128, 465);
+            
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+
+        // Shelf Acrylic Price Rail Texture
+        function createPriceRailTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.fillStyle = '#121215';
+            ctx.fillRect(0, 0, 1024, 64);
+            
+            // Price Tag Badges
+            const tags = [
+                { x: 120, label: '450 ₸ • SNICKERS' },
+                { x: 380, label: '1,200 ₸ • RED BULL' },
+                { x: 640, label: '2,400 ₸ • SANDWICH' },
+                { x: 890, label: '650 ₸ • COCA-COLA' }
+            ];
+            
+            ctx.font = '800 20px "Dmmono", monospace';
+            tags.forEach(t => {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(t.x - 90, 10, 180, 44);
+                ctx.fillStyle = '#000000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(t.label, t.x, 32);
+            });
+            
+            const tex = new THREE.CanvasTexture(canvas);
+            tex.needsUpdate = true;
+            return tex;
+        }
+
+        // Product Cans Textures
+        function createRedBullTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            // Navy Blue and Silver Diagonal Quarters
+            ctx.fillStyle = '#002855';
+            ctx.fillRect(0, 0, 256, 256);
+            ctx.fillStyle = '#CBD5E1';
+            ctx.beginPath();
+            ctx.moveTo(0, 0); ctx.lineTo(256, 0); ctx.lineTo(0, 256); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(256, 256); ctx.lineTo(256, 0); ctx.lineTo(0, 256); ctx.fill();
+            // Sun & Red Bull Emblem
+            ctx.fillStyle = '#F59E0B';
+            ctx.beginPath();
+            ctx.arc(128, 128, 48, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#DC2626';
+            ctx.font = '900 36px "Rightgrotesk", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('RED BULL', 128, 128);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        function createCocaColaTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#C50A1E';
+            ctx.fillRect(0, 0, 256, 256);
+            // Dynamic White Wave Ribbon
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 14;
+            ctx.beginPath();
+            ctx.moveTo(0, 180);
+            ctx.bezierCurveTo(70, 130, 180, 220, 256, 150);
+            ctx.stroke();
+            // Bold Script Wordmark
+            ctx.font = '900 44px "Rightgrotesk", sans-serif';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('COCA-COLA', 128, 110);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        function createMonsterTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#09090B';
+            ctx.fillRect(0, 0, 256, 256);
+            // Neon Lime Green Claw Marks
+            ctx.fillStyle = '#4ADE80';
+            ctx.beginPath();
+            ctx.moveTo(85, 50); ctx.lineTo(105, 180); ctx.lineTo(90, 180); ctx.lineTo(75, 50); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(120, 35); ctx.lineTo(135, 200); ctx.lineTo(122, 200); ctx.lineTo(110, 35); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(155, 55); ctx.lineTo(170, 175); ctx.lineTo(158, 175); ctx.lineTo(145, 55); ctx.fill();
+            ctx.font = '900 28px "Rightgrotesk", sans-serif';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            ctx.fillText('MONSTER', 128, 225);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        function createFantaTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#EA580C';
+            ctx.fillRect(0, 0, 256, 256);
+            // Blue Circle with White Wordmark
+            ctx.fillStyle = '#1D4ED8';
+            ctx.beginPath();
+            ctx.arc(128, 128, 62, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 36px "Rightgrotesk", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('FANTA', 128, 128);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        function createSnickersTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#3E1D08'; // Dark Brown Wrapper
+            ctx.fillRect(0, 0, 256, 128);
+            ctx.fillStyle = '#1D4ED8'; // Blue Center Bar
+            ctx.fillRect(20, 24, 216, 80);
+            ctx.strokeStyle = '#DC2626'; // Red Trim
+            ctx.lineWidth = 4;
+            ctx.strokeRect(20, 24, 216, 80);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '900 38px "Rightgrotesk", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('SNICKERS', 128, 64);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        function createKitKatTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256; canvas.height = 128;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#DC2626';
+            ctx.fillRect(0, 0, 256, 128);
+            // White Oval
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.ellipse(128, 64, 90, 42, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#DC2626';
+            ctx.font = '900 38px "Rightgrotesk", sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('KitKat', 128, 64);
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+
+        // ════════════ BUILD PROCEDURAL COMMERCIAL VENDING FRIDGE ════════════
+        const machineGroup = new THREE.Group();
+        // Set scale to 0.70 (Imposing, architectural hero framing)
+        machineGroup.scale.set(0.70, 0.70, 0.70);
+        // Stage 0 Dynamic 3/4 Studio Tilt: rotation.y = -0.22, rotation.x = 0.04
+        machineGroup.rotation.y = -0.22;
+        machineGroup.rotation.x = 0.04;
+        scene.add(machineGroup);
+
+        // Materials
+        const exteriorMat = new THREE.MeshStandardMaterial({
+            color: 0x141417, // Matte charcoal/black chassis
+            roughness: 0.35,
+            metalness: 0.55
+        });
+
+        const interiorWhiteMat = new THREE.MeshStandardMaterial({
+            color: 0xf8f8fa, // Bright reflective commercial cooler lining
+            roughness: 0.16,
+            metalness: 0.12
+        });
+
+        const chromeMat = new THREE.MeshStandardMaterial({
+            color: 0xf4f4f5,
+            metalness: 0.95,
+            roughness: 0.08
+        });
+
+        const darkMetalMat = new THREE.MeshStandardMaterial({
+            color: 0x27272a,
+            metalness: 0.8,
+            roughness: 0.3
+        });
+
+        const wireShelfMat = new THREE.MeshStandardMaterial({
+            color: 0xd4d4d8,
+            metalness: 0.92,
+            roughness: 0.12
+        });
+
+        const rubberGasketMat = new THREE.MeshStandardMaterial({
+            color: 0x09090b,
+            roughness: 0.92,
+            metalness: 0.05
+        });
+
+        const priceRailMat = new THREE.MeshBasicMaterial({
+            map: createPriceRailTexture()
+        });
+
+        // ── Outer Cabinet Shell (Walls, Roof, Base) ──
+        // Height = 6.3, Width = 3.6, Depth = 2.8
+        const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.16, 6.3, 2.8), exteriorMat);
+        leftWall.position.set(-1.72, 0, 0);
+        leftWall.castShadow = true;
+        machineGroup.add(leftWall);
+
+        const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.16, 6.3, 2.8), exteriorMat);
+        rightWall.position.set(1.72, 0, 0);
+        rightWall.castShadow = true;
+        machineGroup.add(rightWall);
+
+        const topWall = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.22, 2.8), exteriorMat);
+        topWall.position.set(0, 3.14, 0);
+        topWall.castShadow = true;
+        machineGroup.add(topWall);
+
+        const basePedestal = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.55, 2.8), exteriorMat);
+        basePedestal.position.set(0, -2.88, 0);
+        basePedestal.castShadow = true;
+        machineGroup.add(basePedestal);
+
+        // White Interior Cavity
+        const backWall = new THREE.Mesh(new THREE.BoxGeometry(3.28, 5.6, 0.12), interiorWhiteMat);
+        backWall.position.set(0, 0.05, -1.34);
+        backWall.receiveShadow = true;
+        machineGroup.add(backWall);
+
+        const innerLeft = new THREE.Mesh(new THREE.BoxGeometry(0.04, 5.6, 2.6), interiorWhiteMat);
+        innerLeft.position.set(-1.62, 0.05, 0);
+        machineGroup.add(innerLeft);
+
+        const innerRight = new THREE.Mesh(new THREE.BoxGeometry(0.04, 5.6, 2.6), interiorWhiteMat);
+        innerRight.position.set(1.62, 0.05, 0);
+        machineGroup.add(innerRight);
+
+        const innerCeiling = new THREE.Mesh(new THREE.BoxGeometry(3.28, 0.04, 2.6), interiorWhiteMat);
+        innerCeiling.position.set(0, 2.85, 0);
+        machineGroup.add(innerCeiling);
+
+        const innerFloor = new THREE.Mesh(new THREE.BoxGeometry(3.28, 0.04, 2.6), interiorWhiteMat);
+        innerFloor.position.set(0, -2.55, 0);
+        machineGroup.add(innerFloor);
+
+        // ── Dual Vertical LED Frosted Strip Diffusers ──
+        const ledStripGeo = new THREE.BoxGeometry(0.035, 5.3, 0.035);
+        const ledStripMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        
+        const ledStripL = new THREE.Mesh(ledStripGeo, ledStripMat);
+        ledStripL.position.set(-1.58, 0.05, 1.18);
+        machineGroup.add(ledStripL);
+
+        const ledStripR = new THREE.Mesh(ledStripGeo, ledStripMat);
+        ledStripR.position.set(1.58, 0.05, 1.18);
+        machineGroup.add(ledStripR);
+
+        // ── Top Header Brand Marquee ("NEX • NEURAL VISION") ──
+        const marqueeBox = new THREE.Mesh(
+            new THREE.BoxGeometry(3.32, 0.52, 0.08),
+            new THREE.MeshStandardMaterial({ color: 0x050508, roughness: 0.25 })
+        );
+        marqueeBox.position.set(0, 2.58, 1.41);
+        machineGroup.add(marqueeBox);
+
+        const marqueeFaceGeo = new THREE.BoxGeometry(3.26, 0.48, 0.02);
+        const marqueeFaceMat = new THREE.MeshBasicMaterial({ map: createMarqueeTexture() });
+        const marqueeFace = new THREE.Mesh(marqueeFaceGeo, marqueeFaceMat);
+        marqueeFace.position.set(0, 2.58, 1.46);
+        machineGroup.add(marqueeFace);
+
+        // ── Base Kickplate with Recessed Louvers & Corner Bolts ──
+        // Recessed Cavity
+        const kickplateCavity = new THREE.Mesh(
+            new THREE.BoxGeometry(3.0, 0.45, 0.06),
+            new THREE.MeshStandardMaterial({ color: 0x050507, roughness: 0.8 })
+        );
+        kickplateCavity.position.set(0, -2.88, 1.39);
+        machineGroup.add(kickplateCavity);
+
+        // 6 Angled Ventilation Louvers
+        for (let v = -0.16; v <= 0.16; v += 0.064) {
+            const slat = new THREE.Mesh(
+                new THREE.BoxGeometry(2.8, 0.035, 0.045),
+                new THREE.MeshStandardMaterial({ color: 0x1f1f23, metalness: 0.7, roughness: 0.3 })
+            );
+            slat.rotation.x = -0.32;
+            slat.position.set(0, -2.88 + v, 1.42);
+            machineGroup.add(slat);
+        }
+
+        // 4 Chrome Hex Mounting Bolts
+        const boltGeo = new THREE.CylinderGeometry(0.025, 0.025, 0.02, 6);
+        [[-1.4, -2.7], [1.4, -2.7], [-1.4, -3.05], [1.4, -3.05]].forEach(([bx, by]) => {
+            const bolt = new THREE.Mesh(boltGeo, chromeMat);
+            bolt.rotation.x = Math.PI / 2;
+            bolt.position.set(bx, by, 1.42);
+            machineGroup.add(bolt);
+        });
+
+        // ── 3 Commercial Wire Shelves with Longitudinal Rods & Price Rails ──
+        const shelfHeights = [1.1, -0.2, -1.5];
+        shelfHeights.forEach(y => {
+            // Main Shelf Frame
+            const shelfFrame = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.04, 2.3), wireShelfMat);
+            shelfFrame.position.set(0, y, 0.1);
+            shelfFrame.receiveShadow = true;
+            machineGroup.add(shelfFrame);
+
+            // Longitudinal Chrome Wire Rods (10 Rods per shelf)
+            const rodGeo = new THREE.CylinderGeometry(0.012, 0.012, 2.25, 8);
+            for (let rx = -1.4; rx <= 1.4; rx += 0.31) {
+                const rod = new THREE.Mesh(rodGeo, wireShelfMat);
+                rod.rotation.x = Math.PI / 2;
+                rod.position.set(rx, y + 0.022, 0.1);
+                machineGroup.add(rod);
+            }
+
+            // Front Clear Acrylic Price Tag Rail
+            const acrylicRail = new THREE.Mesh(
+                new THREE.BoxGeometry(3.2, 0.12, 0.02),
+                priceRailMat
+            );
+            acrylicRail.position.set(0, y, 1.25);
+            machineGroup.add(acrylicRail);
+        });
+
+        // ════════════ REALISTIC COMMERCIAL PRODUCTS ON SHELVES ════════════
+        // Shelf 1 (Top, y = 1.1): Beverages & Energy Cans with Pull-Tabs
+        const canGeo = new THREE.CylinderGeometry(0.17, 0.17, 0.65, 28);
+        const canRimGeo = new THREE.CylinderGeometry(0.165, 0.17, 0.04, 24);
+        const pullTabGeo = new THREE.TorusGeometry(0.038, 0.01, 8, 16);
+        const pullTabRivetGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.015, 10);
+
+        const canTextures = [
+            createRedBullTexture(),
+            createCocaColaTexture(),
+            createMonsterTexture(),
+            createFantaTexture(),
+            createRedBullTexture(),
+            createCocaColaTexture()
+        ];
+
+        const xCans = [-1.2, -0.72, -0.24, 0.24, 0.72, 1.2];
+        xCans.forEach((x, idx) => {
+            const canTex = canTextures[idx % canTextures.length];
+            const canMat = new THREE.MeshStandardMaterial({ map: canTex, metalness: 0.75, roughness: 0.18 });
+
+            // Helper to build realistic can with chrome top and pull tab
+            function buildCan(cx, cy, cz) {
+                const can = new THREE.Mesh(canGeo, canMat);
+                can.position.set(cx, cy, cz);
+                can.castShadow = true;
+                machineGroup.add(can);
+
+                const rim = new THREE.Mesh(canRimGeo, chromeMat);
+                rim.position.set(cx, cy + 0.33, cz);
+                machineGroup.add(rim);
+
+                const tab = new THREE.Mesh(pullTabGeo, chromeMat);
+                tab.rotation.x = Math.PI / 2;
+                tab.position.set(cx + 0.035, cy + 0.355, cz);
+                machineGroup.add(tab);
+
+                const rivet = new THREE.Mesh(pullTabRivetGeo, chromeMat);
+                rivet.position.set(cx, cy + 0.355, cz);
+                machineGroup.add(rivet);
+            }
+
+            // Front Row Can
+            buildCan(x, 1.45, 0.75);
+            // Back Row Can (Full shelf depth)
+            buildCan(x, 1.45, 0.0);
+        });
+
+        // Shelf 2 (Middle, y = -0.2): Snacks & Confectionery with Crimped Ends
+        const snickersTex = createSnickersTexture();
+        const snickersMat = new THREE.MeshStandardMaterial({ map: snickersTex, roughness: 0.35 });
+        const goldCandyMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.88, roughness: 0.2 });
+        const kitKatTex = createKitKatTexture();
+        const kitKatMat = new THREE.MeshStandardMaterial({ map: kitKatTex, roughness: 0.35 });
+
+        const snackBarGeo = new THREE.BoxGeometry(0.62, 0.15, 0.36);
+        const crimpEndGeo = new THREE.BoxGeometry(0.06, 0.04, 0.34);
+
+        const xSnacks = [-1.15, -0.4, 0.38, 1.1];
+        xSnacks.forEach((x, idx) => {
+            const mat = (idx === 0) ? snickersMat : (idx === 1) ? goldCandyMat : (idx === 2) ? kitKatMat : snickersMat;
+            for (let stack = 0; stack < 2; stack++) {
+                const sy = 0.0 + stack * 0.17;
+                const sz = 0.65;
+
+                const snack = new THREE.Mesh(snackBarGeo, mat);
+                snack.position.set(x, sy, sz);
+                snack.castShadow = true;
+                machineGroup.add(snack);
+
+                // Left Crimped Wrapper End
+                const crimpL = new THREE.Mesh(crimpEndGeo, mat);
+                crimpL.position.set(x - 0.34, sy, sz);
+                machineGroup.add(crimpL);
+
+                // Right Crimped Wrapper End
+                const crimpR = new THREE.Mesh(crimpEndGeo, mat);
+                crimpR.position.set(x + 0.34, sy, sz);
+                machineGroup.add(crimpR);
+            }
+        });
+
+        // Shelf 3 (Bottom, y = -1.5): Fresh Grab & Go Sandwiches & Bento Trays
+        const bentoTrayMat = new THREE.MeshStandardMaterial({ color: 0x141417, roughness: 0.4 });
+        const clearAcrylicLidMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.65,
+            roughness: 0.06,
+            metalness: 0.05,
+            clearcoat: 1.0,
+            transmission: 0.92
+        });
+
+        // 1. Triangular Sandwich Wedge Container (at x = -0.9)
+        const sandwichGroup = new THREE.Group();
+        sandwichGroup.position.set(-0.9, -1.35, 0.65);
+        machineGroup.add(sandwichGroup);
+
+        const triShape = new THREE.Shape();
+        triShape.moveTo(-0.35, -0.18);
+        triShape.lineTo(0.35, -0.18);
+        triShape.lineTo(-0.35, 0.38);
+        triShape.closePath();
+
+        const triGeo = new THREE.ExtrudeGeometry(triShape, { depth: 0.42, bevelEnabled: false });
+        const sandwichContainer = new THREE.Mesh(triGeo, bentoTrayMat);
+        sandwichContainer.position.set(0, 0, -0.21);
+        sandwichGroup.add(sandwichContainer);
+
+        const sandwichLid = new THREE.Mesh(triGeo, clearAcrylicLidMat);
+        sandwichLid.position.set(0, 0.02, -0.21);
+        sandwichGroup.add(sandwichLid);
+
+        // Visible Sandwich Layers (Bread, Ham, Lettuce, Cheddar)
+        const breadMat = new THREE.MeshStandardMaterial({ color: 0xfef3c7, roughness: 0.7 });
+        const hamMat = new THREE.MeshStandardMaterial({ color: 0xf43f5e, roughness: 0.5 });
+        const lettuceMat = new THREE.MeshStandardMaterial({ color: 0x16a34a, roughness: 0.6 });
+        const cheeseMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.4 });
+
+        const breadBottom = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.36), breadMat);
+        breadBottom.position.set(-0.06, -0.12, 0);
+        sandwichGroup.add(breadBottom);
+
+        const hamLayer = new THREE.Mesh(new THREE.BoxGeometry(0.50, 0.03, 0.34), hamMat);
+        hamLayer.position.set(-0.08, -0.08, 0);
+        sandwichGroup.add(hamLayer);
+
+        const lettuceLayer = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.035, 0.37), lettuceMat);
+        lettuceLayer.position.set(-0.05, -0.04, 0);
+        sandwichGroup.add(lettuceLayer);
+
+        const cheeseLayer = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.025, 0.34), cheeseMat);
+        cheeseLayer.position.set(-0.07, -0.01, 0);
+        sandwichGroup.add(cheeseLayer);
+
+        const breadTop = new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.04, 0.36), breadMat);
+        breadTop.position.set(-0.08, 0.03, 0);
+        sandwichGroup.add(breadTop);
+
+        // 2 & 3. Bento Fresh Salad Trays (at x = 0.0 and x = 0.9)
+        [0.0, 0.9].forEach((bx, bIdx) => {
+            const bento = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.22, 0.65), bentoTrayMat);
+            bento.position.set(bx, -1.36, 0.65);
+            machineGroup.add(bento);
+
+            // Fresh Salad Food Texture
+            const saladFood = new THREE.Mesh(
+                new THREE.BoxGeometry(0.72, 0.14, 0.58),
+                (bIdx === 0) ? new THREE.MeshStandardMaterial({ color: 0x15803d, roughness: 0.6 }) : new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.5 })
+            );
+            saladFood.position.set(bx, -1.26, 0.65);
+            machineGroup.add(saladFood);
+
+            // Clear Acrylic Dome Lid
+            const bentoLid = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.08, 0.65), clearAcrylicLidMat);
+            bentoLid.position.set(bx, -1.18, 0.65);
+            machineGroup.add(bentoLid);
+        });
+
+        // ════════════ CEILING MOUNTED STEREOSCOPIC CV CAMERA SENSOR ════════════
+        const cvCameraRig = new THREE.Group();
+        cvCameraRig.position.set(0, 2.45, 0.70);
+        cvCameraRig.rotation.x = 0.65; // Angled down over shelf matrix
+        machineGroup.add(cvCameraRig);
+
+        // Sensor Housing (Industrial Matte Black Pod)
+        const camHousingGeo = new THREE.BoxGeometry(1.5, 0.36, 0.52);
+        const camHousingMat = new THREE.MeshStandardMaterial({ color: 0x09090b, roughness: 0.25, metalness: 0.85 });
+        const camHousing = new THREE.Mesh(camHousingGeo, camHousingMat);
+        cvCameraRig.add(camHousing);
+
+        // Ceiling Chrome Mounting Struts
+        const strutGeo = new THREE.BoxGeometry(0.06, 0.16, 0.08);
+        const strutL = new THREE.Mesh(strutGeo, chromeMat);
+        strutL.position.set(-0.62, 0.24, 0);
+        cvCameraRig.add(strutL);
+        const strutR = new THREE.Mesh(strutGeo, chromeMat);
+        strutR.position.set(0.62, 0.24, 0);
+        cvCameraRig.add(strutR);
+
+        // 7 Heatsink Cooling Fins Across Pod Top
+        for (let f = -0.6; f <= 0.6; f += 0.2) {
+            const fin = new THREE.Mesh(
+                new THREE.BoxGeometry(0.035, 0.08, 0.45),
+                chromeMat
+            );
+            fin.position.set(f, 0.21, 0);
+            cvCameraRig.add(fin);
+        }
+
+        // Dual Precision Stereoscopic Optical Camera Lenses
+        const outerKnurledBarrelGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.12, 32);
+        const innerBezelGeo = new THREE.CylinderGeometry(0.14, 0.14, 0.08, 32);
+        const irisApertureRingGeo = new THREE.RingGeometry(0.045, 0.135, 32);
+        const lensGlassGeo = new THREE.CylinderGeometry(0.13, 0.13, 0.035, 32);
+
+        // Multi-coated High-Index Optical Glass Material
+        const lensGlassMat = new THREE.MeshPhysicalMaterial({
+            color: 0x060f22,
+            metalness: 0.95,
+            roughness: 0.02,
+            transmission: 0.88,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.02,
+            reflectivity: 1.0,
+            ior: 1.62
+        });
+
+        const irisMat = new THREE.MeshBasicMaterial({ color: 0x050508, side: THREE.DoubleSide });
+
+        // Left Optical Lens Array (x = -0.45)
+        const lensLOuter = new THREE.Mesh(outerKnurledBarrelGeo, chromeMat);
+        lensLOuter.rotation.x = Math.PI / 2;
+        lensLOuter.position.set(-0.45, -0.04, 0.26);
+        cvCameraRig.add(lensLOuter);
+
+        const lensLBezel = new THREE.Mesh(innerBezelGeo, darkMetalMat);
+        lensLBezel.rotation.x = Math.PI / 2;
+        lensLBezel.position.set(-0.45, -0.04, 0.30);
+        cvCameraRig.add(lensLBezel);
+
+        const lensLIris = new THREE.Mesh(irisApertureRingGeo, irisMat);
+        lensLIris.position.set(-0.45, -0.04, 0.33);
+        cvCameraRig.add(lensLIris);
+
+        const lensLGlass = new THREE.Mesh(lensGlassGeo, lensGlassMat);
+        lensLGlass.rotation.x = Math.PI / 2;
+        lensLGlass.position.set(-0.45, -0.04, 0.34);
+        cvCameraRig.add(lensLGlass);
+
+        // Right Optical Lens Array (x = +0.45) — PRIMARY FLY-IN TARGET
+        const lensROuter = new THREE.Mesh(outerKnurledBarrelGeo, chromeMat);
+        lensROuter.rotation.x = Math.PI / 2;
+        lensROuter.position.set(0.45, -0.04, 0.26);
+        cvCameraRig.add(lensROuter);
+
+        const lensRBezel = new THREE.Mesh(innerBezelGeo, darkMetalMat);
+        lensRBezel.rotation.x = Math.PI / 2;
+        lensRBezel.position.set(0.45, -0.04, 0.30);
+        cvCameraRig.add(lensRBezel);
+
+        const lensRIris = new THREE.Mesh(irisApertureRingGeo, irisMat);
+        lensRIris.position.set(0.45, -0.04, 0.33);
+        cvCameraRig.add(lensRIris);
+
+        const lensRGlass = new THREE.Mesh(lensGlassGeo, lensGlassMat);
+        lensRGlass.rotation.x = Math.PI / 2;
+        lensRGlass.position.set(0.45, -0.04, 0.34);
+        cvCameraRig.add(lensRGlass);
+
+        // Active Optical Neural Indicator (Coral #FF3366 Pulsing LED)
+        const sensorLedGeo = new THREE.SphereGeometry(0.045, 16, 16);
+        const sensorLedMat = new THREE.MeshBasicMaterial({ color: 0xff3366 });
+        const sensorLed = new THREE.Mesh(sensorLedGeo, sensorLedMat);
+        sensorLed.position.set(0, 0.06, 0.27);
+        cvCameraRig.add(sensorLed);
+
+        // IR Time-of-Flight Depth Projector Dot
+        const irProjectorGeo = new THREE.CylinderGeometry(0.035, 0.035, 0.02, 16);
+        const irProjectorMat = new THREE.MeshBasicMaterial({ color: 0x990033 });
+        const irProjector = new THREE.Mesh(irProjectorGeo, irProjectorMat);
+        irProjector.rotation.x = Math.PI / 2;
+        irProjector.position.set(0, -0.07, 0.27);
+        cvCameraRig.add(irProjector);
+
+        // ════════════ GLASS DOOR ASSEMBLY WITH HINGES, GASKET & TERMINAL ════════════
+        // Hinge Pivot at the Left Edge: x = -1.72, z = 1.45
+        const doorPivot = new THREE.Group();
+        doorPivot.position.set(-1.72, 0, 1.45);
+        machineGroup.add(doorPivot);
+
+        const doorGroup = new THREE.Group();
+        doorGroup.position.set(1.72, 0, 0); // Offset so pivot is cleanly on left edge
+        doorPivot.add(doorGroup);
+
+        // Heavy-Duty Commercial Cylindrical Hinges (Top & Bottom Left)
+        const hingePinGeo = new THREE.CylinderGeometry(0.045, 0.045, 0.22, 20);
+        const hingeBracketGeo = new THREE.BoxGeometry(0.08, 0.16, 0.12);
+
+        // Top Hinge (y = 2.5)
+        const topHingeBracket = new THREE.Mesh(hingeBracketGeo, darkMetalMat);
+        topHingeBracket.position.set(-1.72, 2.5, 1.42);
+        machineGroup.add(topHingeBracket);
+
+        const topHingePin = new THREE.Mesh(hingePinGeo, chromeMat);
+        topHingePin.position.set(-1.72, 2.5, 1.45);
+        machineGroup.add(topHingePin);
+
+        // Bottom Hinge (y = -2.5)
+        const botHingeBracket = new THREE.Mesh(hingeBracketGeo, darkMetalMat);
+        botHingeBracket.position.set(-1.72, -2.5, 1.42);
+        machineGroup.add(botHingeBracket);
+
+        const botHingePin = new THREE.Mesh(hingePinGeo, chromeMat);
+        botHingePin.position.set(-1.72, -2.5, 1.45);
+        machineGroup.add(botHingePin);
+
+        // Outer Door Frame (Sleek Matte Black Anodized Aluminum)
+        const frameMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.35, metalness: 0.6 });
+        const frameL = new THREE.Mesh(new THREE.BoxGeometry(0.18, 6.2, 0.12), frameMat);
+        frameL.position.set(-1.63, 0, 0);
+        doorGroup.add(frameL);
+
+        const frameR = new THREE.Mesh(new THREE.BoxGeometry(0.18, 6.2, 0.12), frameMat);
+        frameR.position.set(1.63, 0, 0);
+        doorGroup.add(frameR);
+
+        const frameT = new THREE.Mesh(new THREE.BoxGeometry(3.44, 0.18, 0.12), frameMat);
+        frameT.position.set(0, 3.01, 0);
+        doorGroup.add(frameT);
+
+        const frameB = new THREE.Mesh(new THREE.BoxGeometry(3.44, 0.18, 0.12), frameMat);
+        frameB.position.set(0, -3.01, 0);
+        doorGroup.add(frameB);
+
+        // Black Rubber Magnetic Perimeter Gasket Sealing Loop
+        const gasketL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 6.0, 0.05), rubberGasketMat);
+        gasketL.position.set(-1.58, 0, -0.06);
+        doorGroup.add(gasketL);
+
+        const gasketR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 6.0, 0.05), rubberGasketMat);
+        gasketR.position.set(1.58, 0, -0.06);
+        doorGroup.add(gasketR);
+
+        const gasketT = new THREE.Mesh(new THREE.BoxGeometry(3.24, 0.08, 0.05), rubberGasketMat);
+        gasketT.position.set(0, 2.95, -0.06);
+        doorGroup.add(gasketT);
+
+        const gasketB = new THREE.Mesh(new THREE.BoxGeometry(3.24, 0.08, 0.05), rubberGasketMat);
+        gasketB.position.set(0, -2.95, -0.06);
+        doorGroup.add(gasketB);
+
+        // On-Door Digital Touch Terminal on Right Frame (Kaspi QR & "SCAN TO UNLOCK")
+        const terminalBezel = new THREE.Mesh(
+            new THREE.BoxGeometry(0.16, 0.54, 0.04),
+            new THREE.MeshStandardMaterial({ color: 0x09090b, roughness: 0.15, metalness: 0.85 })
+        );
+        terminalBezel.position.set(1.63, 0.3, 0.075);
+        doorGroup.add(terminalBezel);
+
+        const terminalScreen = new THREE.Mesh(
+            new THREE.BoxGeometry(0.14, 0.51, 0.01),
+            new THREE.MeshBasicMaterial({ map: createTouchTerminalTexture() })
+        );
+        terminalScreen.position.set(1.63, 0.3, 0.098);
+        doorGroup.add(terminalScreen);
+
+        // Active Status Mini LED on Touch Terminal
+        const terminalLed = new THREE.Mesh(
+            new THREE.SphereGeometry(0.016, 12, 12),
+            new THREE.MeshBasicMaterial({ color: 0x10b981 }) // Glowing emerald active
+        );
+        terminalLed.position.set(1.63, 0.53, 0.098);
+        doorGroup.add(terminalLed);
+
+        // Crystal Clear Physical Glass Pane
+        const glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0xf5f8ff,
+            transparent: true,
+            opacity: 0.22,
+            roughness: 0.05,
+            metalness: 0.1,
+            transmission: 0.90,
+            ior: 1.52,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.04
+        });
+        const glassPane = new THREE.Mesh(new THREE.BoxGeometry(3.14, 5.86, 0.04), glassMat);
+        doorGroup.add(glassPane);
+
+        // Chrome Long Architectural Tubular Handle on Right Edge
+        const handleBarGeo = new THREE.CylinderGeometry(0.04, 0.04, 3.8, 20);
+        const handleBar = new THREE.Mesh(handleBarGeo, chromeMat);
+        handleBar.position.set(1.48, 0, 0.18);
+        doorGroup.add(handleBar);
+
+        // Top & Bottom Handle Standoff Mounts
+        const standoffGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.16, 16);
+        const standoffTop = new THREE.Mesh(standoffGeo, chromeMat);
+        standoffTop.rotation.x = Math.PI / 2;
+        standoffTop.position.set(1.48, 1.6, 0.1);
+        doorGroup.add(standoffTop);
+
+        const standoffBot = new THREE.Mesh(standoffGeo, chromeMat);
+        standoffBot.rotation.x = Math.PI / 2;
+        standoffBot.position.set(1.48, -1.6, 0.1);
+        doorGroup.add(standoffBot);
+
+        // Solenoid Magnetic Latch Plate on Top-Right
+        const solenoidPlate = new THREE.Mesh(
+            new THREE.BoxGeometry(0.12, 0.22, 0.08),
+            new THREE.MeshStandardMaterial({ color: 0xca8a04, metalness: 0.9, roughness: 0.2 })
+        );
+        solenoidPlate.position.set(1.58, 2.85, 0.04);
+        doorGroup.add(solenoidPlate);
+
+        // ════════════ SCROLLYTELLING ANIMATION CHOREOGRAPHY ════════════
+        let targetProgress = 0;
+        let currentProgress = 0;
+
+        // Support URL parameter ?p=0.xx or ?section=xxx for instant headless inspection & testing
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasUrlProgress = urlParams.has('p');
+        if (hasUrlProgress) {
+            targetProgress = parseFloat(urlParams.get('p'));
+            currentProgress = targetProgress;
+        }
+
+        if (urlParams.has('scrollY')) {
+            const sY = parseFloat(urlParams.get('scrollY'));
+            window.scrollTo(0, sY);
+        }
+
+        if (urlParams.has('section')) {
+            const secId = urlParams.get('section');
+            scrollyRoot.style.display = 'none';
+            if (siteHeader) siteHeader.classList.add('is-dark');
+            document.querySelectorAll('.c-panel').forEach(p => {
+                if (p.id === secId || secId === 'panels') {
+                    p.style.display = 'flex';
+                    p.style.position = 'relative';
+                    p.style.marginTop = '60px';
+                    p.style.transform = 'none';
+                } else {
+                    p.style.display = 'none';
+                }
+            });
+            document.querySelectorAll('.pt-marquee-strip, .section-cta, .site-footer').forEach(el => {
+                if (secId !== 'cta' && secId !== 'footer') {
+                    el.style.display = 'none';
+                }
+            });
+        }
+
+        function updateScroll() {
+            if (hasUrlProgress) return;
+            const rect = scrollyRoot.getBoundingClientRect();
+            const totalScrollable = scrollyRoot.offsetHeight - window.innerHeight;
+            const currentScroll = Math.max(0, -rect.top);
+            targetProgress = Math.min(1.0, Math.max(0.0, currentScroll / totalScrollable));
+
+            // Dynamic Header Dark Mode Switch
+            const isDarkZone = currentScroll >= (scrollyRoot.offsetHeight - 120);
+            if (siteHeader) {
+                if (isDarkZone) siteHeader.classList.add('is-dark');
+                else siteHeader.classList.remove('is-dark');
+            }
+        }
+        window.addEventListener('scroll', updateScroll, { passive: true });
+        updateScroll();
+
+        function renderLoop() {
+            requestAnimationFrame(renderLoop);
+
+            // Pulsing Coral Neural Indicator
+            const pulse = 1.0 + 0.18 * Math.sin(Date.now() * 0.006);
+            sensorLed.scale.set(pulse, pulse, pulse);
+
+            // Ultra-smooth lerp interpolation (or instant in param mode)
+            if (hasUrlProgress) {
+                currentProgress = targetProgress;
+            } else {
+                currentProgress += (targetProgress - currentProgress) * 0.09;
+            }
+            const p = currentProgress;
+
+            // Global Hero Fade Rule: STRICTLY hidden when p >= 0.18
+            const heroOpacity = (p < 0.18) ? Math.max(0, 1 - (p / 0.18) * 1.8) : 0;
+            heroTop.style.opacity = `${heroOpacity}`;
+            heroBottom.style.opacity = `${heroOpacity}`;
+            heroDock.style.opacity = `${heroOpacity}`;
+            heroTop.style.pointerEvents = (heroOpacity > 0.05) ? 'auto' : 'none';
+            heroBottom.style.pointerEvents = (heroOpacity > 0.05) ? 'auto' : 'none';
+            heroDock.style.pointerEvents = (heroOpacity > 0.05) ? 'auto' : 'none';
+
+            if (heroBackingFrame) {
+                heroBackingFrame.style.opacity = `${heroOpacity}`;
+                const scaleVal = Math.max(0.75, 1 - (p / 0.18) * 0.2);
+                heroBackingFrame.style.transform = `translate(-50%, -50%) scale(${scaleVal})`;
+                heroBackingFrame.style.pointerEvents = (heroOpacity > 0.05) ? 'auto' : 'none';
+            }
+
+            // ── SCROLL PHASES CHOREOGRAPHY (SMOOTH CONTINUOUS STEADICAM & LOOKAT) ──
+            
+            // 1. Door opening: smoothly between p = 0.35 and p = 0.65
+            // NEGATIVE angle swings door OUTWARDS towards user in +Z (-1.95 rad = -112 deg)
+            const doorP = Math.max(0.0, Math.min(1.0, (p - 0.35) / 0.30));
+            const smoothDoor = doorP * doorP * (3.0 - 2.0 * doorP);
+            doorPivot.rotation.y = -smoothDoor * 1.95;
+
+            // Interior illumination flares up smoothly as door unlocks
+            interiorCeilingLight.intensity = 3.4 + smoothDoor * 2.6;
+
+            // 2. Machine Chassis 3D Rotation
+            let rotY;
+            if (p < 0.18) {
+                rotY = -0.22;
+            } else if (p < 0.38) {
+                const t = (p - 0.18) / 0.20;
+                const st = t * t * (3.0 - 2.0 * t);
+                rotY = -0.22 + st * 0.60; // -0.22 -> +0.38
+            } else {
+                const t = Math.min(1.0, (p - 0.38) / 0.22);
+                const st = t * t * (3.0 - 2.0 * t);
+                rotY = 0.38 - st * 0.33; // +0.38 -> +0.05
+            }
+            machineGroup.rotation.y = rotY;
+            machineGroup.rotation.x = (p < 0.18) ? 0.04 * (1.0 - p / 0.18) : 0;
+
+            // 3. Right optical lens target in world coordinates
+            const lensTargetX = 0.315;
+            const lensTargetY = 1.562;
+            const lensTargetZ = 0.646;
+
+            // Continuous LookAt Vector: smoothly ascends from (0, 0.05, 0) between p = 0.45 and p = 0.85
+            // This ELIMINATES the violent instantaneous lookAt snap that previously whipped the camera!
+            const targetT = Math.max(0.0, Math.min(1.0, (p - 0.45) / 0.40));
+            const smoothTargetT = targetT * targetT * (3.0 - 2.0 * targetT);
+            const lookAtX = smoothTargetT * lensTargetX;
+            const lookAtY = 0.05 + smoothTargetT * (lensTargetY - 0.05);
+            const lookAtZ = smoothTargetT * lensTargetZ;
+            camera.lookAt(lookAtX, lookAtY, lookAtZ);
+
+            // 4. Continuous Camera Position Interpolation
+            let camX, camY, camZ;
+            if (p < 0.18) {
+                // Stage 0: Hero resting 3D perspective
+                const subP = p / 0.18;
+                camX = 0;
+                camY = 0;
+                camZ = 13.5 - subP * 0.3; // 13.5 -> 13.2
+            } else if (p < 0.45) {
+                // Stage 1: Gliding approach
+                const subP = (p - 0.18) / 0.27;
+                const st = subP * subP * (3.0 - 2.0 * subP);
+                camX = st * 0.10;
+                camY = st * 0.05;
+                camZ = 13.2 - st * 5.0; // 13.2 -> 8.2
+            } else if (p < 0.72) {
+                // Stage 2: Approach opening door & interior cavity
+                const subP = (p - 0.45) / 0.27;
+                const st = subP * subP * (3.0 - 2.0 * subP);
+                camX = 0.10 + st * 0.08; // 0.10 -> 0.18
+                camY = 0.05 + st * 0.30; // 0.05 -> 0.35
+                camZ = 8.2 - st * 3.2;   // 8.2 -> 5.0
+            } else if (p < 0.90) {
+                // Stage 3: Smooth swoop up towards stereo optical array
+                const subP = (p - 0.72) / 0.18;
+                const st = subP * subP * (3.0 - 2.0 * subP);
+                camX = 0.18 + st * (lensTargetX - 0.18); // 0.18 -> 0.315
+                camY = 0.35 + st * (1.45 - 0.35);       // 0.35 -> 1.45
+                camZ = 5.0 - st * 3.5;                  // 5.0 -> 1.50
+            } else {
+                // Stage 3 Final: Move directly into the lens aperture/pupil
+                const subP = (p - 0.90) / 0.10;
+                const st = subP * subP * (3.0 - 2.0 * subP);
+                camX = lensTargetX;
+                camY = 1.45 + st * (lensTargetY - 1.45); // 1.45 -> 1.562
+                camZ = 1.50 - st * 0.85;                // 1.50 -> 0.65
+            }
+            camera.position.set(camX, camY, camZ);
+
+            // 5. HUD Step Indicator Text
+            if (p < 0.20) {
+                hudStep.textContent = "STANDBY STATE";
+            } else if (p < 0.45) {
+                hudStep.textContent = "HARDWARE ARCHITECTURE";
+            } else if (p < 0.72) {
+                hudStep.textContent = "DOOR UNLOCK VULNERABILITY";
+            } else {
+                hudStep.textContent = "STEREOSCOPIC OPTICAL ARRAY";
+            }
+
+            // 6. UI Narrative Cards & Lens Plunge Transitions
+            // Stage 2 Exploit Card (smooth fade in 0.42..0.48, fade out 0.68..0.74)
+            let exploitOpacity = 0;
+            if (p >= 0.42 && p <= 0.74) {
+                if (p < 0.48) exploitOpacity = (p - 0.42) / 0.06;
+                else if (p > 0.68) exploitOpacity = (0.74 - p) / 0.06;
+                else exploitOpacity = 1;
+            }
+            stageCardExploit.style.opacity = `${exploitOpacity}`;
+            stageCardExploit.style.pointerEvents = (exploitOpacity > 0.1) ? 'auto' : 'none';
+            if (exploitOpacity > 0.02) stageCardExploit.classList.add('is-visible');
+            else stageCardExploit.classList.remove('is-visible');
+
+            // Stage 3 Active Vision Card (smooth fade in 0.72..0.78, fade out >= 0.94)
+            let visionOpacity = 0;
+            if (p >= 0.72) {
+                if (p < 0.78) visionOpacity = (p - 0.72) / 0.06;
+                else if (p >= 0.94) visionOpacity = Math.max(0, 1 - (p - 0.94) / 0.06);
+                else visionOpacity = 1;
+            }
+            stageCardVision.style.opacity = `${visionOpacity}`;
+            stageCardVision.style.pointerEvents = (visionOpacity > 0.1) ? 'auto' : 'none';
+            if (visionOpacity > 0.02) stageCardVision.classList.add('is-visible');
+            else stageCardVision.classList.remove('is-visible');
+
+            // Optical Iris Black Plunge Overlay (p >= 0.94)
+            if (p >= 0.94) {
+                const plungeRatio = Math.min(1.0, (p - 0.94) / 0.06);
+                lensPlungeOverlay.style.opacity = `${plungeRatio}`;
+                hudTopBar.style.opacity = `${1 - plungeRatio}`;
+            } else {
+                lensPlungeOverlay.style.opacity = "0";
+                hudTopBar.style.opacity = "1";
+            }
+            scrollPrompt.style.opacity = (p > 0.90) ? "0" : "1";
+
+            if (renderer) renderer.render(scene, camera);
+        }
+        renderLoop();
+
+        // Responsive Resizing
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            if (renderer) renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ═══════════════════════════════════════════════════════════════
+        // SIGNATURE PAPER TIGER STACKING PANELS CONTROLLER
+        // ═══════════════════════════════════════════════════════════════
+        const panels = document.querySelectorAll('.c-panel');
+
+        function updatePanelStacking() {
+            const vh = window.innerHeight;
+            panels.forEach((panel, i) => {
+                if (i < panels.length - 1) {
+                    const nextPanel = panels[i + 1];
+                    const rect = nextPanel.getBoundingClientRect();
+                    if (rect.top <= vh && rect.top >= 0) {
+                        const progress = 1 - (rect.top / vh);
+                        const scale = 1 - (progress * 0.04);
+                        const brightness = 1 - (progress * 0.25);
+                        panel.style.transform = `scale(${scale})`;
+                        panel.style.filter = `brightness(${brightness})`;
+                    } else if (rect.top < 0) {
+                        panel.style.transform = 'scale(0.96)';
+                        panel.style.filter = 'brightness(0.75)';
+                    } else {
+                        panel.style.transform = 'scale(1)';
+                        panel.style.filter = 'brightness(1)';
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updatePanelStacking, { passive: true });
+        window.addEventListener('resize', updatePanelStacking, { passive: true });
+        updatePanelStacking();
+    </script>
 </body>
 </html>

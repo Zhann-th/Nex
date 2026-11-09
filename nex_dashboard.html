@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEX CORE — Object & Data Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Space+Grotesk:wght@500;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           PAPER TIGER EDITORIAL DESIGN SYSTEM FOR NEX
+           High-Contrast Brutalist Typography, Clean Lines, Zero AI Glass
+           ═══════════════════════════════════════════════════════════════ */
+        :root {
+            --bg-page: #FFFFFF;
+            --bg-subtle: #F6F6F7;
+            --bg-card: #FFFFFF;
+            
+            --ink-black: #000000;
+            --ink-charcoal: #171717;
+            --ink-muted: #525252;
+            --ink-faint: #8E8E93;
+            
+            --border-heavy: 1.5px solid #000000;
+            --border-light: 1px solid #E5E5E5;
+            
+            --accent-coral: #FF3366;
+            --accent-lavender: #C4B5FD;
+            --accent-emerald: #10B981;
+            
+            /* Compatibility variables for scripts */
+            --cyan: #000000;
+            --green: #10B981;
+            --red: #FF3366;
+            --amber: #F59E0B;
+            --text-main: #000000;
+            --text-dim: #525252;
+            
+            --font-headline: 'Anton', 'Syne', -apple-system, sans-serif;
+            --font-subhead: 'Syne', -apple-system, sans-serif;
+            --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Space Grotesk', monospace;
+            
+            --shadow-brutal: 4px 4px 0px #000000;
+            --shadow-brutal-sm: 2px 2px 0px #000000;
+            --shadow-brutal-lg: 6px 6px 0px #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--ink-black);
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ════════════ TOP HEADER BAR ════════════ */
+        .hud-header {
+            background: #FFFFFF;
+            border-bottom: var(--border-heavy);
+            padding: 18px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .hud-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-text {
+            font-family: var(--font-headline);
+            font-size: 30px;
+            letter-spacing: -0.01em;
+            color: #000000;
+            text-decoration: none;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-pill-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border: var(--border-heavy);
+            background: var(--bg-subtle);
+            color: #000000;
+        }
+
+        .hud-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hud-nav-item {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-muted);
+            text-decoration: none;
+            cursor: pointer;
+            padding: 4px 0;
+            position: relative;
+            background: transparent;
+            border: none;
+            transition: color 0.15s ease;
+        }
+
+        .hud-nav-item:hover {
+            color: #000000;
+        }
+
+        .hud-nav-item.active {
+            color: #000000;
+            font-weight: 800;
+        }
+
+        .hud-nav-item.active::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #000000;
+        }
+
+        .header-actions-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ════════════ PAPER TIGER BRUTALIST BUTTONS ════════════ */
+        .btn {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border-radius: 0px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: var(--border-heavy);
+            background: #FFFFFF;
+            color: #000000;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .btn-primary {
+            background: #000000 !important;
+            color: #FFFFFF !important;
+            border: var(--border-heavy) !important;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-coral) !important;
+            border-color: var(--accent-coral) !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-secondary {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        .btn-danger {
+            background: #FFFFFF !important;
+            border: 1.5px solid var(--accent-coral) !important;
+            color: var(--accent-coral) !important;
+        }
+
+        .btn-danger:hover {
+            background: var(--accent-coral) !important;
+            color: #FFFFFF !important;
+        }
+
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 11px;
+        }
+
+        /* ════════════ EDITORIAL HERO BANNER (PAPER TIGER STYLE) ════════════ */
+        .editorial-hero-banner {
+            padding: 56px 48px 48px 48px;
+            border-bottom: var(--border-heavy);
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .editorial-headline-stack {
+            display: flex;
+            flex-direction: column;
+            line-height: 0.9;
+        }
+
+        .editorial-giant-text {
+            font-family: var(--font-headline);
+            font-size: clamp(68px, 11vw, 150px);
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: #000000;
+            display: block;
+        }
+
+        .editorial-sub-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 48px;
+            padding-top: 16px;
+        }
+
+        .editorial-metrics-strip {
+            display: flex;
+            align-items: flex-start;
+            gap: 36px;
+        }
+
+        .metric-block {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .metric-number {
+            font-family: var(--font-headline);
+            font-size: 32px;
+            line-height: 1;
+            color: #000000;
+        }
+
+        .metric-label-clean {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--ink-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .editorial-statement-para {
+            max-width: 520px;
+            font-size: 15px;
+            line-height: 1.55;
+            color: var(--ink-charcoal);
+            font-weight: 500;
+            justify-self: end;
+        }
+
+        .editorial-statement-para em {
+            font-style: italic;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        /* Hidden compatibility HUD for JS telemetry bindings */
+        .hud-telemetry {
+            display: none;
+        }
+
+        /* ════════════ MAIN TABS NAVIGATION BAR ════════════ */
+        .hud-nav-bar {
+            background: var(--bg-subtle);
+            border-bottom: var(--border-heavy);
+            padding: 12px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-tab {
+            padding: 8px 18px;
+            background: transparent;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            color: #000000;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-tab:hover {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .nav-tab.active {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .tab-badge {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border: 1px solid currentColor;
+            background: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ════════════ MAIN CONTENT SECTION ════════════ */
+        .app-content {
+            padding: 40px 48px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #FFFFFF;
+        }
+
+        .tab-view {
+            display: none;
+        }
+
+        .tab-view.active {
+            display: block;
+        }
+
+        /* Toolbars */
+        .view-toolbar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            gap: 24px;
+            border-bottom: var(--border-heavy);
+            padding-bottom: 20px;
+        }
+
+        .view-title-box h2 {
+            font-family: var(--font-subhead);
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            color: #000000;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-title-box p {
+            color: var(--ink-muted);
+            font-size: 13px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .toolbar-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .search-box {
+            position: relative;
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 260px;
+        }
+
+        .search-box i {
+            color: #000000;
+            font-size: 12px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #000000;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 600;
+            width: 100%;
+            outline: none;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            color: #000000;
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 7px 14px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .filter-btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .filter-btn.active {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        /* ════════════ OBJECT CARDS & GRID ════════════ */
+        .objects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+
+        .object-card {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-brutal);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .object-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-brutal-lg);
+        }
+
+        .object-card-thumb-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background: #000000;
+            overflow: hidden;
+            border-bottom: var(--border-heavy);
+        }
+
+        .object-card-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .object-overlay-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            padding: 4px 10px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            color: #000000;
+            box-shadow: var(--shadow-brutal-sm);
+        }
+
+        .object-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .object-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .object-name-title {
+            font-family: var(--font-subhead);
+            font-size: 18px;
+            font-weight: 800;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+        }
+
+        .object-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: var(--bg-subtle);
+            border: var(--border-heavy);
+            padding: 12px;
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .metric-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            font-weight: 700;
+        }
+
+        .metric-value {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .object-actions-row {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+            border-top: var(--border-heavy);
+            padding-top: 16px;
+        }
+
+        .object-actions-row .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* ════════════ DATA GALLERY GRID ════════════ */
+        .data-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .data-card {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-brutal);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .data-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: var(--shadow-brutal-lg);
+        }
+
+        .data-thumb-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #000000;
+            overflow: hidden;
+            border-bottom: var(--border-heavy);
+        }
+
+        .data-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .data-cat-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent-coral);
+            border: var(--border-heavy);
+            padding: 3px 8px;
+            font-family: var(--font-mono);
+            font-size: 9px;
+            font-weight: 800;
+            color: #FFFFFF;
+            text-transform: uppercase;
+        }
+
+        .data-card-body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .data-card-name {
+            font-size: 13px;
+            font-weight: 800;
+            color: #000000;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-card-meta {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--ink-muted);
+        }
+
+        .data-card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .data-card-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* ════════════ LIVE STREAM & DETECTOR ════════════ */
+        .live-stream-layout {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 32px;
+        }
+
+        .stream-card {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-brutal);
+        }
+
+        .stream-viewport {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000000;
+            overflow: hidden;
+            border: var(--border-heavy);
+        }
+
+        .stream-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .stream-hud-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: var(--border-heavy);
+        }
+
+        .info-panel-card {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow-brutal);
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--ink-charcoal);
+            padding: 10px 0;
+            border-bottom: var(--border-light);
+        }
+
+        .telemetry-row strong {
+            color: #000000;
+            font-weight: 700;
+        }
+
+        /* ════════════ MODALS (PAPER TIGER BRUTALIST) ════════════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            width: 90%;
+            max-width: 640px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-brutal-lg);
+            transform: translateY(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: var(--border-heavy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-subtle);
+        }
+
+        .modal-header h3 {
+            font-family: var(--font-subhead);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #000000;
+        }
+
+        .modal-close-btn {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            color: #000000;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            transition: all 0.15s ease;
+        }
+
+        .modal-close-btn:hover {
+            background: #000000;
+            color: #FFFFFF;
+        }
+
+        .modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: #FFFFFF;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: var(--border-heavy);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: var(--bg-subtle);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            background: #FFFFFF;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            padding: 10px 14px;
+            color: #000000;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .form-input:focus {
+            box-shadow: var(--shadow-brutal-sm);
+        }
+
+        .crop-canvas-wrap {
+            position: relative;
+            width: 100%;
+            background: #000000;
+            border: var(--border-heavy);
+            overflow: hidden;
+        }
+
+        #crop-canvas {
+            display: block;
+            width: 100%;
+            cursor: crosshair;
+        }
+
+        .crop-preview-box {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            background: var(--bg-subtle);
+            padding: 14px;
+            border: var(--border-heavy);
+        }
+
+        .crop-preview-img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border: var(--border-heavy);
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 2000;
+        }
+
+        .toast {
+            background: #000000;
+            border: var(--border-heavy);
+            border-radius: 0px;
+            padding: 14px 20px;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            box-shadow: var(--shadow-brutal);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--ink-faint);
+            gap: 12px;
+            border: var(--border-heavy);
+            background: var(--bg-subtle);
+        }
+
+        .empty-state i {
+            font-size: 38px;
+            color: #000000;
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-subhead);
+            font-size: 18px;
+            color: #000000;
+            text-transform: uppercase;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            max-width: 420px;
+            color: var(--ink-muted);
+        }
+
+        @media (max-width: 1024px) {
+            .hud-header, .hud-nav-bar, .editorial-hero-banner, .app-content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .editorial-sub-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .live-stream-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ════════════ TOP HEADER BAR (PAPER TIGER STYLE) ════════════ -->
+    <header class="hud-header">
+        <div class="hud-brand">
+            <a href="/" class="brand-logo-text">NEX CORE</a>
+            <span class="brand-pill-tag">B2B Vision Engine</span>
+        </div>
+
+        <nav class="hud-nav-links">
+            <button class="hud-nav-item active" data-tab="tab-objects">Objects</button>
+            <button class="hud-nav-item" data-tab="tab-data">Captures</button>
+            <button class="hud-nav-item" data-tab="tab-live">Live Stream</button>
+        </nav>
+
+        <div class="header-actions-group">
+            <button class="btn btn-secondary" id="btn-toggle-camera-top">
+                <span id="btn-toggle-camera-top-text">Camera: ON</span>
+            </button>
+            <button class="btn btn-primary" id="btn-burst-detect-top">
+                Burst Detect
+            </button>
+            <button class="btn btn-secondary" id="btn-open-train-modal">
+                + Train Object
+            </button>
+            <button class="btn btn-secondary btn-sm" id="btn-refresh-all" title="Refresh">
+                <i class="fa-solid fa-rotate"></i>
+            </button>
+        </div>
+
+        <!-- Hidden hooks for stats JS bindings -->
+        <div class="hud-telemetry">
+            <span id="tel-accel"></span>
+            <span id="tel-objects-count">0</span>
+            <span id="tel-storage-mb">0 MB</span>
+        </div>
+    </header>
+
+    <!-- ════════════ PAPER TIGER EDITORIAL HERO BANNER ════════════ -->
+    <section class="editorial-hero-banner">
+        <div class="editorial-headline-stack">
+            <span class="editorial-giant-text">OBJECTS FIRST</span>
+            <span class="editorial-giant-text">IMPACT FOREVER</span>
+        </div>
+
+        <div class="editorial-sub-grid">
+            <div class="editorial-metrics-strip">
+                <div class="metric-block">
+                    <span class="metric-number" id="hero-stat-objects">0</span>
+                    <span class="metric-label-clean">Trained Objects</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-number" id="hero-stat-storage">0 MB</span>
+                    <span class="metric-label-clean">Data Archive</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-number">Sub-15ms</span>
+                    <span class="metric-label-clean">Inference Latency</span>
+                </div>
+                <div class="metric-block">
+                    <span class="metric-number">0 Errors</span>
+                    <span class="metric-label-clean">System Integrity</span>
+                </div>
+            </div>
+
+            <p class="editorial-statement-para">
+                Nex Core is a high-precision computer vision architecture designed to classify objects, compute feature homography, and record neural evidence in real time. <em>Engineered for decisive, production-grade reliability.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- ════════════ NAV TABS BAR ════════════ -->
+    <div class="hud-nav-bar">
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="tab-objects">
+                <span>Object Database</span>
+                <span class="tab-badge" id="badge-objects-count">0</span>
+            </button>
+            <button class="nav-tab" data-tab="tab-data">
+                <span>Data Archive</span>
+                <span class="tab-badge" id="badge-data-count">0</span>
+            </button>
+            <button class="nav-tab" data-tab="tab-live">
+                <span>Live Feed</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ════════════ MAIN CONTENT AREA ════════════ -->
+    <main class="app-content">
+
+        <!-- TAB 1: OBJECT DATABASE MANAGER -->
+        <section id="tab-objects" class="tab-view active">
+            <div class="view-toolbar">
+                <div class="view-title-box">
+                    <h2>Registered Categories</h2>
+                    <p>Objects trained into local memory. Click the delete icon to remove any entry completely.</p>
+                </div>
+
+                <div class="toolbar-controls">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="objects-search-input" placeholder="Search objects...">
+                    </div>
+                    <button class="btn btn-danger btn-sm" id="btn-clear-all-objects">
+                        Clear All Database
+                    </button>
+                </div>
+            </div>
+
+            <!-- Objects Grid -->
+            <div class="objects-grid" id="objects-grid-container">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 2: DATA VAULT & CAPTURES GALLERY -->
+        <section id="tab-data" class="tab-view">
+            <div class="view-toolbar">
+                <div class="view-title-box">
+                    <h2>Capture Archive (nex_output)</h2>
+                    <p>Recorded frames, cropped detections, and verified burst comparisons.</p>
+                </div>
+
+                <div class="toolbar-controls">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-cat="all">All</button>
+                        <button class="filter-btn" data-cat="detected_objects">Objects</button>
+                        <button class="filter-btn" data-cat="detected_faces">Faces</button>
+                        <button class="filter-btn" data-cat="burst_comparison">Bursts</button>
+                    </div>
+
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="data-search-input" placeholder="Filter by name...">
+                    </div>
+
+                    <button class="btn btn-danger btn-sm" id="btn-clean-data">
+                        Clear Category
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="data-gallery-grid" id="data-gallery-container">
+                <!-- Populated via JS -->
+            </div>
+        </section>
+
+        <!-- TAB 3: LIVE VIDEO FEED & DETECTOR -->
+        <section id="tab-live" class="tab-view">
+            <div class="live-stream-layout">
+                <div class="stream-card">
+                    <div class="stream-viewport">
+                        <img id="live-stream-img" src="/api/stream" class="stream-img" alt="Live Stream">
+                    </div>
+                    <div class="stream-hud-bar">
+                        <div class="stream-info">
+                            <span style="font-family:var(--font-mono); font-size:12px; font-weight:700;">OPTICAL SENSOR FEED (ON-DEMAND INFERENCE)</span>
+                        </div>
+                        <div class="stream-btns" style="display:flex; gap:10px; align-items:center;">
+                            <button class="btn btn-danger btn-sm" id="btn-toggle-camera-stream">
+                                Disable Sensor
+                            </button>
+                            <button class="btn btn-primary" id="btn-burst-detect">
+                                Burst Detect [Space]
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-stream-capture-to-train">
+                                Capture For Training
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Telemetry & Status Card -->
+                <div class="info-panel-card">
+                    <h3 style="font-family:var(--font-subhead); font-size:16px; font-weight:800; text-transform:uppercase;">System Telemetry</h3>
+                    <div class="telemetry-row">
+                        <span>Hardware Engine</span>
+                        <strong id="info-hw-accel">Apple MPS GPU</strong>
+                    </div>
+                    <div class="telemetry-row">
+                        <span>Registered Objects</span>
+                        <strong id="info-objects-count">0</strong>
+                    </div>
+                    <div class="telemetry-row">
+                        <span>Capture Latency</span>
+                        <strong>12-15 ms</strong>
+                    </div>
+                    <div class="telemetry-row">
+                        <span>Homography Engine</span>
+                        <strong>SIFT + RANSAC</strong>
+                    </div>
+                </div>
+
+                <!-- Burst Comparison & Detection Result Card -->
+                <div class="burst-result-card" id="burst-result-card" style="display:none; grid-column: 1 / -1; background: #FFFFFF; border: var(--border-heavy); padding: 24px; box-shadow: var(--shadow-brutal);">
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; border-bottom:var(--border-heavy); padding-bottom:14px; flex-wrap:wrap; gap:10px;">
+                        <div>
+                            <h3 style="font-family:var(--font-subhead); font-size:18px; font-weight:800; text-transform:uppercase;" id="burst-result-title">BURST DETECTION REPORT</h3>
+                            <p style="font-size:12px; color:var(--ink-muted);" id="burst-result-subtitle">12 frames inspected. Winner selected by sharpness criteria.</p>
+                        </div>
+                        <div id="burst-status-badge"></div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
+                                <span>WINNER FRAME</span>
+                                <span id="burst-winner-sharpness">Sharpness: 0.0</span>
+                            </div>
+                            <div style="background:#000; border:var(--border-heavy); aspect-ratio:4/3; overflow:hidden;">
+                                <img id="burst-winner-img" src="" alt="Winner" style="width:100%; height:100%; object-fit:cover; display:block;">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
+                                <span>MATCHED TEMPLATE</span>
+                                <span id="burst-matched-name">None</span>
+                            </div>
+                            <div style="background:#000; border:var(--border-heavy); aspect-ratio:4/3; overflow:hidden;">
+                                <img id="burst-template-img" src="" alt="Template" style="width:100%; height:100%; object-fit:cover; display:block;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: TRAIN NEW OBJECT -->
+    <div class="modal-overlay" id="train-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Train New Object</h3>
+                <button class="modal-close-btn" onclick="closeModal('train-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Object Category Name</label>
+                    <input type="text" id="train-object-name" class="form-input" placeholder="e.g. Coca_Cola_Bottle">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Interactive Crop Area</label>
+                    <div class="crop-canvas-wrap">
+                        <canvas id="crop-canvas"></canvas>
+                    </div>
+                </div>
+
+                <div class="crop-preview-box" id="crop-preview-container" style="display:none;">
+                    <img id="crop-preview-img" class="crop-preview-img" src="" alt="Preview">
+                    <div>
+                        <strong style="font-size:12px; font-family:var(--font-mono); display:block;">SELECTION READY</strong>
+                        <span style="font-size:11px; color:var(--ink-muted);" id="crop-dims">0 x 0 px</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('train-modal')">Cancel</button>
+                <button class="btn btn-primary" id="btn-save-trained-object">Save Object</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: TEMPLATES VIEWER -->
+    <div class="modal-overlay" id="templates-modal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="templates-modal-title">Object Templates</h3>
+                <button class="modal-close-btn" onclick="closeModal('templates-modal')">&times;</button>
+            </div>
+            <div class="modal-body" id="templates-modal-body">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('templates-modal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: CONFIRM ACTION -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="modal-box" style="max-width:440px;">
+            <div class="modal-header">
+                <h3>Confirm Deletion</h3>
+                <button class="modal-close-btn" onclick="closeModal('confirm-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-modal-text" style="font-size:13px; line-height:1.5;">Are you sure you want to permanently delete this item?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('confirm-modal')">Cancel</button>
+                <button class="btn btn-danger" id="confirm-modal-action-btn">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL -->
+    <div class="modal-overlay" id="lightbox-modal" onclick="closeModal('lightbox-modal')">
+        <img id="lightbox-img" src="" alt="Enlarged" style="max-width:90vw; max-height:90vh; border:var(--border-heavy); box-shadow:var(--shadow-brutal-lg);">
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Additional Hook Script for Syncing Paper Tiger Hero Stats -->
+    <script>
+        // Sync top nav items with tabs
+        document.querySelectorAll('.hud-nav-item').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.hud-nav-item').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const target = btn.getAttribute('data-tab');
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    if (t.getAttribute('data-tab') === target) t.click();
+                });
+            });
+        });
+
+        // Mirror stat updates from JS to hero banner
+        const observer = new MutationObserver(() => {
+            const objCount = document.getElementById('tel-objects-count');
+            const storCount = document.getElementById('tel-storage-mb');
+            const heroObj = document.getElementById('hero-stat-objects');
+            const heroStor = document.getElementById('hero-stat-storage');
+            if (objCount && heroObj) heroObj.textContent = objCount.textContent;
+            if (storCount && heroStor) heroStor.textContent = storCount.textContent;
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const objCount = document.getElementById('tel-objects-count');
+            const storCount = document.getElementById('tel-storage-mb');
+            if (objCount) observer.observe(objCount, { childList: true, characterData: true, subtree: true });
+            if (storCount) observer.observe(storCount, { childList: true, characterData: true, subtree: true });
+        });
+    </script>
+
+<script>
+        // State
+        let allObjects = [];
+        let allFiles = [];
+        let activeDataCategory = 'all';
+
+        // Crop Tool State
+        let rawImage = new Image();
+        let isCropping = false;
+        let cropStartX = 0, cropStartY = 0;
+        let cropEndX = 0, cropEndY = 0;
+        let croppedBase64 = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            loadAll();
+            setupCropTool();
+            setupEventHandlers();
+
+            // Auto-refresh every 8s
+            setInterval(() => {
+                fetchStats();
+            }, 8000);
+        });
+
+        // ════════════ TABS NAVIGATION ════════════
+        function initTabs() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+                    tab.classList.add('active');
+                    const targetId = tab.getAttribute('data-tab');
+                    const view = document.getElementById(targetId);
+                    if (view) view.classList.add('active');
+                });
+            });
+        }
+
+        // ════════════ API FETCHING ════════════
+        async function loadAll() {
+            await Promise.all([fetchObjects(), fetchData(), fetchStats(), checkCameraStatus()]);
+        }
+
+        let isCameraActive = true;
+
+        async function checkCameraStatus() {
+            try {
+                const res = await fetch('/api/camera/status');
+                const data = await res.json();
+                if (data.success) {
+                    updateCameraUI(data.is_running);
+                }
+            } catch (err) {
+                console.error("Camera status check error:", err);
+            }
+        }
+
+        async function toggleCamera() {
+            const btnTop = document.getElementById('btn-toggle-camera-top');
+            const btnStream = document.getElementById('btn-toggle-camera-stream');
+            if (btnTop) btnTop.disabled = true;
+            if (btnStream) btnStream.disabled = true;
+
+            try {
+                const res = await fetch('/api/camera/toggle', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    updateCameraUI(data.is_running);
+                    showToast(data.message, data.is_running ? "success" : "info");
+
+                    // Force refresh stream element
+                    const streamImg = document.getElementById('live-stream-img');
+                    if (streamImg) {
+                        streamImg.src = `/api/stream?t=${Date.now()}`;
+                    }
+                } else {
+                    showToast("Не удалось изменить статус камеры", "error");
+                }
+            } catch (err) {
+                console.error("Toggle camera error:", err);
+                showToast("Ошибка связи с сервером при переключении камеры", "error");
+            } finally {
+                if (btnTop) btnTop.disabled = false;
+                if (btnStream) btnStream.disabled = false;
+            }
+        }
+
+        function updateCameraUI(running) {
+            isCameraActive = running;
+
+            // Top Nav Button
+            const btnTop = document.getElementById('btn-toggle-camera-top');
+            const topDot = btnTop ? btnTop.querySelector('.camera-status-dot') : null;
+            const topText = document.getElementById('btn-toggle-camera-top-text');
+
+            // Stream HUD Button
+            const btnStream = document.getElementById('btn-toggle-camera-stream');
+
+            if (running) {
+                if (topDot) {
+                    topDot.style.background = 'var(--green)';
+                    topDot.style.boxShadow = '0 0 8px var(--green)';
+                }
+                if (topText) topText.textContent = 'Камера: ВКЛ';
+                if (btnTop) {
+                    btnTop.className = 'btn btn-secondary';
+                    btnTop.title = 'Камера включена. Нажмите, чтобы выключить';
+                }
+                if (btnStream) {
+                    btnStream.className = 'btn btn-danger';
+                    btnStream.innerHTML = '<i class="fa-solid fa-video-slash"></i> Выключить камеру';
+                    btnStream.title = 'Отключить питание камеры и освободить видеосенсор';
+                }
+            } else {
+                if (topDot) {
+                    topDot.style.background = 'var(--red)';
+                    topDot.style.boxShadow = '0 0 8px var(--red)';
+                }
+                if (topText) topText.textContent = 'Камера: ВЫКЛ';
+                if (btnTop) {
+                    btnTop.className = 'btn btn-danger';
+                    btnTop.title = 'Камера выключена. Нажмите, чтобы включить';
+                }
+                if (btnStream) {
+                    btnStream.className = 'btn btn-primary';
+                    btnStream.innerHTML = '<i class="fa-solid fa-video"></i> Включить камеру';
+                    btnStream.title = 'Запустить видеопоток камеры';
+                }
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('tel-accel').innerHTML = `GPU: <strong class="text-cyan">${data.device}</strong>`;
+                    document.getElementById('tel-objects-count').textContent = data.objects_count;
+                    document.getElementById('tel-storage-mb').textContent = `${data.storage_mb} MB`;
+                    document.getElementById('badge-objects-count').textContent = data.objects_count;
+                    document.getElementById('info-objects-count').textContent = data.objects_count;
+                    document.getElementById('info-hw-accel').textContent = data.device === 'MPS' ? 'Apple Silicon MPS GPU ⚡' : data.device;
+                }
+            } catch (err) {
+                console.error("Stats fetch error:", err);
+            }
+        }
+
+        async function fetchObjects() {
+            try {
+                const res = await fetch('/api/objects');
+                const data = await res.json();
+                if (data.success) {
+                    allObjects = data.objects || [];
+                    renderObjects(allObjects);
+                    document.getElementById('badge-objects-count').textContent = allObjects.length;
+                }
+            } catch (err) {
+                showToast("Ошибка загрузки объектов", "error");
+            }
+        }
+
+        async function fetchData() {
+            try {
+                const res = await fetch(`/api/data?category=${activeDataCategory}`);
+                const data = await res.json();
+                if (data.success) {
+                    allFiles = data.files || [];
+                    renderData(allFiles);
+                    document.getElementById('badge-data-count').textContent = data.total_files;
+                }
+            } catch (err) {
+                showToast("Ошибка загрузки архива снимков", "error");
+            }
+        }
+
+        // ════════════ RENDER OBJECTS ════════════
+        function renderObjects(objects) {
+            const container = document.getElementById('objects-grid-container');
+            const searchVal = document.getElementById('objects-search-input').value.toLowerCase().trim();
+
+            const filtered = objects.filter(o => o.name.toLowerCase().includes(searchVal));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-shapes"></i>
+                        <h3>Нет зарегистрированных объектов</h3>
+                        <p>Нажмите <strong>"+ Обучить новый объект"</strong> чтобы добавить предмет (браслет, часы, телефон) в базу детектора.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(obj => {
+                const mainThumb = obj.templates.length > 0 ? obj.templates[0].url : '';
+                return `
+                    <div class="object-card" data-name="${obj.name}">
+                        <div class="object-card-thumb-wrap">
+                            <span class="object-overlay-badge"><i class="fa-solid fa-check"></i> ИИ АКТИВЕН</span>
+                            ${mainThumb
+                                ? `<img src="${mainThumb}" class="object-card-thumb" alt="${obj.name}" onclick="openLightbox('${mainThumb}')">`
+                                : `<i class="fa-solid fa-image" style="font-size:36px; color:var(--text-sub);"></i>`
+                            }
+                        </div>
+                        <div class="object-card-body">
+                            <div class="object-header-row">
+                                <span class="object-name-title">${obj.name}</span>
+                                <span class="tab-badge" style="background:rgba(0,255,136,0.15); color:var(--green);">${obj.template_count} ракурс(ов)</span>
+                            </div>
+
+                            <div class="object-metrics">
+                                <div class="metric-item">
+                                    <span class="metric-label">SIFT ТОЧКИ</span>
+                                    <span class="metric-value cyan">${obj.total_keypoints} pts</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="metric-label">РАЗМЕР НА ДИСКЕ</span>
+                                    <span class="metric-value">${obj.total_size_kb} KB</span>
+                                </div>
+                            </div>
+
+                            <div class="object-actions-row">
+                                <div style="display:flex; gap:6px;">
+                                    <button class="btn btn-secondary btn-sm" onclick="openTemplatesModal('${obj.name}')" title="Просмотр всех ракурсов">
+                                        <i class="fa-solid fa-images"></i> Ракурсы
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm" onclick="addAngleToObject('${obj.name}')" title="Добавить еще фото этого объекта">
+                                        <i class="fa-solid fa-camera"></i> + Ракурс
+                                    </button>
+                                </div>
+                                <button class="btn btn-danger btn-sm" onclick="promptDeleteObject('${obj.name}')" title="Удалить объект полностью из памяти и с диска">
+                                    <i class="fa-solid fa-trash-can"></i> Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ════════════ RENDER DATA VAULT ════════════
+        function renderData(files) {
+            const container = document.getElementById('data-gallery-container');
+            const searchVal = document.getElementById('data-search-input').value.toLowerCase().trim();
+
+            const filtered = files.filter(f => f.filename.toLowerCase().includes(searchVal));
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-photo-film"></i>
+                        <h3>Нет сохраненных снимков в этой категории</h3>
+                        <p>При обнаружении предметов или захвате лиц снимки будут автоматически сохранены здесь.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(f => {
+                return `
+                    <div class="data-card">
+                        <div class="data-thumb-wrap" onclick="openLightbox('${f.url}')">
+                            <span class="data-cat-badge ${f.category}">${f.category.replace('detected_', '')}</span>
+                            <img src="${f.url}" class="data-thumb" loading="lazy" alt="${f.filename}">
+                        </div>
+                        <div class="data-card-body">
+                            <span class="data-card-name" title="${f.filename}">${f.filename}</span>
+                            <div class="data-card-meta">
+                                <span>${f.modified}</span>
+                                <span>${f.size_kb} KB</span>
+                            </div>
+                            <div class="data-card-actions">
+                                <a href="${f.url}" download="${f.filename}" class="btn btn-secondary btn-sm" title="Скачать">
+                                    <i class="fa-solid fa-download"></i>
+                                </a>
+                                <button class="btn btn-danger btn-sm" onclick="deleteDataFile('${f.category}', '${f.filename}')" title="Удалить снимок">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ════════════ DELETE ACTIONS ════════════
+        function promptDeleteObject(name) {
+            showConfirm(
+                `Вы точно хотите <strong>ПОЛНОСТЬЮ УДАЛИТЬ</strong> объект <strong>"${name}"</strong>?<br><br>Все ракурсы, шаблоны и дескрипторы этого объекта будут немедленно стерты с диска и выгружены из памяти детектора.`,
+                async () => {
+                    try {
+                        const res = await fetch(`/api/objects/${encodeURIComponent(name)}`, { method: 'DELETE' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(`Объект "${name}" полностью удален!`, "success");
+                            await loadAll();
+                        } else {
+                            showToast(data.detail || "Ошибка удаления", "error");
+                        }
+                    } catch (err) {
+                        showToast("Сетевая ошибка при удалении", "error");
+                    }
+                }
+            );
+        }
+
+        async function deleteDataFile(category, filename) {
+            try {
+                const res = await fetch(`/api/data/${category}/${encodeURIComponent(filename)}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`Файл ${filename} удален`, "success");
+                    await fetchData();
+                    await fetchStats();
+                } else {
+                    showToast(data.detail || "Ошибка удаления", "error");
+                }
+            } catch (err) {
+                showToast("Ошибка при удалении файла", "error");
+            }
+        }
+
+        document.getElementById('btn-clear-all-objects').addEventListener('click', () => {
+            showConfirm(
+                `Вы уверены, что хотите <strong>ОЧИСТИТЬ ВСЮ БАЗУ</strong> объектов?<br><br>Все зарегистрированные объекты детекции будут безвозвратно удалены.`,
+                async () => {
+                    try {
+                        const res = await fetch('/api/objects', { method: 'DELETE' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast("База объектов полностью очищена", "success");
+                            await loadAll();
+                        }
+                    } catch (err) {
+                        showToast("Ошибка очистки базы", "error");
+                    }
+                }
+            );
+        });
+
+        document.getElementById('btn-clean-data').addEventListener('click', () => {
+            const catName = activeDataCategory === 'all' ? 'всех снимков' : `категории "${activeDataCategory}"`;
+            showConfirm(
+                `Очистить архив <strong>${catName}</strong>? Файлы будут удалены с диска.`,
+                async () => {
+                    try {
+                        const res = await fetch('/api/data/clean', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ category: activeDataCategory })
+                        });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(data.message, "success");
+                            await fetchData();
+                            await fetchStats();
+                        }
+                    } catch (err) {
+                        showToast("Ошибка очистки архива", "error");
+                    }
+                }
+            );
+        });
+
+        // ════════════ TEMPLATES MODAL ════════════
+        function openTemplatesModal(objName) {
+            const obj = allObjects.find(o => o.name === objName);
+            if (!obj) return;
+
+            document.getElementById('templates-modal-title').innerHTML = `<i class="fa-solid fa-images text-cyan"></i> Шаблоны: ${obj.name} (${obj.template_count} фото)`;
+            const body = document.getElementById('templates-modal-body');
+
+            if (obj.templates.length === 0) {
+                body.innerHTML = `<p style="color:var(--text-dim);">У этого объекта нет сохраненных шаблонов.</p>`;
+            } else {
+                body.innerHTML = `
+                    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:14px;">
+                        ${obj.templates.map(tpl => `
+                            <div style="background:#05070a; border:1px solid var(--border-subtle); border-radius:6px; overflow:hidden; display:flex; flex-direction:column;">
+                                <img src="${tpl.url}" style="height:140px; width:100%; object-fit:contain; background:#000; cursor:pointer;" onclick="openLightbox('${tpl.url}')">
+                                <div style="padding:8px; display:flex; align-items:center; justify-content:space-between;">
+                                    <span style="font-size:10px; font-family:var(--font-mono); color:var(--text-dim);">${tpl.size_kb} KB</span>
+                                    <button class="btn btn-danger btn-sm" style="padding:3px 7px;" onclick="deleteSingleTemplate('${obj.name}', '${tpl.filename}')" title="Удалить этот ракурс">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            openModal('templates-modal');
+        }
+
+        async function deleteSingleTemplate(objName, filename) {
+            try {
+                const res = await fetch(`/api/objects/${encodeURIComponent(objName)}/template/${encodeURIComponent(filename)}`, {
+                    method: 'DELETE'
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast("Ракурс удален", "success");
+                    await fetchObjects();
+                    openTemplatesModal(objName); // Refresh modal view
+                }
+            } catch (err) {
+                showToast("Ошибка удаления ракурса", "error");
+            }
+        }
+
+        function addAngleToObject(objName) {
+            document.getElementById('train-obj-name').value = objName;
+            openTrainModal();
+        }
+
+        // ════════════ TRAINER & CROP TOOL ════════════
+        function openTrainModal() {
+            openModal('train-modal');
+            captureFromCamToCanvas();
+        }
+
+        document.getElementById('btn-open-train-modal').addEventListener('click', () => {
+            document.getElementById('train-obj-name').value = '';
+            openTrainModal();
+        });
+
+        document.getElementById('btn-source-cam').addEventListener('click', captureFromCamToCanvas);
+
+        document.getElementById('btn-source-file').addEventListener('click', () => {
+            document.getElementById('train-file-input').click();
+        });
+
+        document.getElementById('train-file-input').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    rawImage.onload = () => {
+                        drawToCanvas(rawImage);
+                    };
+                    rawImage.src = evt.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('btn-stream-capture-to-train').addEventListener('click', () => {
+            document.getElementById('train-obj-name').value = '';
+            openTrainModal();
+        });
+
+        async function captureFromCamToCanvas() {
+            try {
+                const res = await fetch('/api/capture_frame');
+                const data = await res.json();
+                if (data.success) {
+                    rawImage.onload = () => {
+                        drawToCanvas(rawImage);
+                    };
+                    rawImage.src = data.image_base64;
+                } else {
+                    showToast("Камера недоступна", "error");
+                }
+            } catch (err) {
+                showToast("Ошибка захвата кадра", "error");
+            }
+        }
+
+        function setupCropTool() {
+            const canvas = document.getElementById('crop-canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.addEventListener('mousedown', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                cropStartX = (e.clientX - rect.left) * scaleX;
+                cropStartY = (e.clientY - rect.top) * scaleY;
+                isCropping = true;
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isCropping) return;
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+
+                cropEndX = (e.clientX - rect.left) * scaleX;
+                cropEndY = (e.clientY - rect.top) * scaleY;
+
+                // Redraw canvas with box
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(rawImage, 0, 0, canvas.width, canvas.height);
+
+                // Dim outer area
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Clear selection box
+                const x = Math.min(cropStartX, cropEndX);
+                const y = Math.min(cropStartY, cropEndY);
+                const w = Math.abs(cropEndX - cropStartX);
+                const h = Math.abs(cropEndY - cropStartY);
+
+                ctx.drawImage(rawImage, x, y, w, h, x, y, w, h);
+
+                // Draw bounding box
+                ctx.strokeStyle = '#00f0ff';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(x, y, w, h);
+            });
+
+            canvas.addEventListener('mouseup', () => {
+                if (!isCropping) return;
+                isCropping = false;
+                extractCrop();
+            });
+        }
+
+        function drawToCanvas(img) {
+            const canvas = document.getElementById('crop-canvas');
+            canvas.width = img.width || 640;
+            canvas.height = img.height || 480;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Default center crop selection (30% centered)
+            cropStartX = canvas.width * 0.3;
+            cropStartY = canvas.height * 0.3;
+            cropEndX = canvas.width * 0.7;
+            cropEndY = canvas.height * 0.7;
+            extractCrop();
+        }
+
+        function extractCrop() {
+            const canvas = document.getElementById('crop-canvas');
+            const x = Math.round(Math.min(cropStartX, cropEndX));
+            const y = Math.round(Math.min(cropStartY, cropEndY));
+            const w = Math.round(Math.abs(cropEndX - cropStartX));
+            const h = Math.round(Math.abs(cropEndY - cropStartY));
+
+            if (w < 20 || h < 20) return;
+
+            const cropCanvas = document.createElement('canvas');
+            cropCanvas.width = w;
+            cropCanvas.height = h;
+            const cropCtx = cropCanvas.getContext('2d');
+            cropCtx.drawImage(rawImage, x, y, w, h, 0, 0, w, h);
+
+            croppedBase64 = cropCanvas.toDataURL('image/jpeg', 0.95);
+
+            document.getElementById('crop-preview-img').src = croppedBase64;
+            document.getElementById('crop-meta-dim').textContent = `${w} x ${h} px`;
+            document.getElementById('crop-preview-container').style.display = 'flex';
+        }
+
+        document.getElementById('btn-submit-train').addEventListener('click', async () => {
+            const name = document.getElementById('train-obj-name').value.trim();
+            if (!name) {
+                showToast("Введите имя объекта!", "error");
+                return;
+            }
+            if (!croppedBase64) {
+                showToast("Пожалуйста, обведите объект прямоугольником", "error");
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit-train');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Обучение...`;
+
+            try {
+                const res = await fetch('/api/objects/train', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: name,
+                        image_base64: croppedBase64
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, "success");
+                    closeModal('train-modal');
+                    await loadAll();
+                } else {
+                    showToast(data.detail || "Ошибка обучения", "error");
+                }
+            } catch (err) {
+                showToast("Сетевая ошибка при регистрации", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Зарегистрировать и активировать в ИИ`;
+            }
+        });
+
+        // ════════════ EVENT HANDLERS & SEARCH ════════════
+        function setupEventHandlers() {
+            // Search filters
+            document.getElementById('objects-search-input').addEventListener('input', () => {
+                renderObjects(allObjects);
+            });
+
+            document.getElementById('data-search-input').addEventListener('input', () => {
+                renderData(allFiles);
+            });
+
+            // Category filter pills
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeDataCategory = btn.getAttribute('data-cat');
+                    fetchData();
+                });
+            });
+
+            // Refresh button
+            document.getElementById('btn-refresh-all').addEventListener('click', () => {
+                loadAll();
+                showToast("Данные обновлены", "success");
+            });
+
+            // Camera toggle buttons
+            const btnCamTop = document.getElementById('btn-toggle-camera-top');
+            const btnCamStream = document.getElementById('btn-toggle-camera-stream');
+            if (btnCamTop) btnCamTop.addEventListener('click', toggleCamera);
+            if (btnCamStream) btnCamStream.addEventListener('click', toggleCamera);
+
+            // Burst Detection buttons
+            const btnBurst = document.getElementById('btn-burst-detect');
+            const btnBurstTop = document.getElementById('btn-burst-detect-top');
+            if (btnBurst) btnBurst.addEventListener('click', triggerBurstDetect);
+            if (btnBurstTop) btnBurstTop.addEventListener('click', triggerBurstDetect);
+
+            // Global Keyboard Shortcut: Space or 'B' triggers burst detect
+            window.addEventListener('keydown', (e) => {
+                const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+                const isInputActive = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select';
+                const hasOpenModal = document.querySelector('.modal-overlay.active') !== null;
+
+                if (!isInputActive && !hasOpenModal) {
+                    if (e.code === 'Space' || e.code === 'KeyB') {
+                        e.preventDefault();
+                        triggerBurstDetect();
+                    }
+                }
+            });
+        }
+
+        let lastBurstComparisonUrl = '';
+        let lastWinnerPreviewUrl = '';
+        let isBurstRunning = false;
+
+        async function triggerBurstDetect() {
+            if (isBurstRunning) return;
+            isBurstRunning = true;
+
+            // Switch to live tab if not active
+            const liveTab = document.querySelector('.nav-tab[data-tab="tab-live"]');
+            if (liveTab && !liveTab.classList.contains('active')) {
+                liveTab.click();
+            }
+
+            const btn1 = document.getElementById('btn-burst-detect');
+            const btn2 = document.getElementById('btn-burst-detect-top');
+            const origHtml1 = btn1 ? btn1.innerHTML : '';
+            const origHtml2 = btn2 ? btn2.innerHTML : '';
+
+            const loadingHtml = `<i class="fa-solid fa-spinner fa-spin"></i> Съемка 12 кадров и выбор резкого...`;
+            if (btn1) { btn1.disabled = true; btn1.innerHTML = loadingHtml; }
+            if (btn2) { btn2.disabled = true; btn2.innerHTML = loadingHtml; }
+
+            showToast("📸 Съемка серии кадров (Burst) и анализ резкости...", "success");
+
+            try {
+                const res = await fetch('/api/burst_detect', { method: 'POST' });
+                const data = await res.json();
+
+                if (data.success) {
+                    const card = document.getElementById('burst-result-card');
+                    card.style.display = 'block';
+
+                    lastBurstComparisonUrl = data.comparison_url;
+                    lastWinnerPreviewUrl = data.winner_preview_b64;
+
+                    document.getElementById('burst-winner-img').src = data.winner_preview_b64;
+                    document.getElementById('burst-comp-img').src = data.comparison_url;
+
+                    const score = data.winner_score;
+                    document.getElementById('burst-winner-sharpness').textContent =
+                        `Q: ${score.total} | Резкость: ${score.sharpness} | Контраст: ${score.contrast}`;
+
+                    if (data.detected_count > 0) {
+                        const detNames = data.detections.map(d => `${d.object} (${Math.round(d.confidence * 100)}%)`).join(', ');
+                        document.getElementById('burst-result-title').innerHTML =
+                            `<span style="color:var(--green);"><i class="fa-solid fa-shield-check"></i> НАЙДЕН: ${detNames}</span>`;
+                        document.getElementById('burst-result-subtitle').textContent =
+                            `Победил кадр с обнаруженным объектом (проанализировано ${data.frames_analyzed} кадров серии). Снимок с обводкой сохранен в папку объектов.`;
+                        document.getElementById('burst-status-badge').innerHTML =
+                            `<button class="btn btn-secondary btn-sm" onclick="viewObjectInDataVault()" style="background:rgba(0,255,136,0.15); border-color:var(--green); color:var(--green);"><i class="fa-solid fa-folder-open"></i> Папка объектов</button>`;
+                        showToast(`🎯 Объект распознан и сохранен в папку объектов!`, "success");
+                    } else {
+                        document.getElementById('burst-result-title').innerHTML =
+                            `<span style="color:var(--text-main);"><i class="fa-solid fa-circle-info text-cyan"></i> Серия завершена: объектов не найдено</span>`;
+                        document.getElementById('burst-result-subtitle').textContent =
+                            `Во всех ${data.frames_analyzed} кадрах серии зарегистрированных объектов не обнаружено. Выбран самый резкий кадр (резкость: ${score.sharpness}).`;
+                        document.getElementById('burst-status-badge').innerHTML =
+                            `<span style="font-family:var(--font-mono); font-size:11px; color:var(--text-dim); background:rgba(255,255,255,0.08); padding:5px 12px; border-radius:4px;">0 объектов</span>`;
+                        showToast(`ℹ️ Серия снята (резкость ${score.sharpness}), но объект не обнаружен`, "error");
+                    }
+
+                    // Refresh data vault & stats
+                    await Promise.all([fetchData(), fetchStats()]);
+
+                    // Scroll result into view
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    showToast("Ошибка выполнения серийной съемки", "error");
+                }
+            } catch (err) {
+                showToast("Сетевая ошибка при серийной съемке", "error");
+            } finally {
+                isBurstRunning = false;
+                if (btn1) { btn1.disabled = false; btn1.innerHTML = origHtml1; }
+                if (btn2) { btn2.disabled = false; btn2.innerHTML = origHtml2; }
+            }
+        }
+
+        function openWinnerLightbox() {
+            if (lastWinnerPreviewUrl) {
+                openLightbox(lastWinnerPreviewUrl);
+            }
+        }
+
+        function openComparisonLightbox() {
+            if (lastBurstComparisonUrl) {
+                openLightbox(lastBurstComparisonUrl);
+            }
+        }
+
+        function viewObjectInDataVault() {
+            const dataTab = document.querySelector('.nav-tab[data-tab="tab-data"]');
+            if (dataTab) dataTab.click();
+            const btnObjCat = document.querySelector('.filter-btn[data-cat="detected_objects"]');
+            if (btnObjCat) btnObjCat.click();
+            setTimeout(() => {
+                const el = document.getElementById('data-gallery-container');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // ════════════ MODAL HELPERS ════════════
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function showConfirm(htmlText, onConfirm) {
+            document.getElementById('confirm-modal-text').innerHTML = htmlText;
+            const actionBtn = document.getElementById('confirm-modal-action-btn');
+            actionBtn.onclick = async () => {
+                closeModal('confirm-modal');
+                await onConfirm();
+            };
+            openModal('confirm-modal');
+        }
+
+        function openLightbox(url) {
+            document.getElementById('lightbox-img').src = url;
+            openModal('lightbox-modal');
+        }
+
+        function showToast(text, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation';
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${text}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
+

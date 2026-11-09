@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large model weights (exceeds GitHub limits)
+*.pt
+weights/
+
+# Output and runtime dumps
+nex_output/
+
+# Backups and temporary files
+*.bak_*
+*.bak
+index.html.hand_particles
+.DS_Store
