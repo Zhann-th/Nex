@@ -1,0 +1,10 @@
+# NEX Vision Core - Minimal Requirements
+opencv-python>=4.8.0
+numpy>=1.24.0
+fastapi>=0.100.0
+uvicorn>=0.22.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+# Neural detection (optional, falls back gracefully to SIFT CPU mode if omitted):
+# ultralytics>=8.0.0
+# torch>=2.0.0

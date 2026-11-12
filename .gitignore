@@ -9,6 +9,23 @@ weights/
 
 # Output and runtime dumps
 nex_output/
+*.log
+*.db
+
+# Standalone zip builds
+*.zip
+
+# Presentations & pitch deck artifacts (excluded)
+presentation.html
+NEX_PITCH_DECK.pdf
+PITCH_DECK_CONTENT.md
+generate_pitch_deck.py
+export_deck_to_pdf.py
+pitch_deck_copy.json
+pdf_slides/
+slide_*.png
+*_test.png
+preview_slide_*.png
 
 # Backups and temporary files
 *.bak_*

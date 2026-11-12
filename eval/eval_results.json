@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-11-12T12:47:30Z",
+  "architecture": "Hybrid SIFT-RANSAC + Invariant Edge Matcher",
+  "enrolled_classes": [
+    "Mouse",
+    "Phone"
+  ],
+  "total_test_samples": 25,
+  "metrics": {
+    "precision": 1.0,
+    "recall": 0.9524,
+    "f1_score": 0.9756,
+    "accuracy": 0.96,
+    "accuracy_pct": "96.0%"
+  },
+  "confusion_matrix": {
+    "true_positives": 20,
+    "false_positives": 0,
+    "false_negatives": 1,
+    "true_negatives": 4
+  },
+  "latency_ms": {
+    "p50": 97.71,
+    "p90": 101.72,
+    "p99": 103.24,
+    "target": "<15.0ms"
+  }
+}

@@ -972,9 +972,9 @@
         </div>
 
         <nav class="hud-nav-links">
-            <button class="hud-nav-item active" data-tab="tab-objects">Objects</button>
+            <button class="hud-nav-item" data-tab="tab-objects">Objects</button>
             <button class="hud-nav-item" data-tab="tab-data">Captures</button>
-            <button class="hud-nav-item" data-tab="tab-live">Live Stream</button>
+            <button class="hud-nav-item active" data-tab="tab-live"><i class="fa-solid fa-video text-cyan"></i> Live Stream</button>
         </nav>
 
         <div class="header-actions-group">
@@ -984,6 +984,7 @@
             <button class="btn btn-primary" id="btn-burst-detect-top">
                 Burst Detect
             </button>
+
             <button class="btn btn-secondary" id="btn-open-train-modal">
                 + Train Object
             </button>
@@ -1036,16 +1037,16 @@
     <!-- ════════════ NAV TABS BAR ════════════ -->
     <div class="hud-nav-bar">
         <div class="nav-tabs">
-            <button class="nav-tab active" data-tab="tab-objects">
+            <button class="nav-tab active" data-tab="tab-live">
+                <span><i class="fa-solid fa-video text-cyan"></i> Live Feed</span>
+            </button>
+            <button class="nav-tab" data-tab="tab-objects">
                 <span>Object Database</span>
                 <span class="tab-badge" id="badge-objects-count">0</span>
             </button>
             <button class="nav-tab" data-tab="tab-data">
                 <span>Data Archive</span>
                 <span class="tab-badge" id="badge-data-count">0</span>
-            </button>
-            <button class="nav-tab" data-tab="tab-live">
-                <span>Live Feed</span>
             </button>
         </div>
     </div>
@@ -1054,7 +1055,7 @@
     <main class="app-content">
 
         <!-- TAB 1: OBJECT DATABASE MANAGER -->
-        <section id="tab-objects" class="tab-view active">
+        <section id="tab-objects" class="tab-view">
             <div class="view-toolbar">
                 <div class="view-title-box">
                     <h2>Registered Categories</h2>
@@ -1066,6 +1067,9 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="objects-search-input" placeholder="Search objects...">
                     </div>
+                    <button class="btn btn-secondary btn-sm" id="btn-refresh-objects-db" title="Синхронизировать базу объектов с файлами на диске">
+                        <i class="fa-solid fa-arrows-rotate"></i> Обновить объекты
+                    </button>
                     <button class="btn btn-danger btn-sm" id="btn-clear-all-objects">
                         Clear All Database
                     </button>
@@ -1099,6 +1103,9 @@
                         <input type="text" id="data-search-input" placeholder="Filter by name...">
                     </div>
 
+                    <button class="btn btn-secondary btn-sm" id="btn-clean-empty" title="Удалить пустые снимки без детекций">
+                        <i class="fa-solid fa-broom"></i> Clean Empty
+                    </button>
                     <button class="btn btn-danger btn-sm" id="btn-clean-data">
                         Clear Category
                     </button>
@@ -1112,7 +1119,42 @@
         </section>
 
         <!-- TAB 3: LIVE VIDEO FEED & DETECTOR -->
-        <section id="tab-live" class="tab-view">
+        <section id="tab-live" class="tab-view active">
+            <!-- REAL-TIME AI DETECTION MODE HUD BAR -->
+            <div class="detection-mode-bar" style="background:#FFFFFF; border:var(--border-heavy); box-shadow:var(--shadow-brutal); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+                <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:22px;">🎯</span>
+                        <div>
+                            <strong style="font-family:var(--font-subhead); font-size:14px; text-transform:uppercase; display:block; letter-spacing:0.04em;">REAL-TIME AI DETECTION MODE</strong>
+                            <span style="font-size:11px; color:var(--ink-muted);" id="realtime-detection-status-text">Непрерывный захват лиц покупателей и отслеживание обученных товаров в реальном времени</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <span class="live-pill" style="display:inline-flex; align-items:center; gap:6px; background:#F0FDF4; border:1px solid #86EFAC; color:#15803D; font-family:var(--font-mono); font-size:11px; font-weight:700; padding:4px 10px; border-radius:2px;">
+                            <span style="width:7px; height:7px; background:#22C55E; border-radius:50%; display:inline-block; box-shadow:0 0 6px #22C55E;"></span>
+                            CUSTOMER FACE: LIVE
+                        </span>
+                        <span class="live-pill" style="display:inline-flex; align-items:center; gap:6px; background:#EFF6FF; border:1px solid #93C5FD; color:#1D4ED8; font-family:var(--font-mono); font-size:11px; font-weight:700; padding:4px 10px; border-radius:2px;">
+                            <span style="width:7px; height:7px; background:#3B82F6; border-radius:50%; display:inline-block;"></span>
+                            OBJECT TRACKING: ACTIVE
+                        </span>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-sm" id="btn-stream-cam-toggle-hud" onclick="toggleCamera()">
+                        <i class="fa-solid fa-power-off"></i> <span id="hud-cam-toggle-text">Камера: ВЫКЛ</span>
+                    </button>
+                    <button class="btn btn-primary btn-sm" id="btn-hud-burst-detect" onclick="triggerBurstDetect()">
+                        <i class="fa-solid fa-camera"></i> Burst Снимок [Space]
+                    </button>
+                    <button class="btn btn-secondary btn-sm" onclick="triggerCleanEmptySnapshots()" title="Очистить снимки без детекций">
+                        <i class="fa-solid fa-trash-can"></i> Очистить пустые
+                    </button>
+                </div>
+            </div>
+
             <div class="live-stream-layout">
                 <div class="stream-card">
                     <div class="stream-viewport">
@@ -1137,23 +1179,33 @@
                 </div>
 
                 <!-- Telemetry & Status Card -->
-                <div class="info-panel-card">
-                    <h3 style="font-family:var(--font-subhead); font-size:16px; font-weight:800; text-transform:uppercase;">System Telemetry</h3>
-                    <div class="telemetry-row">
-                        <span>Hardware Engine</span>
-                        <strong id="info-hw-accel">Apple MPS GPU</strong>
+                <div class="info-panel-card" id="live-telemetry-panel">
+                    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:var(--border-heavy); padding-bottom:12px; gap:10px;">
+                        <div>
+                            <h3 style="font-family:var(--font-subhead); font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:-0.02em;">Live Optical Stream</h3>
+                            <div style="font-family:var(--font-mono); font-size:11px; color:var(--ink-muted); margin-top:2px;">
+                                LAST UPDATE <span id="live-detection-timer">0s ago</span>
+                            </div>
+                        </div>
+                        <div id="live-stream-status-badge" style="display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:11px; font-weight:700; background:var(--bg-subtle); padding:4px 8px; border:1px solid #000000;">
+                            <span id="live-stream-dot" style="width:8px; height:8px; border-radius:50%; background:var(--accent-emerald); display:inline-block;"></span>
+                            <span id="live-stream-status-text">ACTIVE</span>
+                        </div>
                     </div>
-                    <div class="telemetry-row">
-                        <span>Registered Objects</span>
-                        <strong id="info-objects-count">0</strong>
+
+                    <!-- Live Content Container (State A / State B) -->
+                    <div id="live-detections-content" style="display:flex; flex-direction:column; gap:8px; min-height:120px;">
+                        <!-- State A: Default Clear State -->
+                        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 16px; border:1px dashed var(--border-light); background:var(--bg-subtle); text-align:center;">
+                            <span style="font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--ink-muted); letter-spacing:0.04em;">◉ OPTICAL FIELD CLEAR</span>
+                            <p style="font-family:var(--font-body); font-size:12px; color:var(--ink-faint); margin-top:6px;">No physical products or human faces currently detected in frame.</p>
+                        </div>
                     </div>
-                    <div class="telemetry-row">
-                        <span>Capture Latency</span>
-                        <strong>12-15 ms</strong>
-                    </div>
-                    <div class="telemetry-row">
-                        <span>Homography Engine</span>
-                        <strong>SIFT + RANSAC</strong>
+
+                    <!-- System Telemetry Footnote (preserves element IDs for fetchStats) -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:var(--border-light); padding-top:10px; font-family:var(--font-mono); font-size:11px; color:var(--ink-muted);">
+                        <span>ENGINE: <strong id="info-hw-accel" style="color:var(--ink-black);">Apple MPS GPU</strong></span>
+                        <span>OBJECTS: <strong id="info-objects-count" style="color:var(--ink-black);">0</strong> ENROLLED</span>
                     </div>
                 </div>
 
@@ -1167,7 +1219,7 @@
                         <div id="burst-status-badge"></div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:24px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px;">
                         <div style="display:flex; flex-direction:column; gap:8px;">
                             <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
                                 <span>WINNER FRAME</span>
@@ -1180,11 +1232,32 @@
 
                         <div style="display:flex; flex-direction:column; gap:8px;">
                             <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
+                                <span>BURST COMPARISON (12 FRAMES)</span>
+                                <button class="btn btn-secondary btn-sm" onclick="viewBurstComparison()" style="padding:1px 6px; font-size:10px; cursor:pointer;" title="Увеличить сетку">Zoom</button>
+                            </div>
+                            <div style="background:#000; border:var(--border-heavy); aspect-ratio:4/3; overflow:hidden; cursor:pointer;" onclick="viewBurstComparison()" title="Нажмите для увеличения">
+                                <img id="burst-comp-img" src="" alt="Burst Grid" style="width:100%; height:100%; object-fit:cover; display:block;">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
                                 <span>MATCHED TEMPLATE</span>
                                 <span id="burst-matched-name">None</span>
                             </div>
                             <div style="background:#000; border:var(--border-heavy); aspect-ratio:4/3; overflow:hidden;">
                                 <img id="burst-template-img" src="" alt="Template" style="width:100%; height:100%; object-fit:cover; display:block;">
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:8px;" id="burst-face-block">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; font-family:var(--font-mono); font-weight:700;">
+                                <span>CUSTOMER FACE</span>
+                                <span id="burst-face-status" style="color:#009944;">BIOMETRICS ACTIVE</span>
+                            </div>
+                            <div style="background:#000; border:var(--border-heavy); aspect-ratio:4/3; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                                <img id="burst-face-img" src="" alt="Customer Face" style="width:100%; height:100%; object-fit:cover; display:none;">
+                                <span id="burst-no-face-txt" style="color:var(--ink-muted); font-size:12px; font-family:var(--font-mono); padding:10px; text-align:center;">Ожидание фиксации лица</span>
                             </div>
                         </div>
                     </div>
@@ -1203,28 +1276,40 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">Object Category Name</label>
-                    <input type="text" id="train-object-name" class="form-input" placeholder="e.g. Coca_Cola_Bottle">
+                    <label class="form-label">ИМЯ ТОВАРА / КАТЕГОРИИ</label>
+                    <input type="text" id="train-object-name" class="form-input" placeholder="Например: my_phone, coffee_cup, keys">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Interactive Crop Area</label>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <label class="form-label" style="margin-bottom:0;">ИСТОЧНИК ИЗОБРАЖЕНИЯ</label>
+                        <div style="display:flex; gap:8px;">
+                            <button class="btn btn-secondary btn-sm" id="btn-source-cam" type="button">
+                                <i class="fa-solid fa-camera"></i> С камеры
+                            </button>
+                            <button class="btn btn-secondary btn-sm" id="btn-source-file" type="button">
+                                <i class="fa-solid fa-upload"></i> Загрузить фото
+                            </button>
+                            <input type="file" id="train-file-input" accept="image/*" style="display:none;">
+                        </div>
+                    </div>
                     <div class="crop-canvas-wrap">
                         <canvas id="crop-canvas"></canvas>
                     </div>
+                    <p style="font-size:11px; color:var(--ink-muted); margin-top:6px;">Зажмите левую кнопку мыши и выделите рамкой предмет на кадре.</p>
                 </div>
 
                 <div class="crop-preview-box" id="crop-preview-container" style="display:none;">
                     <img id="crop-preview-img" class="crop-preview-img" src="" alt="Preview">
                     <div>
-                        <strong style="font-size:12px; font-family:var(--font-mono); display:block;">SELECTION READY</strong>
+                        <strong style="font-size:12px; font-family:var(--font-mono); display:block;">ОБЛАСТЬ ВЫДЕЛЕНА</strong>
                         <span style="font-size:11px; color:var(--ink-muted);" id="crop-dims">0 x 0 px</span>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal('train-modal')">Cancel</button>
-                <button class="btn btn-primary" id="btn-save-trained-object">Save Object</button>
+                <button class="btn btn-secondary" onclick="closeModal('train-modal')">Отмена</button>
+                <button class="btn btn-primary" id="btn-save-trained-object">Обучить и Сохранить</button>
             </div>
         </div>
     </div>
@@ -1258,6 +1343,40 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('confirm-modal')">Cancel</button>
                 <button class="btn btn-danger" id="confirm-modal-action-btn">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: SMART SHELF & QR CODES -->
+    <div class="modal-overlay" id="shelf-modal">
+        <div class="modal-box" style="max-width:850px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-qrcode"></i> Смарт-Полка: QR-Коды Товаров и Выбор</h3>
+                <button class="modal-close-btn" onclick="closeModal('shelf-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background:#F5F7FA; border:1px solid #E2E8F0; padding:14px 18px; border-radius:6px; margin-bottom:18px;">
+                    <h4 style="margin:0 0 6px 0; font-size:14px; text-transform:uppercase;"><i class="fa-solid fa-circle-info" style="color:#0066CC;"></i> Сценарий автоматической полки:</h4>
+                    <p style="margin:0; font-size:12px; color:var(--ink-muted); line-height:1.5;">
+                        1. Покупатель сканирует QR-код товара телефоном или показывает QR в камеру (или нажмите «Выбрать товар» ниже).<br>
+                        2. Камера активирует сессию для выбранного товара.<br>
+                        3. Когда покупатель подносит руку к товару на полке, камера <strong>автоматически</strong> делает серийную съемку 12 кадров, распознает взятый предмет и <strong>фиксирует лицо покупателя</strong>!
+                    </p>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <strong style="font-size:13px; font-family:var(--font-subhead); text-transform:uppercase;">КАТАЛОГ ТОВАРОВ И QR-КОДОВ ДЛЯ ПОЛКИ</strong>
+                    <button class="btn btn-secondary btn-sm" onclick="selectShelfTarget(null)">
+                        <i class="fa-solid fa-layer-group"></i> Сбросить выбор (Все товары)
+                    </button>
+                </div>
+
+                <div id="shelf-qr-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:16px;">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('shelf-modal')">Закрыть</button>
             </div>
         </div>
     </div>
@@ -1325,8 +1444,151 @@
             // Auto-refresh every 8s
             setInterval(() => {
                 fetchStats();
+                if (isCameraActive && !liveDetectionInterval) {
+                    startLiveDetectionPolling();
+                }
             }, 8000);
         });
+
+
+        // ════════════ LIVE DETECTION POLLING ════════════
+        let liveDetectionInterval = null;
+        let liveTimerInterval = null;
+        let lastLiveDetectionTime = Date.now();
+
+        function startLiveDetectionPolling() {
+            if (liveDetectionInterval) return;
+
+            const dot = document.getElementById('live-stream-dot');
+            const statusText = document.getElementById('live-stream-status-text');
+            if (dot) dot.style.background = 'var(--accent-emerald)';
+            if (statusText) statusText.textContent = 'ACTIVE';
+
+            const pollDetections = async () => {
+                try {
+                    const res = await fetch('/api/live_detections');
+                    const data = await res.json();
+                    if (!data.success) return;
+
+                    if (!data.camera_running) {
+                        stopLiveDetectionPolling();
+                        return;
+                    }
+
+                    lastLiveDetectionTime = Date.now();
+                    updateLiveTimer(0);
+                    renderLiveDetections(data.detections || [], data.faces || []);
+                } catch (err) {
+                    console.debug("Live detection polling error:", err);
+                }
+            };
+
+            pollDetections();
+            liveDetectionInterval = setInterval(pollDetections, 800);
+
+            if (!liveTimerInterval) {
+                liveTimerInterval = setInterval(() => {
+                    const secondsAgo = Math.floor((Date.now() - lastLiveDetectionTime) / 1000);
+                    updateLiveTimer(secondsAgo);
+                }, 1000);
+            }
+        }
+
+        function stopLiveDetectionPolling() {
+            if (liveDetectionInterval) {
+                clearInterval(liveDetectionInterval);
+                liveDetectionInterval = null;
+            }
+            if (liveTimerInterval) {
+                clearInterval(liveTimerInterval);
+                liveTimerInterval = null;
+            }
+
+            const dot = document.getElementById('live-stream-dot');
+            const statusText = document.getElementById('live-stream-status-text');
+            if (dot) dot.style.background = 'var(--accent-coral)';
+            if (statusText) statusText.textContent = 'OFFLINE';
+
+            const container = document.getElementById('live-detections-content');
+            if (container) {
+                container.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 16px; border:1px dashed var(--border-light); background:var(--bg-subtle); text-align:center;">
+                        <span style="font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--accent-coral); letter-spacing:0.04em;">⊘ OPTICAL SENSOR OFFLINE</span>
+                        <p style="font-family:var(--font-body); font-size:12px; color:var(--ink-faint); margin-top:6px;">Sensor hardware is powered down. Enable camera to resume live inference.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateLiveTimer(secondsAgo) {
+            const timerEl = document.getElementById('live-detection-timer');
+            if (timerEl) {
+                timerEl.textContent = `${secondsAgo}s ago`;
+            }
+        }
+
+        function renderLiveDetections(detections, faces) {
+            const container = document.getElementById('live-detections-content');
+            if (!container) return;
+
+            // State A: Empty
+            if (detections.length === 0 && faces.length === 0) {
+                container.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 16px; border:1px dashed var(--border-light); background:var(--bg-subtle); text-align:center;">
+                        <span style="font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--ink-muted); letter-spacing:0.04em;">◉ OPTICAL FIELD CLEAR</span>
+                        <p style="font-family:var(--font-body); font-size:12px; color:var(--ink-faint); margin-top:6px;">No physical products or human faces currently detected in frame.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // State B: Detections and/or faces present
+            let html = '';
+
+            if (detections.length > 0) {
+                detections.forEach(det => {
+                    const rawName = det.object || 'Product';
+                    const isVerified = rawName.includes('[VERIFIED]') || rawName.includes('[SIFT]');
+                    const isAi = rawName.includes('[AI]');
+
+                    const dotColor = isVerified ? 'var(--accent-emerald)' : (isAi ? 'var(--amber)' : 'var(--accent-emerald)');
+                    const tagLabel = isVerified ? (rawName.includes('[SIFT]') ? 'SIFT' : 'VERIFIED') : (isAi ? 'NEURAL AI' : 'DETECTED');
+                    const cleanName = rawName.replace(/\[VERIFIED\]|\[SIFT\]|\[AI\]/g, '').trim();
+
+                    const confVal = typeof det.confidence === 'number' ? det.confidence : 0.8;
+                    const confPct = (confVal <= 1.0 ? confVal * 100 : confVal).toFixed(1);
+
+                    html += `
+                        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:var(--border-heavy); background:#FFFFFF; box-shadow:var(--shadow-brutal-sm);">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="color:${dotColor}; font-size:14px; line-height:1;">●</span>
+                                <span style="font-family:var(--font-body); font-weight:700; font-size:14px; text-transform:uppercase; color:var(--ink-black);">${cleanName}</span>
+                                <span style="font-family:var(--font-mono); font-size:10px; font-weight:700; padding:2px 5px; border:1px solid var(--border-light); background:var(--bg-subtle); color:var(--ink-muted);">${tagLabel}</span>
+                            </div>
+                            <div style="font-family:var(--font-mono); font-weight:700; font-size:13px; color:var(--ink-black);">
+                                ${confPct}%
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            if (faces.length > 0) {
+                html += `
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:var(--border-heavy); background:var(--bg-subtle); margin-top:4px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-size:15px;">👤</span>
+                            <span style="font-family:var(--font-body); font-weight:700; font-size:13px; color:var(--ink-black);">CUSTOMER FACE DETECTED</span>
+                        </div>
+                        <div style="font-family:var(--font-mono); font-size:11px; font-weight:700; background:var(--accent-emerald); color:#FFFFFF; padding:2px 8px;">
+                            ${faces.length} ${faces.length === 1 ? 'PERSON' : 'PEOPLE'}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
 
         // ════════════ TABS NAVIGATION ════════════
         function initTabs() {
@@ -1402,8 +1664,15 @@
 
             // Stream HUD Button
             const btnStream = document.getElementById('btn-toggle-camera-stream');
+            const btnHud = document.getElementById('btn-stream-cam-toggle-hud');
+            const hudText = document.getElementById('hud-cam-toggle-text');
+            if (hudText) hudText.textContent = running ? 'Камера: ВКЛ' : 'Камера: ВЫКЛ';
+            if (btnHud) {
+                btnHud.className = running ? 'btn btn-secondary btn-sm' : 'btn btn-primary btn-sm';
+            }
 
             if (running) {
+                startLiveDetectionPolling();
                 if (topDot) {
                     topDot.style.background = 'var(--green)';
                     topDot.style.boxShadow = '0 0 8px var(--green)';
@@ -1419,6 +1688,7 @@
                     btnStream.title = 'Отключить питание камеры и освободить видеосенсор';
                 }
             } else {
+                stopLiveDetectionPolling();
                 if (topDot) {
                     topDot.style.background = 'var(--red)';
                     topDot.style.boxShadow = '0 0 8px var(--red)';
@@ -1646,6 +1916,33 @@
             );
         });
 
+        async function triggerCleanEmptySnapshots() {
+            showConfirm(
+                "Удалить все пустые снимки, где ничего не обнаружено?",
+                async () => {
+                    try {
+                        const res = await fetch('/api/data/clean_empty', { method: 'POST' });
+                        const data = await res.json();
+                        if (data.success) {
+                            showToast(data.message, "success");
+                            await fetchData();
+                            await fetchStats();
+                        } else {
+                            showToast(data.detail || "Ошибка очистки", "error");
+                        }
+                    } catch (err) {
+                        showToast("Ошибка очистки пустых снимков", "error");
+                    }
+                }
+            );
+        }
+        window.triggerCleanEmptySnapshots = triggerCleanEmptySnapshots;
+
+        const btnCleanEmpty = document.getElementById('btn-clean-empty');
+        if (btnCleanEmpty) {
+            btnCleanEmpty.addEventListener('click', triggerCleanEmptySnapshots);
+        }
+
         document.getElementById('btn-clean-data').addEventListener('click', () => {
             const catName = activeDataCategory === 'all' ? 'всех снимков' : `категории "${activeDataCategory}"`;
             showConfirm(
@@ -1718,7 +2015,7 @@
         }
 
         function addAngleToObject(objName) {
-            document.getElementById('train-obj-name').value = objName;
+            document.getElementById('train-object-name').value = objName;
             openTrainModal();
         }
 
@@ -1729,7 +2026,7 @@
         }
 
         document.getElementById('btn-open-train-modal').addEventListener('click', () => {
-            document.getElementById('train-obj-name').value = '';
+            document.getElementById('train-object-name').value = '';
             openTrainModal();
         });
 
@@ -1754,7 +2051,7 @@
         });
 
         document.getElementById('btn-stream-capture-to-train').addEventListener('click', () => {
-            document.getElementById('train-obj-name').value = '';
+            document.getElementById('train-object-name').value = '';
             openTrainModal();
         });
 
@@ -1860,12 +2157,12 @@
             croppedBase64 = cropCanvas.toDataURL('image/jpeg', 0.95);
 
             document.getElementById('crop-preview-img').src = croppedBase64;
-            document.getElementById('crop-meta-dim').textContent = `${w} x ${h} px`;
+            document.getElementById('crop-dims').textContent = `${w} x ${h} px`;
             document.getElementById('crop-preview-container').style.display = 'flex';
         }
 
-        document.getElementById('btn-submit-train').addEventListener('click', async () => {
-            const name = document.getElementById('train-obj-name').value.trim();
+        document.getElementById('btn-save-trained-object').addEventListener('click', async () => {
+            const name = document.getElementById('train-object-name').value.trim();
             if (!name) {
                 showToast("Введите имя объекта!", "error");
                 return;
@@ -1875,7 +2172,7 @@
                 return;
             }
 
-            const btn = document.getElementById('btn-submit-train');
+            const btn = document.getElementById('btn-save-trained-object');
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Обучение...`;
 
@@ -1905,6 +2202,168 @@
             }
         });
 
+        // ════════════ SMART RETAIL SHELF & QR LOGIC ════════════
+        let shelfPollingInterval = null;
+        let isShelfAutoTrigger = true;
+        let currentShelfTarget = null;
+
+        async function fetchShelfStatus() {
+            try {
+                const res = await fetch('/api/shelf/status');
+                const data = await res.json();
+                if (data.success) {
+                    currentShelfTarget = data.target_item;
+                    isShelfAutoTrigger = data.auto_hand_trigger;
+
+                    // Update UI labels
+                    const targetLabel = document.getElementById('shelf-target-item-label');
+                    if (targetLabel) {
+                        targetLabel.textContent = currentShelfTarget ? `[${currentShelfTarget.toUpperCase()}]` : `[Все объекты]`;
+                        targetLabel.style.color = currentShelfTarget ? '#009944' : '#0066CC';
+                    }
+
+                    const autoBtnText = document.getElementById('shelf-auto-toggle-text');
+                    if (autoBtnText) {
+                        autoBtnText.textContent = isShelfAutoTrigger ? 'Авто-захват руки: ВКЛ' : 'Авто-захват руки: ВЫКЛ';
+                    }
+
+                    const statusText = document.getElementById('shelf-mode-status-text');
+                    if (statusText) {
+                        if (data.shelf_state === 'CAPTURING') {
+                            statusText.innerHTML = `<span style="color:#D9381E; font-weight:700;"><i class="fa-solid fa-hand fa-fade"></i> РУКА В ЗОНЕ ЗАХВАТА -> СЪЕМКА 12 КАДРОВ!</span>`;
+                        } else if (data.shelf_state === 'WAITING_FOR_HAND') {
+                            statusText.innerHTML = `<span style="color:#009944; font-weight:700;"><i class="fa-solid fa-circle-check"></i> Товар ${currentShelfTarget} выбран. Поднесите руку.</span>`;
+                        } else {
+                            statusText.textContent = 'Ожидание появления руки или показа QR-кода товара';
+                        }
+                    }
+                }
+            } catch (err) {
+                // Background polling silent fail
+            }
+        }
+
+        function openShelfModal() {
+            renderShelfQRModal();
+            openModal('shelf-modal');
+        }
+
+        function renderShelfQRModal() {
+            const container = document.getElementById('shelf-qr-grid');
+            if (!container) return;
+
+            if (allObjects.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 30px; text-align: center; color: var(--ink-muted);">
+                        <i class="fa-solid fa-shapes" style="font-size:32px; margin-bottom:10px; display:block;"></i>
+                        <p>В базе пока нет товаров. Сначала обучите объект через кнопку "+ Train Object".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = allObjects.map(obj => {
+                const isSelected = currentShelfTarget && (currentShelfTarget.toLowerCase() === obj.name.toLowerCase());
+                return `
+                    <div style="background:#FFF; border:${isSelected ? '2px solid #009944' : 'var(--border-heavy)'}; box-shadow:var(--shadow-brutal-sm); padding:16px; border-radius:4px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;">
+                        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                            <strong style="font-family:var(--font-mono); font-size:14px; text-transform:uppercase;">${obj.name}</strong>
+                            ${isSelected ? '<span style="background:#009944; color:#FFF; font-size:10px; padding:2px 6px; font-weight:700;">ВЫБРАН</span>' : ''}
+                        </div>
+                        <div style="background:#FFF; padding:6px; border:1px solid #CCC; border-radius:4px;">
+                            <img src="/api/qr/${encodeURIComponent(obj.name)}" style="width:140px; height:140px; object-fit:contain; display:block;" alt="QR ${obj.name}">
+                        </div>
+                        <span style="font-size:11px; color:var(--ink-muted); font-family:var(--font-mono);">${obj.template_count} шаблона | ${obj.total_keypoints} kp</span>
+                        <div style="display:flex; gap:6px; width:100%; margin-top:4px;">
+                            <button class="btn btn-primary btn-sm" style="flex:1; padding:5px 8px; font-size:11px;" onclick="selectShelfTarget('${obj.name}')">
+                                <i class="fa-solid fa-check"></i> Выбрать
+                            </button>
+                            <a href="/api/qr/${encodeURIComponent(obj.name)}" download="QR_${obj.name}.png" class="btn btn-secondary btn-sm" style="padding:5px 8px; font-size:11px;" title="Скачать QR">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function selectShelfTarget(itemName) {
+            try {
+                const res = await fetch('/api/shelf/select', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: itemName })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, "success");
+                    await fetchShelfStatus();
+                    closeModal('shelf-modal');
+                }
+            } catch (err) {
+                showToast("Ошибка выбора товара", "error");
+            }
+        }
+
+        async function toggleShelfAuto() {
+            try {
+                const res = await fetch('/api/shelf/toggle_auto', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, data.auto_hand_trigger ? "success" : "info");
+                    await fetchShelfStatus();
+                }
+            } catch (err) {
+                showToast("Ошибка переключения авто-захвата", "error");
+            }
+        }
+
+        async function resetShelfSession() {
+            try {
+                const res = await fetch('/api/shelf/reset', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, "info");
+                    await fetchShelfStatus();
+                }
+            } catch (err) {
+                showToast("Ошибка сброса полки", "error");
+            }
+        }
+
+        // ════════════ HOT-RELOAD OBJECT DATABASE ════════════
+        async function reloadObjectDatabase() {
+            const btnDb = document.getElementById('btn-refresh-objects-db');
+            const btnAll = document.getElementById('btn-refresh-all');
+            if (btnDb) {
+                btnDb.disabled = true;
+                btnDb.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i> Обновление...`;
+            }
+            if (btnAll) {
+                btnAll.disabled = true;
+                btnAll.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i>`;
+            }
+
+            try {
+                const res = await fetch('/api/objects/reload', { method: 'POST' });
+                const data = await res.json();
+                await loadAll();
+                showToast(data.message || "База данных объектов успешно обновлена!", "success");
+            } catch (err) {
+                console.error("Reload objects error:", err);
+                showToast("Ошибка при обновлении базы объектов", "error");
+            } finally {
+                if (btnDb) {
+                    btnDb.disabled = false;
+                    btnDb.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i> Обновить объекты`;
+                }
+                if (btnAll) {
+                    btnAll.disabled = false;
+                    btnAll.innerHTML = `<i class="fa-solid fa-arrows-rotate"></i>`;
+                }
+            }
+        }
+
         // ════════════ EVENT HANDLERS & SEARCH ════════════
         function setupEventHandlers() {
             // Search filters
@@ -1926,11 +2385,32 @@
                 });
             });
 
-            // Refresh button
-            document.getElementById('btn-refresh-all').addEventListener('click', () => {
-                loadAll();
-                showToast("Данные обновлены", "success");
-            });
+            // Refresh / Reload Database buttons
+            const btnRefreshDb = document.getElementById('btn-refresh-objects-db');
+            if (btnRefreshDb) {
+                btnRefreshDb.addEventListener('click', reloadObjectDatabase);
+            }
+
+            const btnRefreshAll = document.getElementById('btn-refresh-all');
+            if (btnRefreshAll) {
+                btnRefreshAll.addEventListener('click', reloadObjectDatabase);
+            }
+
+            // Smart Shelf controls
+            const btnOpenShelf = document.getElementById('btn-open-shelf-modal');
+            if (btnOpenShelf) btnOpenShelf.addEventListener('click', openShelfModal);
+
+            const btnOpenQrShelf = document.getElementById('btn-open-qr-shelf-modal');
+            if (btnOpenQrShelf) btnOpenQrShelf.addEventListener('click', openShelfModal);
+
+            const btnToggleShelfAuto = document.getElementById('btn-toggle-auto-shelf');
+            if (btnToggleShelfAuto) btnToggleShelfAuto.addEventListener('click', toggleShelfAuto);
+
+            const btnResetShelf = document.getElementById('btn-reset-shelf');
+            if (btnResetShelf) btnResetShelf.addEventListener('click', resetShelfSession);
+
+            // Real-time detection mode: shelf polling eliminated
+            if (shelfPollingInterval) clearInterval(shelfPollingInterval);
 
             // Camera toggle buttons
             const btnCamTop = document.getElementById('btn-toggle-camera-top');
@@ -1996,21 +2476,45 @@
                     lastWinnerPreviewUrl = data.winner_preview_b64;
 
                     document.getElementById('burst-winner-img').src = data.winner_preview_b64;
-                    document.getElementById('burst-comp-img').src = data.comparison_url;
+                    const compImgEl = document.getElementById('burst-comp-img');
+                    if (compImgEl && data.comparison_url) compImgEl.src = data.comparison_url;
 
                     const score = data.winner_score;
                     document.getElementById('burst-winner-sharpness').textContent =
                         `Q: ${score.total} | Резкость: ${score.sharpness} | Контраст: ${score.contrast}`;
 
+                    // 1. Render Face detection result
+                    const faceImg = document.getElementById('burst-face-img');
+                    const noFaceTxt = document.getElementById('burst-no-face-txt');
+                    const faceStatus = document.getElementById('burst-face-status');
+                    if (data.face_detected && data.face_url) {
+                        if (faceImg) { faceImg.src = data.face_url; faceImg.style.display = 'block'; }
+                        if (noFaceTxt) { noFaceTxt.style.display = 'none'; }
+                        if (faceStatus) { faceStatus.textContent = 'Лицо распознано (ID)'; faceStatus.style.color = '#009944'; }
+                    } else {
+                        if (faceImg) { faceImg.style.display = 'none'; }
+                        if (noFaceTxt) { noFaceTxt.style.display = 'block'; }
+                        if (faceStatus) { faceStatus.textContent = 'Вне кадра'; faceStatus.style.color = 'var(--ink-muted)'; }
+                    }
+
                     if (data.detected_count > 0) {
                         const detNames = data.detections.map(d => `${d.object} (${Math.round(d.confidence * 100)}%)`).join(', ');
+                        let targetNotice = '';
+                        if (data.target_item) {
+                            if (data.target_matched) {
+                                targetNotice = ` <span style="background:#009944; color:#FFF; font-size:11px; padding:3px 8px; border-radius:3px; margin-left:6px;"><i class="fa-solid fa-check-double"></i> Целевой товар взят!</span>`;
+                            } else {
+                                targetNotice = ` <span style="background:#D9381E; color:#FFF; font-size:11px; padding:3px 8px; border-radius:3px; margin-left:6px;"><i class="fa-solid fa-triangle-exclamation"></i> Взят другой предмет (ждали: ${data.target_item})</span>`;
+                            }
+                        }
+
                         document.getElementById('burst-result-title').innerHTML =
-                            `<span style="color:var(--green);"><i class="fa-solid fa-shield-check"></i> НАЙДЕН: ${detNames}</span>`;
+                            `<span style="color:var(--green);"><i class="fa-solid fa-shield-check"></i> НАЙДЕН: ${detNames}</span>${targetNotice}`;
                         document.getElementById('burst-result-subtitle').textContent =
-                            `Победил кадр с обнаруженным объектом (проанализировано ${data.frames_analyzed} кадров серии). Снимок с обводкой сохранен в папку объектов.`;
+                            `Победил кадр с обнаруженным объектом (проанализировано ${data.frames_analyzed} кадров серии). Лицо покупателя и взятый предмет сохранены в архив.`;
                         document.getElementById('burst-status-badge').innerHTML =
                             `<button class="btn btn-secondary btn-sm" onclick="viewObjectInDataVault()" style="background:rgba(0,255,136,0.15); border-color:var(--green); color:var(--green);"><i class="fa-solid fa-folder-open"></i> Папка объектов</button>`;
-                        showToast(`🎯 Объект распознан и сохранен в папку объектов!`, "success");
+                        showToast(`🎯 Взятый предмет и лицо покупателя зафиксированы!`, "success");
                     } else {
                         document.getElementById('burst-result-title').innerHTML =
                             `<span style="color:var(--text-main);"><i class="fa-solid fa-circle-info text-cyan"></i> Серия завершена: объектов не найдено</span>`;

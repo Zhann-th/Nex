@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEX — Active Loss Prevention & Vision AI for Smart Vending</title>
-    <meta name="description" content="Nex eliminates micromarket shrinkage. Plug-and-play 120 FPS stereoscopic computer vision for smart fridges and micromarkets, preventing multi-item theft in real-time.">
+    <title>NEX — Autonomous Loss Prevention OS for Smart Coolers & Micromarkets</title>
+    <meta name="description" content="NEX prevents theft in unattended retail and commercial coolers. Computer vision captures every SKU departure in 15ms and enforces route-wide lockout until debt is paid.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Space+Grotesk:wght@500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js 3D Engine for Smart Vending Model -->
+    <script src="./three.min.js"></script>
+    <script>
+        if (typeof THREE === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+        }
+    </script>
     
     <!-- Paper Tiger Authentic Typography System -->
     <style>
@@ -57,12 +65,7 @@
             font-style: normal;
             font-display: swap;
         }
-    </style>
-
-    <!-- Three.js for 3D Vending Machine & Camera Scrollytelling -->
-    <script src="./three.min.js"></script>
-
-    <style>
+    
         /* ═══════════════════════════════════════════════════════════════
            PAPER TIGER BRUTALIST DESIGN SYSTEM FOR NEX
            Sleek Hero Canvas -> Deep Dive -> Pitch Black Brutalism (#000000)
@@ -1689,21 +1692,27 @@
     <!-- ════════════ TOP HEADER BAR (FIXED) ════════════ -->
     <header class="site-header">
         <div class="header-brand">
-            <a href="/" class="brand-wordmark">NEX</a>
+            <a href="/" class="brand-wordmark" style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 30px; height: 30px; border-radius: 9px; background: #E1FF01; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(225, 255, 1, 0.4); flex-shrink: 0;">
+                    <img src="logo_black_trans.png" alt="NEX" style="width: 20px; height: 13px; object-fit: contain;">
+                </div>
+                <span>NEX</span>
+            </a>
         </div>
 
         <nav class="header-nav">
             <a href="#scrolly-root" class="nav-link">Architecture</a>
-            <a href="#panel-1" class="nav-link">Blindspot</a>
-            <a href="#panel-2" class="nav-link">Theft Vault</a>
-            <a href="#panel-3" class="nav-link">Lockout</a>
-            <a href="#panel-4" class="nav-link">Retrofit</a>
+            <a href="#panel-1" class="nav-link">The Blind Spot</a>
+            <a href="#panel-2" class="nav-link">Evidence Log</a>
+            <a href="#panel-3" class="nav-link">City Lockout</a>
+            <a href="#panel-4" class="nav-link">Retrofit Kit</a>
+            <a href="demo.html" class="nav-link" style="color: #E1FF01; font-weight: 700;">Demo ↗</a>
         </nav>
 
         <div class="header-actions">
-            <a href="/dashboard" class="btn btn-black header-cta-btn" title="Open Computer Vision Control Workspace">
-                <span class="btn-text-full">Control Workspace →</span>
-                <span class="btn-text-mobile">Workspace →</span>
+            <a href="demo.html" class="nav-link" style="color: #71717A; font-weight: 700; margin-right: 6px;">Setup Guide</a>
+            <a href="nex_demo_standalone.zip" download class="btn header-cta-btn" style="background: #E1FF01; color: #000; border-color: #000; font-weight: 800; font-size: 11px; padding: 8px 16px;">
+                <i class="fa-solid fa-download"></i> Download Demo (.ZIP)
             </a>
             <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
                 <span class="menu-bar"></span>
@@ -1716,52 +1725,58 @@
     <!-- ════════════ MOBILE NAVIGATION DRAWER ════════════ -->
     <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
         <div class="mobile-drawer-top">
-            <span class="drawer-meta-tag"><span class="meta-dot"></span> SYSTEM NAVIGATION</span>
-            <span class="drawer-status-pill">120 FPS CV ONLINE</span>
+            <span class="drawer-meta-tag"><span class="meta-dot"></span> NAVIGATION</span>
+            <span class="drawer-status-pill">DEFENSE ACTIVE</span>
         </div>
         <nav class="mobile-drawer-nav">
             <a href="#scrolly-root" class="mobile-nav-link">
                 <span class="nav-idx">00</span>
                 <div class="nav-info">
                     <span class="nav-text">ARCHITECTURE</span>
-                    <span class="nav-sub">3D Interactive Inspection</span>
+                    <span class="nav-sub">Interactive 3D Cooler Topology</span>
                 </div>
             </a>
             <a href="#panel-1" class="mobile-nav-link">
                 <span class="nav-idx">01</span>
                 <div class="nav-info">
-                    <span class="nav-text">BLINDSPOT</span>
-                    <span class="nav-sub">Passive CCTV Collapse</span>
+                    <span class="nav-text">THE BLIND SPOT</span>
+                    <span class="nav-sub">Why ceiling security cameras fail</span>
                 </div>
             </a>
             <a href="#panel-2" class="mobile-nav-link">
                 <span class="nav-idx">02</span>
                 <div class="nav-info">
-                    <span class="nav-text">THEFT VAULT</span>
-                    <span class="nav-sub">Real-Time Evidence Logging</span>
+                    <span class="nav-text">EVIDENCE LOG</span>
+                    <span class="nav-sub">15ms facial capture & missing SKU dossier</span>
                 </div>
             </a>
             <a href="#panel-3" class="mobile-nav-link">
                 <span class="nav-idx">03</span>
                 <div class="nav-info">
-                    <span class="nav-text">LOCKOUT</span>
-                    <span class="nav-sub">Autonomous Interlock Security</span>
+                    <span class="nav-text">CITY LOCKOUT</span>
+                    <span class="nav-sub">300kg magnetic deadbolt across all coolers</span>
                 </div>
             </a>
             <a href="#panel-4" class="mobile-nav-link">
                 <span class="nav-idx">04</span>
                 <div class="nav-info">
-                    <span class="nav-text">RETROFIT</span>
-                    <span class="nav-sub">Universal 30-Min Deployment</span>
+                    <span class="nav-text">RETROFIT KIT</span>
+                    <span class="nav-sub">30-minute installation with 0mm cabinet drilling</span>
+                </div>
+            </a>
+            <a href="demo.html" class="mobile-nav-link">
+                <span class="nav-idx">05</span>
+                <div class="nav-info">
+                    <span class="nav-text" style="color:#E1FF01;">DOWNLOAD DEMO</span>
+                    <span class="nav-sub">Standalone laptop CV app & enrollment guide</span>
                 </div>
             </a>
         </nav>
         <div class="mobile-drawer-actions">
-            <a href="/dashboard" class="btn btn-coral drawer-btn">
-                Open Control Workspace →
-            </a>
-            <a href="mailto:thzhanasyl@gmail.com" class="btn drawer-btn drawer-btn-white">
-                Inquire For Pilot Fleet
+            <a href="demo.html" class="btn drawer-btn" style="background:#E1FF01; color:#000; border:2px solid #000; font-weight:800;">
+                Launch Demo App
+            </a><a href="nex_demo_standalone.zip" download class="btn drawer-btn" style="background:#E1FF01; color:#000; border:2px solid #000; font-weight:800;">
+                <i class="fa-solid fa-download"></i> Download Demo (.ZIP)
             </a>
         </div>
     </div>
@@ -1780,9 +1795,9 @@
 
             <!-- Row 1: Top HUD Bar (Step Pill & Scroll Prompt) -->
             <div class="hud-top-bar" id="hudTopBar">
-                <span class="hud-step-pill" id="hudStepIndicator">STANDBY STATE</span>
+                <span class="hud-step-pill" id="hudStepIndicator">COOLER SECURED & ARMED</span>
                 <div class="scroll-prompt-pill" id="scrollPrompt">
-                    <span>Scroll To Inspect 3D Vending</span>
+                    <span>Scroll down to inspect system defense</span>
                     <i class="fa-solid fa-arrow-down"></i>
                 </div>
             </div>
@@ -1797,37 +1812,37 @@
                 </div>
             </div>
 
-            <!-- Row 2: Top Headline ZERO THEFT. (Framing above 3D machine) -->
-            <h1 class="hero-headline-top" id="heroHeadlineTop">ZERO THEFT.</h1>
+            <!-- Row 2: Top Headline (Framing above 3D machine) -->
+            <h1 class="hero-headline-top" id="heroHeadlineTop">THEFT PREVENTION.</h1>
 
-            <!-- Row 4: Bottom Headline TOTAL CONTROL. (Framing below 3D machine) -->
-            <div class="hero-headline-bottom" id="heroHeadlineBottom">TOTAL CONTROL.</div>
+            <!-- Row 4: Bottom Headline (Framing below 3D machine) -->
+            <div class="hero-headline-bottom" id="heroHeadlineBottom">TOTAL REAL-TIME CONTROL.</div>
 
             <!-- Row 5: Bottom Flanking Elements (Stage 0): Micro-Stats Left, Manifesto Right -->
             <div class="hero-bottom-dock" id="heroBottomDock">
                 <!-- Left: 4 clean lines of micro-stats -->
                 <div class="hero-micro-stats">
                     <div class="stat-item">
-                        <span class="stat-val">0.0%</span>
-                        <span>Shrinkage</span>
+                        <span class="stat-val">0%</span>
+                        <span>Unpaid Shrinkage</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-val">&lt;15ms</span>
-                        <span>Grab Detection</span>
+                        <span>Extraction Detection</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-val">100%</span>
-                        <span>Universal Retrofit</span>
+                        <span>Cooler Retrofit</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-val">0</span>
-                        <span>Barcode Scanners</span>
+                        <span>Manual Kiosks</span>
                     </div>
                 </div>
 
                 <!-- Right: Editorial Manifesto with italic emphasis -->
                 <div class="hero-manifesto-box">
-                    Nex transforms vulnerable smart fridges into <em>unpickable autonomous micro-markets</em> using active optical neural vision.
+                    NEX converts ordinary unattended commercial coolers into autonomous loss-proof vaults. Dual-camera computer vision links shelf departures directly to customer identity in 15 milliseconds.
                 </div>
             </div>
 
@@ -1835,15 +1850,15 @@
             <div class="stage-card stage-card-right" id="stageCardExploit">
                 <div class="card-kicker">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <span>STAGE 02 • DOOR UNLOCK VULNERABILITY</span>
+                    <span>HOW UNATTENDED COOLERS BLEED REVENUE</span>
                 </div>
-                <h3 class="card-title">Pay for 1 Snickers.<br>Sneak 2 Red Bulls.</h3>
+                <h3 class="card-title">Paid for a $1 candy bar.<br>Walked out with two $4 energy drinks.</h3>
                 <p class="card-body">
-                    Dumb smart fridges disengage the solenoid and assume honesty. Customers reach deep, slide premium energy drinks and sandwiches into winter coats, and only scan a 450 ₸ candy bar.
+                    Smart coolers unlock on a simple QR scan and pray people are honest. An offender scans a cheap snack at the kiosk while quietly sliding premium drinks into their jacket. Operators only discover the bleed during stock replenishment.
                 </p>
                 <div class="card-tags">
-                    <span class="pt-pill pill-danger">18% – 28% SHRINKAGE</span>
-                    <span class="pt-pill">ZERO TRACKING</span>
+                    <span class="pt-pill pill-danger">Devours 18%–28% of Gross Sales</span>
+                    <span class="pt-pill">Ceiling Cameras are Blind</span>
                 </div>
             </div>
 
@@ -1851,15 +1866,15 @@
             <div class="stage-card stage-card-left" id="stageCardVision">
                 <div class="card-kicker" style="color: var(--accent-emerald);">
                     <i class="fa-solid fa-eye"></i>
-                    <span>STAGE 03 • ACTIVE NEURAL VISION</span>
+                    <span>HOW NEX DEFENSE WORKS</span>
                 </div>
-                <h3 class="card-title">120 FPS Stereoscopic<br>Multi-Grab Detection.</h3>
+                <h3 class="card-title">Direct overhead vision<br>tracks every extracted item.</h3>
                 <p class="card-body">
-                    Overhead high-speed optical sensors track hand spatial trajectories across every shelf plane. Sub-15ms edge inference maps SKU subtractions and automatically updates the Kaspi/Stripe cart before the door latches.
+                    Dual-sensor computer vision mounted inside the cooler header monitors each shelf compartment at 66 FPS. The system identifies exactly what left the shelf and flags missing items before the door can open again.
                 </p>
                 <div class="card-tags">
-                    <span class="pt-pill pill-success">0% UNRECORDED LOSS</span>
-                    <span class="pt-pill">SUB-15MS EDGE AI</span>
+                    <span class="pt-pill pill-success">100% SKU Attribution</span>
+                    <span class="pt-pill">Zero Weight Sensor Failures</span>
                 </div>
             </div>
 
@@ -1871,29 +1886,25 @@
          ═══════════════════════════════════════════════════════════════ -->
     <div class="pt-marquee-strip">
         <div class="pt-marquee-track">
-            <span class="marquee-item"><span class="badge">120 FPS</span> STEREOSCOPIC VISION</span>
+            <span class="marquee-item"><span class="badge">0% SHRINKAGE</span> THEFT PREVENTION</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">0.0%</span> SHRINKAGE TOLERANCE</span>
+            <span class="marquee-item"><span class="badge">DUAL-SENSOR</span> COMPUTER VISION</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">&lt;15MS</span> ON-DEVICE INFERENCE</span>
+            <span class="marquee-item"><span class="badge">30 MINUTES</span> UNIVERSAL RETROFIT</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">100%</span> UNIVERSAL RETROFIT</span>
+            <span class="marquee-item"><span class="badge">300KG LOCK</span> CITY-WIDE DEADLOCK</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">NO SCALES</span> OPTICAL BOUNDING BOXES</span>
+            <span class="marquee-item"><span class="badge">PAY-TO-UNLOCK</span> AUTOMATIC RESOLUTION</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">KASPI &amp; STRIPE</span> REAL-TIME TELEMETRY</span>
+            <span class="marquee-item"><span class="badge">0% SHRINKAGE</span> THEFT PREVENTION</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">120 FPS</span> STEREOSCOPIC VISION</span>
+            <span class="marquee-item"><span class="badge">DUAL-SENSOR</span> COMPUTER VISION</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">0.0%</span> SHRINKAGE TOLERANCE</span>
+            <span class="marquee-item"><span class="badge">30 MINUTES</span> UNIVERSAL RETROFIT</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">&lt;15MS</span> ON-DEVICE INFERENCE</span>
+            <span class="marquee-item"><span class="badge">300KG LOCK</span> CITY-WIDE DEADLOCK</span>
             <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">100%</span> UNIVERSAL RETROFIT</span>
-            <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">NO SCALES</span> OPTICAL BOUNDING BOXES</span>
-            <span class="marquee-star">✦</span>
-            <span class="marquee-item"><span class="badge">KASPI &amp; STRIPE</span> REAL-TIME TELEMETRY</span>
+            <span class="marquee-item"><span class="badge">PAY-TO-UNLOCK</span> AUTOMATIC RESOLUTION</span>
             <span class="marquee-star">✦</span>
         </div>
     </div>
@@ -1909,8 +1920,8 @@
         <!-- ════ PANEL 1: PITCH BLACK / BLINDSPOT ════ -->
         <section class="c-panel is-1" id="panel-1">
             <div class="c-panel-top-meta">
-                <div class="meta-tag"><span class="meta-dot"></span> THREAT VECTOR 01 // SURVEILLANCE PARADOX</div>
-                <div class="meta-badge">UNRESOLVED LOSS: 18% – 28%</div>
+                <div class="meta-tag"><span class="meta-dot"></span> 01. THE CEILING CAMERA PARADOX</div>
+                <div class="meta-badge">Revenue Loss: 18% to 28% write-offs</div>
             </div>
 
             <div class="c-panel-grid">
@@ -1918,35 +1929,35 @@
                     <div class="c-panel-top">
                         <div class="c-panel-badge-row">
                             <span class="c-panel-num">01</span>
-                            <span class="c-panel-kicker">PASSIVE CCTV COLLAPSE</span>
+                            <span class="c-panel-kicker">CEILING CAMERAS ARE AN ILLUSION OF CONTROL</span>
                         </div>
                         <div class="c-panel-desc">
                             <p>
-                                <strong>Обычные камеры создают фальшивое чувство безопасности.</strong> Пассивная камера — это просто слепая видеозапись без синхронизации с корзиной. Она не способна понять в моменте, кто оплатил товар, а кто украл. При инциденте оператору приходится вручную отсматривать 70+ часов архива, пока нарушитель безнаказанно обчищает следующую точку.
+                                <strong>Ceiling dome cameras create an illusion of security.</strong> Mounted three meters in the air, their sightline is completely blocked whenever a customer reaches inside. The footage is totally disconnected from POS registers. When inventory goes missing, managers spend 30+ hours reviewing grainy footage days after the thief has left.
                             </p>
                         </div>
 
                         <!-- Technical Specification Matrix Chips -->
                         <div class="c-panel-specs">
                             <div class="c-spec-chip">
-                                <span class="spec-label">Задержка аудита</span>
-                                <span class="spec-val">72+ часа (вручную)</span>
+                                <span class="spec-label">Incident Search</span>
+                                <span class="spec-val">Days of manual review</span>
                             </div>
                             <div class="c-spec-chip">
-                                <span class="spec-label">Точность фиксации</span>
-                                <span class="spec-val">0.0% на точке</span>
+                                <span class="spec-label">Real-Time Interception</span>
+                                <span class="spec-val">Impossible in the moment</span>
                             </div>
                             <div class="c-spec-chip is-alert">
-                                <span class="spec-label">Списания сети</span>
-                                <span class="spec-val">18% – 28% выручки</span>
+                                <span class="spec-label">Fleet Shrinkage</span>
+                                <span class="spec-val">18% – 28% of revenue</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="c-panel_bt">
-                        <h2 class="panel-title">BLINDSPOT</h2>
+                        <h2 class="panel-title">THE BLIND SPOT</h2>
                         <a href="#panel-2" class="c-panel-link">
-                            <span>Архитектура защиты от скрытых краж</span>
+                            <span>How NEX captures theft in real time</span>
                             <span class="arrow">↗</span>
                         </a>
                     </div>
@@ -1958,7 +1969,7 @@
                         <div class="poster-reticle top-right"></div>
                         <div class="poster-reticle bottom-left"></div>
                         <div class="poster-reticle bottom-right"></div>
-                        <img class="panel-poster-img" src="./posters/poster_1_blindspot.webp" alt="NEX Blindspot Technical Architecture Poster" />
+                        <img class="panel-poster-img" src="./posters/poster_1_blindspot.webp" alt="NEX Blindspot Architecture Poster" />
                     </div>
                 </div>
             </div>
@@ -1967,8 +1978,8 @@
         <!-- ════ PANEL 2: LAVENDER / THEFT VAULT ════ -->
         <section class="c-panel is-2" id="panel-2">
             <div class="c-panel-top-meta">
-                <div class="meta-tag"><span class="meta-dot"></span> NEURAL MODULE 02 // REAL-TIME IDENTITY COMMIT</div>
-                <div class="meta-badge">EDGE INFERENCE: 11 MS</div>
+                <div class="meta-tag"><span class="meta-dot"></span> 02. REAL-TIME INCIDENT & BIOMETRIC DOSSIER</div>
+                <div class="meta-badge">Attribution Latency: &lt; 15ms</div>
             </div>
 
             <div class="c-panel-grid">
@@ -1976,35 +1987,35 @@
                     <div class="c-panel-top">
                         <div class="c-panel-badge-row">
                             <span class="c-panel-num">02</span>
-                            <span class="c-panel-kicker">BIOMETRIC BLACKLISTING</span>
+                            <span class="c-panel-kicker">INSTANT EVIDENCE DOSSIER & BLACKLIST GENERATION</span>
                         </div>
                         <div class="c-panel-desc">
                             <p>
-                                <strong>Фиксация нарушителя ровно в момент кражи, а не недели спустя.</strong> Потолочные стереокамеры Nex непрерывно отслеживают 3D-траекторию рук по всем полкам. Как только товар покидает полку без последующей оплаты в корзине, 512-мерный биометрический вектор лица нарушителя мгновенно коммитится в распределенную базу Theft Vault.
+                                <strong>Offender identity captured right at the moment of extraction.</strong> NEX tracks hand-to-product trajectories across shelf compartments in 15 milliseconds. If items leave the shelf without a matching POS transaction, the system snaps a high-resolution biometric face vector and creates a tamper-proof incident dossier with timestamps and unpaid SKUs.
                             </p>
                         </div>
 
                         <!-- Technical Specification Matrix Chips -->
                         <div class="c-panel-specs">
                             <div class="c-spec-chip">
-                                <span class="spec-label">Скорость коммита</span>
-                                <span class="spec-val">&lt; 15 миллисекунд</span>
+                                <span class="spec-label">Attribution Speed</span>
+                                <span class="spec-val">Under 15 milliseconds</span>
                             </div>
                             <div class="c-spec-chip">
-                                <span class="spec-label">Точность распознавания</span>
-                                <span class="spec-val">99.8% (FP16 NPU)</span>
+                                <span class="spec-label">Identification Rigor</span>
+                                <span class="spec-val">2,500 invariant SIFT points</span>
                             </div>
-                            <div class="c-spec-chip">
-                                <span class="spec-label">Приватность</span>
-                                <span class="spec-val">Без сырых фото</span>
+                            <div class="c-spec-chip is-accent">
+                                <span class="spec-label">Network Blacklist</span>
+                                <span class="spec-val">Synchronized city-wide in 200ms</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="c-panel_bt">
-                        <h2 class="panel-title">THEFT VAULT</h2>
+                        <h2 class="panel-title">EVIDENCE LOG</h2>
                         <a href="#panel-3" class="c-panel-link">
-                            <span>Как работает биометрический протокол</span>
+                            <span>How collective network lockout works</span>
                             <span class="arrow">↗</span>
                         </a>
                     </div>
@@ -2016,7 +2027,7 @@
                         <div class="poster-reticle top-right"></div>
                         <div class="poster-reticle bottom-left"></div>
                         <div class="poster-reticle bottom-right"></div>
-                        <img class="panel-poster-img" src="./posters/poster_2_vault.webp" alt="NEX Biometric Theft Vault Technical Poster" />
+                        <img class="panel-poster-img" src="./posters/poster_2_theftvault.webp" alt="NEX Evidence Logging Poster" />
                     </div>
                 </div>
             </div>
@@ -2025,8 +2036,8 @@
         <!-- ════ PANEL 3: TART CORAL / LOCKOUT ════ -->
         <section class="c-panel is-3" id="panel-3">
             <div class="c-panel-top-meta">
-                <div class="meta-tag"><span class="meta-dot"></span> HARDWARE ENFORCEMENT 03 // DISTRIBUTED IMMUNITY</div>
-                <div class="meta-badge">LOCK FORCE: 300 KG</div>
+                <div class="meta-tag"><span class="meta-dot"></span> 03. CITY-WIDE COLLECTIVE DEBT-LOCKOUT</div>
+                <div class="meta-badge">Holding Force: 300 kg</div>
             </div>
 
             <div class="c-panel-grid">
@@ -2034,35 +2045,35 @@
                     <div class="c-panel-top">
                         <div class="c-panel-badge-row">
                             <span class="c-panel-num">03</span>
-                            <span class="c-panel-kicker">PHYSICAL ACCESS DENIAL</span>
+                            <span class="c-panel-kicker">ONE THEFT PROTECTS THE ENTIRE OPERATOR FLEET</span>
                         </div>
                         <div class="c-panel-desc">
                             <p>
-                                <strong>Один инцидент защищает сразу всю сеть микромаркетов.</strong> Лицо нарушителя синхронизируется по всем аппаратам оператора. Когда вор подходит к любому другому холодильнику сети и сканирует Kaspi QR — контроллер наотрез отказывается разблокировать электромагнитный замок с усилием удержания 300 кг.
+                                <strong>A single theft at Cooler #04 deadlocks every door in your city network.</strong> If a customer leaves unpaid items behind, their token is blacklisted network-wide. When the offender approaches any other cooler in the city and scans a QR code, the 300kg industrial magnetic lock refuses to release. The cooler will not open until the outstanding debt is paid.
                             </p>
                         </div>
 
                         <!-- Technical Specification Matrix Chips -->
                         <div class="c-panel-specs">
                             <div class="c-spec-chip">
-                                <span class="spec-label">Усилие замка</span>
-                                <span class="spec-val">300 кг (2940 Н)</span>
+                                <span class="spec-label">Lock Holding Force</span>
+                                <span class="spec-val">300 kg electromagnetic resistance</span>
                             </div>
                             <div class="c-spec-chip">
-                                <span class="spec-label">Синхронизация</span>
-                                <span class="spec-val">&lt; 120ms по всей сети</span>
+                                <span class="spec-label">Route Sync Latency</span>
+                                <span class="spec-val">200ms route-wide propagation</span>
                             </div>
                             <div class="c-spec-chip">
-                                <span class="spec-label">Kaspi / QR отказ</span>
-                                <span class="spec-val">Мгновенный блок</span>
+                                <span class="spec-label">Debt Enforcement</span>
+                                <span class="spec-val">Door locked until debt settled</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="c-panel_bt">
-                        <h2 class="panel-title">LOCKOUT</h2>
+                        <h2 class="panel-title">CITY LOCKOUT</h2>
                         <a href="#panel-4" class="c-panel-link">
-                            <span>Спецификация сетевой блокировки</span>
+                            <span>Universal hardware retrofit installation</span>
                             <span class="arrow">↗</span>
                         </a>
                     </div>
@@ -2083,8 +2094,8 @@
         <!-- ════ PANEL 4: PITCH BLACK / RETROFIT ════ -->
         <section class="c-panel is-4" id="panel-4">
             <div class="c-panel-top-meta">
-                <div class="meta-tag"><span class="meta-dot"></span> INTEGRATION SPEC 04 // UNIVERSAL PLUG-AND-PLAY</div>
-                <div class="meta-badge">INSTALL: 30 MIN</div>
+                <div class="meta-tag"><span class="meta-dot"></span> 04. NON-DESTRUCTIVE 30-MINUTE RETROFIT</div>
+                <div class="meta-badge">Installation: 30 minutes</div>
             </div>
 
             <div class="c-panel-grid">
@@ -2092,35 +2103,35 @@
                     <div class="c-panel-top">
                         <div class="c-panel-badge-row">
                             <span class="c-panel-num">04</span>
-                            <span class="c-panel-kicker">RAPID FLEET INTEGRATION</span>
+                            <span class="c-panel-kicker">ZERO CABINET DRILLING · ZERO VOIDED WARRANTIES</span>
                         </div>
                         <div class="c-panel-desc">
                             <p>
-                                <strong>Вам не нужно менять холодильники и списывать существующий парк.</strong> Модуль Nex монтируется в любые микромаркеты (совместимо с VBox, Unicum и кастомными шкафами с замками 12V/24V) прямо на торговой точке за 30 минут: стереопод крепится на потолок, шлейф подключается к контроллеру замка. Экономика автомата выходит в плюс с первого месяца.
+                                <strong>Never discard working equipment or buy $6,000 smart fridges.</strong> The NEX retrofit kit installs directly on-site in 30 minutes during a routine morning restock: the dual-sensor pod brackets into the ceiling header, and the wiring harness taps directly into 12V/24V lock relays (VBox, Unicum, B-Frigo). Fully paid back from recovered shrinkage in 14 days.
                             </p>
                         </div>
 
                         <!-- Technical Specification Matrix Chips -->
                         <div class="c-panel-specs">
                             <div class="c-spec-chip">
-                                <span class="spec-label">Время монтажа</span>
-                                <span class="spec-val">30 минут на точке</span>
+                                <span class="spec-label">Installation Downtime</span>
+                                <span class="spec-val">30 minutes on-site</span>
                             </div>
                             <div class="c-spec-chip">
-                                <span class="spec-label">Совместимость</span>
+                                <span class="spec-label">Relay Compatibility</span>
                                 <span class="spec-val">VBox, Unicum, 12V/24V</span>
                             </div>
                             <div class="c-spec-chip is-accent">
-                                <span class="spec-label">Окупаемость</span>
-                                <span class="spec-val">1-й месяц работы</span>
+                                <span class="spec-label">Capital Payback</span>
+                                <span class="spec-val">14 calendar days</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="c-panel_bt">
-                        <h2 class="panel-title">RETROFIT</h2>
+                        <h2 class="panel-title">RETROFIT KIT</h2>
                         <a href="#cta" class="c-panel-link">
-                            <span>Запросить пилот на 3 аппарата</span>
+                            <span>Schedule 3-Cabinet Pilot Deployment</span>
                             <span class="arrow">↗</span>
                         </a>
                     </div>
@@ -2144,17 +2155,20 @@
          FINAL CALL TO ACTION (PITCH BLACK THEME)
          ═══════════════════════════════════════════════════════════════ -->
     <section class="section-cta" id="cta">
-        <h2 class="cta-massive-title">STOP LOSING MONEY.<br>RETROFIT YOUR FLEET.</h2>
+        <h2 class="cta-massive-title">STOP THE BLEED.<br>SECURE EVERY DOOR.</h2>
         <p class="cta-sub">
-            Turn vulnerable vending kiosks into unbreachable autonomous micro-markets. Access the technical management dashboard or schedule a hardware trial.
+            Turn vulnerable unattended commercial coolers into an autonomous, loss-proof micro-store network. Download the standalone computer vision demo package (.ZIP) to run real-time edge detection directly on your laptop or Jetson.
         </p>
 
         <div class="cta-btn-group">
-            <a href="/dashboard" class="btn btn-coral" style="font-size:13px; padding:15px 36px;">
-                Open Control Workspace →
+            <a href="nex_demo_standalone.zip" download class="btn" style="font-size:13px; padding:16px 36px; background: #E1FF01; color: #000; border-color: #000; font-weight: 800; box-shadow: 4px 4px 0px #000;">
+                <i class="fa-solid fa-download"></i> Download Demo (.ZIP)
             </a>
-            <a href="mailto:thzhanasyl@gmail.com" class="btn" style="font-size:13px; padding:15px 36px; background:#FFFFFF; color:#000000; border-color:#FFFFFF;">
-                Inquire For Pilot Fleet
+            <a href="demo.html" class="btn" style="font-size:13px; padding:16px 36px; background:#FFFFFF; color:#000000; border-color:#000000; font-weight: 800;">
+                Setup & Documentation
+            </a>
+            <a href="mailto:thzhanasyl@gmail.com" class="btn" style="font-size:13px; padding:16px 36px; background:#18181B; color:#FFFFFF; border-color:#27272A;">
+                Deploy 3-Cabinet Pilot
             </a>
         </div>
     </section>
@@ -2162,14 +2176,14 @@
     <!-- Footer (PITCH BLACK THEME) -->
     <footer class="site-footer">
         <div>
-            <strong>NEX ACTIVE CV</strong> — Autonomous Vision &amp; Loss Prevention OS
+            <strong>NEX VISION</strong> — Autonomous Vision & Loss Prevention OS for Unattended Retail
         </div>
         <div class="footer-nav-row">
-            <a href="/dashboard">Dashboard Workspace</a>
-            <a href="#panel-1">Blindspot</a>
-            <a href="#panel-2">Theft Vault</a>
-            <a href="#panel-3">Lockout</a>
-            <a href="#panel-4">Retrofit</a>
+            <a href="demo.html" style="color: #E1FF01; font-weight: 700;">Demo</a>
+            <a href="#panel-1">The Blind Spot</a>
+            <a href="#panel-2">Evidence Log</a>
+            <a href="#panel-3">City Lockout</a>
+            <a href="#panel-4">Retrofit Kit</a>
             <a href="https://github.com/Zhann-th" target="_blank">GitHub</a>
         </div>
     </footer>
@@ -2282,7 +2296,7 @@
         scene.add(interiorRightLight);
 
         // ════════════ PROCEDURAL TEXTURES GENERATORS ════════════
-        // High-Resolution Top Marquee Canvas ("NEX • NEURAL VISION")
+        // High-Resolution Top Marquee Canvas ("NEX • LOSS PREVENTION OS")
         function createMarqueeTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 1024;
@@ -2292,48 +2306,49 @@
             ctx.fillStyle = '#060609';
             ctx.fillRect(0, 0, 1024, 256);
             
-            ctx.strokeStyle = '#FFFFFF';
+            // Electric Lime Tech Border
+            ctx.strokeStyle = '#E1FF01';
             ctx.lineWidth = 4;
             ctx.strokeRect(12, 12, 1000, 232);
             
-            // Vibrant Coral & Lavender Tech Corners
-            ctx.fillStyle = '#fa435b';
-            ctx.fillRect(12, 12, 32, 8);
-            ctx.fillRect(12, 12, 8, 32);
-            ctx.fillRect(980, 12, 32, 8);
-            ctx.fillRect(1004, 12, 8, 32);
-            ctx.fillRect(12, 236, 32, 8);
-            ctx.fillRect(12, 212, 8, 32);
-            ctx.fillRect(980, 236, 32, 8);
-            ctx.fillRect(1004, 212, 8, 32);
+            // Electric Lime Tech Corner Brackets
+            ctx.fillStyle = '#E1FF01';
+            ctx.fillRect(12, 12, 36, 10);
+            ctx.fillRect(12, 12, 10, 36);
+            ctx.fillRect(976, 12, 36, 10);
+            ctx.fillRect(1002, 12, 10, 36);
+            ctx.fillRect(12, 234, 36, 10);
+            ctx.fillRect(12, 208, 10, 36);
+            ctx.fillRect(976, 234, 36, 10);
+            ctx.fillRect(1002, 208, 10, 36);
             
-            // Tech Sub-Headings
-            ctx.font = '700 24px "Dmmono", monospace';
-            ctx.fillStyle = '#fa435b';
+            // Tech Header Labels
+            ctx.font = '700 22px "Dmmono", monospace';
+            ctx.fillStyle = '#E1FF01';
             ctx.textAlign = 'left';
-            ctx.fillText('[ 120 FPS STEREO CV ]', 46, 62);
+            ctx.fillText('AUTONOMOUS RETAIL DEFENSE', 46, 62);
             ctx.textAlign = 'right';
-            ctx.fillStyle = '#9589d3';
-            ctx.fillText('[ SUB-15MS EDGE AI ]', 978, 62);
+            ctx.fillStyle = '#10B981';
+            ctx.fillText('300KG MAG-LOCK ARMED', 978, 62);
             
-            // Bold Marquee Wordmark
-            ctx.font = '900 86px "Rightgrotesk", "Anton", sans-serif';
+            // Monumental Brand Headline
+            ctx.font = '900 84px "Rightgrotesk", "Anton", sans-serif';
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('NEX • NEURAL VISION', 512, 142);
+            ctx.fillText('NEX • LOSS PREVENTION OS', 512, 142);
             
             // Micro Status Strip
             ctx.font = '700 20px "Dmmono", monospace';
             ctx.fillStyle = '#A1A1AA';
-            ctx.fillText('AUTONOMOUS LOSS PREVENTION OS • ACTIVE', 512, 210);
+            ctx.fillText('DUAL CV TOPOLOGY • 15MS EXTRACTION RECOGNITION', 512, 210);
             
             const tex = new THREE.CanvasTexture(canvas);
             tex.needsUpdate = true;
             return tex;
         }
 
-        // On-Door Digital Touch Terminal Screen (Kaspi QR & "SCAN TO UNLOCK")
+        // On-Door Digital Touch Terminal Screen (QR & "SCAN TO UNLOCK")
         function createTouchTerminalTexture() {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
@@ -2344,18 +2359,18 @@
             ctx.fillStyle = '#08080B';
             ctx.fillRect(0, 0, 256, 512);
             
-            // Top Kaspi Red Header
-            ctx.fillStyle = '#F14635';
+            // Top Electric Lime Header
+            ctx.fillStyle = '#E1FF01';
             ctx.fillRect(0, 0, 256, 68);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '900 22px "Rightgrotesk", sans-serif';
+            ctx.fillStyle = '#000000';
+            ctx.font = '900 20px "Rightgrotesk", sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('KASPI QR • SCAN TO UNLOCK', 128, 42);
+            ctx.fillText('NEX • SCAN TO UNLOCK', 128, 42);
             
             // Subtitle
             ctx.font = '700 13px "Dmmono", monospace';
             ctx.fillStyle = '#E4E4E7';
-            ctx.fillText('POINT CAMERA TO OPEN', 128, 96);
+            ctx.fillText('SCAN WITH CAMERA OR APP', 128, 96);
             
             // Procedural QR Code Graphic
             const qrX = 48, qrY = 118, qrSize = 160;
@@ -2403,8 +2418,8 @@
             
             // Big Bold Prompt: "SCAN TO UNLOCK"
             ctx.font = '900 24px "Rightgrotesk", sans-serif';
-            ctx.fillStyle = '#F6C700'; // Kaspi Gold Accent
-            ctx.fillText('SCAN TO UNLOCK', 128, 320);
+            ctx.fillStyle = '#E1FF01'; // Electric Lime Accent
+            ctx.fillText('POINT PHONE TO OPEN', 128, 320);
             
             // Machine Status Badge
             ctx.fillStyle = '#18181B';
@@ -2414,16 +2429,16 @@
             ctx.strokeRect(20, 350, 216, 75);
             
             ctx.font = '700 13px "Dmmono", monospace';
-            ctx.fillStyle = '#10B981'; // Green Active Dot
-            ctx.fillText('● SOLENOID ARMED', 128, 380);
+            ctx.fillStyle = '#E1FF01'; // Lime Active Dot
+            ctx.fillText('● 300KG LOCK ARMED', 128, 380);
             ctx.fillStyle = '#A1A1AA';
             ctx.font = '700 11px "Dmmono", monospace';
-            ctx.fillText('NEX ACTIVE CV 120 FPS', 128, 405);
+            ctx.fillText('NEX ACTIVE CV 66 FPS', 128, 405);
             
             // Bottom Safe Latch Info
             ctx.fillStyle = '#71717A';
             ctx.font = '700 11px "Dmmono", monospace';
-            ctx.fillText('DOOR LOCKS IN 15S', 128, 465);
+            ctx.fillText('UNPAID DEBT = ROUTE LOCK', 128, 465);
             
             const tex = new THREE.CanvasTexture(canvas);
             tex.needsUpdate = true;
@@ -2440,18 +2455,18 @@
             ctx.fillStyle = '#121215';
             ctx.fillRect(0, 0, 1024, 64);
             
-            // Price Tag Badges
+            // Price Tag Badges in English
             const tags = [
-                { x: 120, label: '450 ₸ • SNICKERS' },
-                { x: 380, label: '1,200 ₸ • RED BULL' },
-                { x: 640, label: '2,400 ₸ • SANDWICH' },
-                { x: 890, label: '650 ₸ • COCA-COLA' }
+                { x: 120, label: '$3.50 • ENERGY BAR' },
+                { x: 380, label: '$4.00 • RED BULL 250ML' },
+                { x: 640, label: '$5.50 • FRESH SANDWICH' },
+                { x: 890, label: '$2.50 • COLD SODA' }
             ];
             
-            ctx.font = '800 20px "Dmmono", monospace';
+            ctx.font = '800 18px "Dmmono", monospace';
             tags.forEach(t => {
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillRect(t.x - 90, 10, 180, 44);
+                ctx.fillRect(t.x - 100, 10, 200, 44);
                 ctx.fillStyle = '#000000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
@@ -2505,7 +2520,7 @@
             ctx.font = '900 44px "Rightgrotesk", sans-serif';
             ctx.fillStyle = '#FFFFFF';
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText('COCA-COLA', 128, 110);
+            ctx.fillText('COLD DRINK', 128, 110);
             const tex = new THREE.CanvasTexture(canvas);
             return tex;
         }
@@ -2564,7 +2579,7 @@
             ctx.fillStyle = '#FFFFFF';
             ctx.font = '900 38px "Rightgrotesk", sans-serif';
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText('SNICKERS', 128, 64);
+            ctx.fillText('ENERGY BAR', 128, 64);
             const tex = new THREE.CanvasTexture(canvas);
             return tex;
         }
@@ -3160,6 +3175,154 @@
         solenoidPlate.position.set(1.58, 2.85, 0.04);
         doorGroup.add(solenoidPlate);
 
+        // ── Evaporator Air Circulation Louvers on Inside Back Wall ──
+        const louverVentGeo = new THREE.BoxGeometry(2.6, 0.025, 0.04);
+        const louverVentMat = new THREE.MeshStandardMaterial({ color: 0x27272A, metalness: 0.8, roughness: 0.25 });
+        for (let ly = 1.9; ly <= 2.3; ly += 0.07) {
+            const ventSlat = new THREE.Mesh(louverVentGeo, louverVentMat);
+            ventSlat.position.set(0, ly, -1.26);
+            ventSlat.rotation.x = 0.35;
+            machineGroup.add(ventSlat);
+        }
+
+        // Dual Internal Circulation Fan Grilles
+        [-0.7, 0.7].forEach(fx => {
+            const fanRingGeo = new THREE.TorusGeometry(0.18, 0.015, 12, 32);
+            const fanRing = new THREE.Mesh(fanRingGeo, chromeMat);
+            fanRing.position.set(fx, 2.1, -1.25);
+            machineGroup.add(fanRing);
+
+            // Fan Cross Guard
+            const crossH = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.012, 0.01), darkMetalMat);
+            crossH.position.set(fx, 2.1, -1.25);
+            machineGroup.add(crossH);
+            const crossV = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.36, 0.01), darkMetalMat);
+            crossV.position.set(fx, 2.1, -1.25);
+            machineGroup.add(crossV);
+        });
+
+        // ── Acrylic Shelf Lane Pushers / Dividers ──
+        // Organizes drink cans into orderly lanes like real commercial automated vending
+        const laneDividerGeo = new THREE.BoxGeometry(0.02, 0.22, 1.8);
+        const laneDividerMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.45,
+            roughness: 0.1,
+            transmission: 0.85
+        });
+        [-0.96, -0.48, 0.0, 0.48, 0.96].forEach(dx => {
+            const dividerTop = new THREE.Mesh(laneDividerGeo, laneDividerMat);
+            dividerTop.position.set(dx, 1.25, 0.1);
+            machineGroup.add(dividerTop);
+
+            const dividerMid = new THREE.Mesh(laneDividerGeo, laneDividerMat);
+            dividerMid.position.set(dx, -0.05, 0.1);
+            machineGroup.add(dividerMid);
+        });
+
+        // ── CAM 01: BIOMETRIC EYE-LEVEL FACE VECTOR CAMERA (Outer Header) ──
+        // High-precision facial recognition sensor mounted at top front
+        const cam01Group = new THREE.Group();
+        cam01Group.position.set(0, 3.14, 1.44);
+        machineGroup.add(cam01Group);
+
+        const cam01Housing = new THREE.Mesh(
+            new THREE.BoxGeometry(0.48, 0.16, 0.14),
+            new THREE.MeshStandardMaterial({ color: 0x09090B, roughness: 0.2, metalness: 0.9 })
+        );
+        cam01Group.add(cam01Housing);
+
+        const cam01LensBezel = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.065, 0.065, 0.04, 24),
+            chromeMat
+        );
+        cam01LensBezel.rotation.x = Math.PI / 2;
+        cam01LensBezel.position.set(0, 0, 0.07);
+        cam01Group.add(cam01LensBezel);
+
+        const cam01LensGlass = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.048, 0.048, 0.02, 24),
+            new THREE.MeshPhysicalMaterial({ color: 0x101a35, metalness: 0.9, roughness: 0.01, transmission: 0.9, clearcoat: 1.0 })
+        );
+        cam01LensGlass.rotation.x = Math.PI / 2;
+        cam01LensGlass.position.set(0, 0, 0.085);
+        cam01Group.add(cam01LensGlass);
+
+        // Biometric Status Halo (Pulsing Electric Lime LED)
+        const cam01HaloGeo = new THREE.TorusGeometry(0.068, 0.008, 8, 24);
+        const cam01HaloMat = new THREE.MeshBasicMaterial({ color: 0xE1FF01 });
+        const cam01Halo = new THREE.Mesh(cam01HaloGeo, cam01HaloMat);
+        cam01Halo.position.set(0, 0, 0.075);
+        cam01Group.add(cam01Halo);
+
+        // ── 300KG INDUSTRIAL ELECTROMAGNETIC LOCK (Mounted Upper Right Door Frame) ──
+        const magLockGroup = new THREE.Group();
+        magLockGroup.position.set(1.48, 2.92, 1.36);
+        machineGroup.add(magLockGroup);
+
+        // Main Electromagnetic Coil Core & Housing
+        const magLockBody = new THREE.Mesh(
+            new THREE.BoxGeometry(0.18, 0.38, 0.16),
+            new THREE.MeshStandardMaterial({ color: 0x1E1E24, metalness: 0.92, roughness: 0.18 })
+        );
+        magLockGroup.add(magLockBody);
+
+        // Steel Laminated Core Plates
+        const magCore = new THREE.Mesh(
+            new THREE.BoxGeometry(0.03, 0.32, 0.12),
+            new THREE.MeshStandardMaterial({ color: 0xE4E4E7, metalness: 0.98, roughness: 0.08 })
+        );
+        magCore.position.set(0.08, 0, 0);
+        magLockGroup.add(magCore);
+
+        // 4 Chrome Hex Socket Cap Mounting Screws
+        const magScrewGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.02, 6);
+        [[-0.06, 0.15], [-0.06, -0.15], [0.06, 0.15], [0.06, -0.15]].forEach(([sx, sy]) => {
+            const sc = new THREE.Mesh(magScrewGeo, chromeMat);
+            sc.rotation.x = Math.PI / 2;
+            sc.position.set(sx, sy, 0.08);
+            magLockGroup.add(sc);
+        });
+
+        // Glowing Status Indicator on Mag-Lock (Electric Lime when locked/armed)
+        const magLockLed = new THREE.Mesh(
+            new THREE.SphereGeometry(0.022, 12, 12),
+            new THREE.MeshBasicMaterial({ color: 0xE1FF01 })
+        );
+        magLockLed.position.set(-0.06, 0, 0.085);
+        magLockGroup.add(magLockLed);
+
+        // Flexible Armored Steel Wiring Conduit Tube to Ceiling
+        const conduitGeo = new THREE.CylinderGeometry(0.022, 0.022, 0.26, 12);
+        const conduit = new THREE.Mesh(conduitGeo, chromeMat);
+        conduit.position.set(0, 0.22, 0);
+        magLockGroup.add(conduit);
+
+        // ── Magnetic Armature Plate (Mounted on Door corresponding to Mag-Lock) ──
+        const armaturePlate = new THREE.Mesh(
+            new THREE.BoxGeometry(0.04, 0.34, 0.13),
+            new THREE.MeshStandardMaterial({ color: 0xF4F4F5, metalness: 0.96, roughness: 0.05 })
+        );
+        armaturePlate.position.set(1.48, 2.92, -0.06);
+        doorGroup.add(armaturePlate);
+
+        // Magnetic Reed Door Contact Switch (Detects Latch Release in 1ms)
+        const reedSwitchFrame = new THREE.Mesh(
+            new THREE.BoxGeometry(0.04, 0.08, 0.03),
+            new THREE.MeshStandardMaterial({ color: 0x09090B, roughness: 0.4 })
+        );
+        reedSwitchFrame.position.set(0.8, 3.01, 1.43);
+        machineGroup.add(reedSwitchFrame);
+
+        const reedSwitchDoor = new THREE.Mesh(
+            new THREE.BoxGeometry(0.04, 0.08, 0.03),
+            new THREE.MeshStandardMaterial({ color: 0x09090B, roughness: 0.4 })
+        );
+        reedSwitchDoor.position.set(0.8, 3.01, -0.02);
+        doorGroup.add(reedSwitchDoor);
+
+
         // ════════════ SCROLLYTELLING ANIMATION CHOREOGRAPHY ════════════
         let targetProgress = 0;
         let currentProgress = 0;
@@ -3333,13 +3496,13 @@
 
             // 5. HUD Step Indicator Text
             if (p < 0.20) {
-                hudStep.textContent = "STANDBY STATE";
+                hudStep.textContent = "COOLER SECURED & ARMED";
             } else if (p < 0.45) {
-                hudStep.textContent = "HARDWARE ARCHITECTURE";
+                hudStep.textContent = "SHELVES & HARDWARE TOPOLOGY";
             } else if (p < 0.72) {
-                hudStep.textContent = "DOOR UNLOCK VULNERABILITY";
+                hudStep.textContent = "DOOR UNLATCH & THEFT EXPLOIT";
             } else {
-                hudStep.textContent = "STEREOSCOPIC OPTICAL ARRAY";
+                hudStep.textContent = "OVERHEAD CV SENSORS & 15MS ATTRIBUTION";
             }
 
             // 6. UI Narrative Cards & Lens Plunge Transitions
